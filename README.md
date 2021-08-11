@@ -3,8 +3,8 @@
 This project contains the `crhc` command line tool that simplifies the use of the C.RH.C API available at `console.redhat.com`
 
 ## Table of Content
- - [link](#binary) - You can download the binary file
- - [link](#You_can_clone_the_repository_and_use_from_the_source_code) - You can clone the repository and use from the source code
+ - [link](#) - You can download the binary file
+ - [link](#) - You can clone the repository and use from the source code
  - [link](#Usage) - Usage
  - [link](#Contribution) - Contribution
  
