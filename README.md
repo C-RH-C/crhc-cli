@@ -78,6 +78,6 @@ Note. All of them will generate the output in a `JSON` format, so you can use th
 
 I really hope this helps you.
 
-If you need anything else of if you are facing issues trying to use it, please let me know.
+If you need anything else of if you are facing issues trying to use it, please let me know via email or feel free to open a repository issue [here](https://github.com/C-RH-C/crhc-cli/issues)
 
 waldirio@redhat.com / waldirio@gmail.com
