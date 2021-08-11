@@ -11,7 +11,7 @@ This project contains the `crhc` command line tool that simplifies the use of th
 ---
 
 ## Binary_File
-Please, access the release page [here](#) and check the version that you would like to use.
+Please, access the release page [here](https://github.com/C-RH-C/crhc-cli/releases/latest) and check the version that you would like to use.
 
 ## Source_Code
 Please, proceed with the steps below
@@ -31,6 +31,7 @@ Now, you should be in your virtual environment. You can realize your prompt will
 
 We can continue
 ```
+(crhc-cli) [user@server crhc-cli]$ pip install --upgrade pip
 (crhc-cli) [user@server crhc-cli]$ pip install -r requirements.txt
 ```
 
