@@ -1,8 +1,10 @@
 #!/usr/bin/env python
+"""
+App responsible for collect some information from
+console.redhat.com (Inventory and Subscription Watch)
+"""
 
-def main():
-    print("Here")
-
+from parse import parse
 
 if __name__ == "__main__":
-    main()
+    parse.main_menu()
