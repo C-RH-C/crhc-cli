@@ -3,17 +3,17 @@
 This project contains the `crhc` command line tool that simplifies the use of the C.RH.C API available at `console.redhat.com`
 
 ## Table of Content
- - [link](#) - You can download the binary file
- - [link](#) - You can clone the repository and use from the source code
+ - [link](#Binary_File) - You can download the binary file
+ - [link](#Source_Code) - You can clone the repository and use from the source code
  - [link](#Usage) - Usage
  - [link](#Contribution) - Contribution
  
 ---
 
-## You can download the binary file
+## Binary_File
 Please, access the release page [here](#) and check the version that you would like to use.
 
-## You can clone the repository and use from the source code
+## Source_Code
 Please, proceed with the steps below
 
 In your RHEL/CentOS/Fedora/etc with Python 3.x installed, let's execute the commands in a sequence
