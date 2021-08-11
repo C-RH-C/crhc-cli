@@ -16,7 +16,7 @@ def inventory_sub_menu():
     if len(sys.argv) == 2:
         print("  list - List the inventory entries, first 50")
         print("  list_all - List all the inventory entries")
-        print("  --dysplay_name - Please, type the FQDN or Partial Hostname")
+        print("  --display_name - Please, type the FQDN or Partial Hostname")
 
     try:
         if (sys.argv[1] == "inventory") and (sys.argv[2] == "list"):
