@@ -112,7 +112,7 @@ If you would like to export the Subscription Watch to a `CSV` file, follow the s
 ```
 $ echo "cores,display_name,hardware_type,inventory_id,is_hypervisor,is_unmapped_guest,last_seen,measurement_type,sockets,subscription_manager_id" >/tmp/swatch_report.csv
 
-$./crhc swatch list_all | jq -r '.data[] | (.cores|tostring) + "," + .display_name + "," + .hardware_type + "," + .inventory_id + "," + (.is_hypervisor|tostring) + "," + (.is_unmapped_guest|tostring) + "," + .last_seen + "," + .measurement_type + "," + (.sockets|tostring) + "," + .subscription_manager_id' >>/tmp/swatch_report.csv
+$ ./crhc swatch list_all | jq -r '.data[] | (.cores|tostring) + "," + .display_name + "," + .hardware_type + "," + .inventory_id + "," + (.is_hypervisor|tostring) + "," + (.is_unmapped_guest|tostring) + "," + .last_seen + "," + .measurement_type + "," + (.sockets|tostring) + "," + .subscription_manager_id' >>/tmp/swatch_report.csv
 ```
 This should be enough to export the data and create the file `/tmp/swatch_report.csv` with the whole Subscription Watch information. In a sequence you can see the fields
 - cores
