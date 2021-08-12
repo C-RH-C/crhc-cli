@@ -82,9 +82,9 @@ If you would like to export the Inventory data to a `CSV` file, follow the steps
 ```
 $ echo "account,ansible_host,bios_uuid,created,culled_timestamp,display_name,external_id,fqdn,id,insights_id,provider_id,provider_type,reporter,rhel_machine_id,satellite_id,stale_timestamp,stale_warning_timestamp,subscription_manager_id,updated" >/tmp/inventory_report.csv
 
-./crhc inventory list_all | jq -r '.results[] | .account + "," + .ansible_host + "," + .bios_uuid + "," + .created + "," + .culled_timestamp + "," + .display_name + "," + .external_id + "," + .fqdn + "," + .id + "," + .insights_id + "," + .provider_id + "," + .provider_type + "," + .reporter + "," + .rhel_machine_id + "," + .satellite_id + "," + .stale_timestamp + "," + .stale_warning_timestamp + "," + .subscription_manager_id + "," + .updated' >>/tmp/inventory_report.csv
+$ ./crhc inventory list_all | jq -r '.results[] | .account + "," + .ansible_host + "," + .bios_uuid + "," + .created + "," + .culled_timestamp + "," + .display_name + "," + .external_id + "," + .fqdn + "," + .id + "," + .insights_id + "," + .provider_id + "," + .provider_type + "," + .reporter + "," + .rhel_machine_id + "," + .satellite_id + "," + .stale_timestamp + "," + .stale_warning_timestamp + "," + .subscription_manager_id + "," + .updated' >>/tmp/inventory_report.csv
 ```
-This should be enough to export all the data and create the file `/tmp/inventory_report.csv` with some Inventory information. In a sequence you can see the fields
+This should be enough to export the data and create the file `/tmp/inventory_report.csv` with some Inventory information. In a sequence you can see the fields
 - account
 - ansible_host
 - bios_uuid
@@ -105,15 +105,16 @@ This should be enough to export all the data and create the file `/tmp/inventory
 - subscription_manager_id
 - updated
 
+Note. The Inventory report will be improved very soon, just to add some additional and important fields as `sockets` and `installed products`, for example.
 
 ### Exporting Subscription Watch data to CSV
 If you would like to export the Subscription Watch to a `CSV` file, follow the steps below
 ```
 $ echo "cores,display_name,hardware_type,inventory_id,is_hypervisor,is_unmapped_guest,last_seen,measurement_type,sockets,subscription_manager_id" >/tmp/swatch_report.csv
 
-$./crhc swatch list_all | jq -r '.data[] | (.cores|tostring) + "," + .display_name + "," + .hardware_type + "," + .inventory_id + "," + (.is_hypervisor|tostring) + "," + (.is_unmapped_guest|tostring) + "," + .last_seen + "," + .measurement_type + "," + (.sockets|tostring) + "," + .subscription_manager_id' >>/tmp/swatch_report.csv
+$ ./crhc swatch list_all | jq -r '.data[] | (.cores|tostring) + "," + .display_name + "," + .hardware_type + "," + .inventory_id + "," + (.is_hypervisor|tostring) + "," + (.is_unmapped_guest|tostring) + "," + .last_seen + "," + .measurement_type + "," + (.sockets|tostring) + "," + .subscription_manager_id' >>/tmp/swatch_report.csv
 ```
-This should be enough to export all the data and create the file `/tmp/swatch_report.csv` with the whole Subscription Watch information. In a sequence you can see the fields
+This should be enough to export the data and create the file `/tmp/swatch_report.csv` with the whole Subscription Watch information. In a sequence you can see the fields
 - cores
 - display_name
 - hardware_type
