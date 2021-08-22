@@ -13,6 +13,12 @@ This project contains the `crhc` command line tool that simplifies the use of th
 ## Binary_File
 Please, access the release page [here](https://github.com/C-RH-C/crhc-cli/releases/latest) and check the version that you would like to use.
 
+If for any reason the binary didn't run properly in your machine also with python3.6, as below example, probably you are using a bit old version of 3.6. In this case, you can create the virtual environment following the steps below, and generate a new binary file that will be 100% compatible with your current python version.
+```
+$ ./crhc 
+[9554] Error loading Python lib '/tmp/_MEIWS0hNs/libpython3.6m.so.1.0': dlopen: /lib64/libm.so.6: version `GLIBC_2.29' not found (required by /tmp/_MEIWS0hNs/libpython3.6m.so.1.0)
+```
+
 ---
 ## Source_Code
 Please, proceed with the steps below
@@ -61,6 +67,16 @@ Flags:
 Use "crhc [command] --help" for more information about a command.
 ```
 
+Great, now it's time to generate the binary file, please, execute the step below yet in your virtual environment
+```
+(crhc-cli) [user@server crhc-cli]$ pyinstaller --onefile crhc.py
+```
+
+At the end of this process, the binary file will be available under the `dist` dir, then you can redistribute or copy to any other machine running the same python version and everything will be running with no issues.
+```
+(crhc-cli) [user@server crhc-cli]$  file dist/crhc 
+dist/crhc: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), BuildID[sha1]=f6af5bc244c001328c174a6abf855d682aa7401b, for GNU/Linux 2.6.32, stripped
+```
 
 ---
 ## Usage
