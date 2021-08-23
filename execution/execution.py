@@ -37,7 +37,7 @@ def inventory_list():
     url = "https://console.redhat.com/api/inventory/v1/hosts"
     response = requests.get(url, auth=(USER, PASSWORD))
     check_authentication(response)
-    print(json.dumps(response.json(), indent=4, sort_keys=True))
+    print(json.dumps(response.json(), indent=4))
 
 
 def inventory_list_all():
@@ -52,7 +52,7 @@ def inventory_list_all():
     for page in range(1, num_of_pages + 1):
         url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=50&page=" + str(page)
         response = requests.get(url, auth=(USER, PASSWORD))
-        print(json.dumps(response.json(), indent=4, sort_keys=True))
+        print(json.dumps(response.json(), indent=4))
 
 
 def inventory_list_search_by_name(fqdn):
@@ -62,7 +62,7 @@ def inventory_list_search_by_name(fqdn):
     url = "https://console.redhat.com/api/inventory/v1/hosts?hostname_or_id=" + fqdn
     response = requests.get(url, auth=(USER, PASSWORD))
     check_authentication(response)
-    print(json.dumps(response.json(), indent=4, sort_keys=True))
+    print(json.dumps(response.json(), indent=4))
 
 
 def swatch_list():
@@ -72,7 +72,7 @@ def swatch_list():
     url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=0&sort=display_name"
     response = requests.get(url, auth=(USER, PASSWORD))
     check_authentication(response)
-    print(json.dumps(response.json(), indent=4, sort_keys=True))
+    print(json.dumps(response.json(), indent=4))
 
 
 def swatch_list_all():
@@ -90,4 +90,4 @@ def swatch_list_all():
         count = count + 100
 
         response = requests.get(url, auth=(USER, PASSWORD))
-        print(json.dumps(response.json(), indent=4, sort_keys=True))
+        print(json.dumps(response.json(), indent=4))
