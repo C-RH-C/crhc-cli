@@ -89,10 +89,26 @@ The main idea of this script is to collect the information from `console.redhat.
 - `crhc inventory --display_name` - To search in RHEL Inventory by `display_name`
 - `crhc swatch list` - To list the first 100 entries of your Subscription Watch Inventory
 - `crhc swatch list_all` - To list all the entries of your Subscription Watch Inventory
+- `crhc swatch socket_summary` - To list a summary of sockets based on your Subscription Watch Inventory
 
 Note. All of them will generate the output in a `JSON` format, so you can use the output as input for any of your own script or also to `jq` command.
 
 ---
+
+## Examples
+
+```
+$ ./crhc swatch socket_summary
+Public Cloud ........: 14
+Virtualized RHEL ....: 2968
+Physical RHEL .......: 1306
+Hypervisors .........: 154
+----------------------
+Total # of Sockets ..: 4444
+```
+
+---
+
 ### Exporting Inventory data to CSV
 If you would like to export the Inventory data to a `CSV` file, follow the steps below
 ```
