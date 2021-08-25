@@ -3,6 +3,7 @@ Module responsible for the main menu
 """
 
 import sys
+import json
 from execution import execution
 from credential import credential
 
@@ -54,11 +55,14 @@ def swatch_sub_menu():
     if len(sys.argv) == 2:
         print("  list - List the swatch entries, first 100")
         print("  list_all - List all the swatch entries")
+        print("  socket_summary - List all the swatch entries")
 
     try:
         if (sys.argv[1] == "swatch") and (sys.argv[2] == "list"):
             # print("executing inventory list")
-            execution.swatch_list()
+            response = execution.swatch_list()
+            print(json.dumps(response, indent=4))
+
             sys.exit()
     except IndexError:
         ...
@@ -66,7 +70,16 @@ def swatch_sub_menu():
     try:
         if (sys.argv[1] == "swatch") and (sys.argv[2] == "list_all"):
             # print("executing inventory list")
-            execution.swatch_list_all()
+            response = execution.swatch_list_all()
+            print(json.dumps(response, indent=4))
+            sys.exit()
+    except IndexError:
+        ...
+
+    try:
+        if (sys.argv[1] == "swatch") and (sys.argv[2] == "socket_summary"):
+            # print("executing inventory list")
+            execution.swatch_socket_summary()
             sys.exit()
     except IndexError:
         ...
