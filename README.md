@@ -90,6 +90,7 @@ The main idea of this script is to collect the information from `console.redhat.
 - `crhc swatch list` - To list the first 100 entries of your Subscription Watch Inventory
 - `crhc swatch list_all` - To list all the entries of your Subscription Watch Inventory
 - `crhc swatch socket_summary` - To list a summary of sockets based on your Subscription Watch Inventory
+- `crhc endpoint list` - To list all the available API endpoints on `console.redhat.com`
 
 Note. All of them will generate the output in a `JSON` format, so you can use the output as input for any of your own script or also to `jq` command.
 
