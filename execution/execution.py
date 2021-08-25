@@ -84,7 +84,7 @@ def swatch_list_all():
     check_authentication(response)
     num_of_pages = round(response.json()['meta']['count'] / 100 + 1)
 
-    dic_full_list = {'data':''}
+    dic_full_list = {'data': ''}
     full_list = []
 
     count = 0
@@ -117,18 +117,18 @@ def swatch_socket_summary():
 
     for server in item_list['data']:
         # Baremetal server
-        if server['hardware_type'] == 'PHYSICAL' and server['is_hypervisor'] == False:
+        if server['hardware_type'] == 'PHYSICAL' and server['is_hypervisor'] is False:
             baremetal_count = baremetal_count + server['sockets']
         # Hypervisor server
-        if server['hardware_type'] == 'PHYSICAL' and server['is_hypervisor'] == True:
+        if server['hardware_type'] == 'PHYSICAL' and server['is_hypervisor'] is True:
             hypervisor_count = hypervisor_count + server['sockets']
         # VM with no host guest mapping
-        if server['hardware_type'] == 'VIRTUALIZED' and server['is_hypervisor'] == False and server['is_unmapped_guest'] == True:
+        if server['hardware_type'] == 'VIRTUALIZED' and server['is_hypervisor'] is False and server['is_unmapped_guest'] is True:
             vm_with_no_host_guest_mapping = vm_with_no_host_guest_mapping + server['sockets']
         # Cloud server
         if server['hardware_type'] == 'CLOUD':
             cloud_count = cloud_count + server['sockets']
-    
+
         total_socket_count = total_socket_count + server['sockets']
 
 
@@ -150,3 +150,30 @@ def endpoint_list():
     check_authentication(response)
     return response.json()
     # print(json.dumps(response.json(), indent=4))
+
+
+def get_command(api_url):
+    """
+    This def will call the API endpoint directly
+    """
+
+    # Testing if the customer is passing the full endpoint path or just the
+    # initial endpoint url. When passing the short one, the script will test
+    # and will show all the full url available.
+    if len(api_url.split("/")) < 4:
+
+        # retrieving the openapi json file
+        url = "https://console.redhat.com/" + api_url + "/v1/openapi.json"
+        response = requests.get(url, auth=(USER, PASSWORD))
+        check_authentication(response)
+
+        available_paths = response.json()['paths'].keys()
+        for path in available_paths:
+            print("{}/v1{}".format(api_url, path))
+
+    else:
+        # retrieving the full url
+        url = "https://console.redhat.com/" + api_url
+        response = requests.get(url, auth=(USER, PASSWORD))
+        check_authentication(response)
+        return response.json()

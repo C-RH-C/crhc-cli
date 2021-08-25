@@ -91,6 +91,7 @@ The main idea of this script is to collect the information from `console.redhat.
 - `crhc swatch list_all` - To list all the entries of your Subscription Watch Inventory
 - `crhc swatch socket_summary` - To list a summary of sockets based on your Subscription Watch Inventory
 - `crhc endpoint list` - To list all the available API endpoints on `console.redhat.com`
+- `crhc get <API ENDPOINT>` - Here you should be able to query the API endpoint directly
 
 Note. All of them will generate the output in a `JSON` format, so you can use the output as input for any of your own script or also to `jq` command.
 
@@ -98,6 +99,7 @@ Note. All of them will generate the output in a `JSON` format, so you can use th
 
 ## Examples
 
+### Subscriptions Socket Summary
 ```
 $ ./crhc swatch socket_summary
 Public Cloud ........: 14
@@ -106,6 +108,61 @@ Physical RHEL .......: 1306
 Hypervisors .........: 154
 ----------------------
 Total # of Sockets ..: 4444
+```
+
+
+### Querying the API, we can first check the available API endpoints using the command below
+```
+$ ./crhc endpoint list
+{
+    "services": [
+        "/api/aiops-clustering",
+        "/api/aiops-idle-cost-savings",
+...
+        "/api/inventory",
+...
+        "/api/rhsm",
+        "/api/rhsm-subscriptions",
+        "/api/ros",
+        "/api/sources",
+        "/api/subscriptions",
+        "/api/system-baseline",
+        "/api/topological-inventory",
+        "/api/tower-analytics",
+        "/api/upload",
+...
+    ]
+}
+```
+
+In a sequence, we can check the API endpoint using the `get` option
+```
+$ ./crhc.py get /api/inventory
+/api/inventory/v1/hosts
+/api/inventory/v1/hosts/checkin
+/api/inventory/v1/hosts/{host_id_list}
+/api/inventory/v1/hosts/{host_id_list}/facts/{namespace}
+/api/inventory/v1/hosts/{host_id_list}/system_profile
+/api/inventory/v1/hosts/{host_id_list}/tags
+/api/inventory/v1/hosts/{host_id_list}/tags/count
+/api/inventory/v1/system_profile/sap_sids
+/api/inventory/v1/system_profile/sap_system
+/api/inventory/v1/system_profile/validate_schema
+/api/inventory/v1/tags
+```
+And after that, we can see all the available methods. From now, we can call them directly, for example
+```
+$ ./crhc.py get /api/inventory/v1/hosts
+{
+    "total": 6221,
+    "count": 50,
+    "page": 1,
+    "per_page": 50,
+    "results": [
+        {
+            "insights_id": "1f959a58-9e13-4d60-8cef-33a452d2303b",
+            "rhel_machine_id": null,
+            ...
 ```
 
 ---
