@@ -102,6 +102,7 @@ def user_sub_menu():
     except IndexError:
         ...
 
+
 def endpoint_sub_menu():
     """
     The endpoint sub menu
@@ -120,6 +121,26 @@ def endpoint_sub_menu():
     except IndexError:
         ...
 
+
+def get_sub_menu():
+    """
+    The get sub menu
+    """
+
+    # To present the available options
+    if len(sys.argv) == 2:
+        print("  get <endpoint API URL HERE> - It will retrieve all the available methods")
+
+    try:
+        if (sys.argv[1] == "get") and (sys.argv[2]):
+            # print("executing inventory list")
+            # response = execution.get_command(sys.argv[2])
+            response = execution.get_command(sys.argv[2])
+            if response:
+                print(json.dumps(response, indent=4))
+            sys.exit()
+    except IndexError:
+        ...
 
 
 def main_menu():
@@ -161,6 +182,16 @@ def main_menu():
             # print("swatch")
             endpoint_sub_menu()
 
+        elif sys.argv[1] == "get":
+            try:
+                if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
+                    print("get help here")
+                    sys.exit()
+            except IndexError:
+                ...
+
+            # print("swatch")
+            get_sub_menu()
 
         elif sys.argv[1] == "user":
             try:
@@ -189,6 +220,7 @@ def main_menu():
         print("  inventory")
         print("  swatch")
         print("  endpoint")
+        print("  get")
         print("")
         print("  user")
         print("")
