@@ -102,6 +102,25 @@ def user_sub_menu():
     except IndexError:
         ...
 
+def endpoint_sub_menu():
+    """
+    The endpoint sub menu
+    """
+
+    # To present the available options
+    if len(sys.argv) == 2:
+        print("  list - List all the endpoints available")
+
+    try:
+        if (sys.argv[1] == "endpoint") and (sys.argv[2] == "list"):
+            # print("executing inventory list")
+            response = execution.endpoint_list()
+            print(json.dumps(response, indent=4))
+            sys.exit()
+    except IndexError:
+        ...
+
+
 
 def main_menu():
     """
@@ -131,6 +150,18 @@ def main_menu():
             # print("swatch")
             swatch_sub_menu()
 
+        elif sys.argv[1] == "endpoint":
+            try:
+                if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
+                    print("endpoint help here")
+                    sys.exit()
+            except IndexError:
+                ...
+
+            # print("swatch")
+            endpoint_sub_menu()
+
+
         elif sys.argv[1] == "user":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
@@ -157,6 +188,7 @@ def main_menu():
         print("Available Commands:")
         print("  inventory")
         print("  swatch")
+        print("  endpoint")
         print("")
         print("  user")
         print("")

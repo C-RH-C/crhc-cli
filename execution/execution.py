@@ -138,3 +138,15 @@ def swatch_socket_summary():
     print("Hypervisors .........: {}".format(hypervisor_count))
     print("----------------------")
     print("Total # of Sockets ..: {}".format(total_socket_count))
+
+
+
+def endpoint_list():
+    """
+    This def will collect the API endpoints and will list them
+    """
+    url = "https://console.redhat.com/api"
+    response = requests.get(url, auth=(USER, PASSWORD))
+    check_authentication(response)
+    return response.json()
+    # print(json.dumps(response.json(), indent=4))
