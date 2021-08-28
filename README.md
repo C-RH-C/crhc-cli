@@ -58,8 +58,13 @@ Usage:
 Available Commands:
   inventory
   swatch
+  endpoint
+  get
 
-  user
+  login
+  logout
+  token
+  whoami
 
 Flags:
   -h, --help                         help for crhc
@@ -83,7 +88,6 @@ dist/crhc: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically link
 
 The main idea of this script is to collect the information from `console.redhat.com` in order to generate some reports and/or proceed with some troubleshooting. That said, we can:
 
-- `crhc user set` - To set the credentials that will be used to authenticate on console.redhat.com
 - `crhc inventory list` - To list the first 50 entries of your RHEL Inventory
 - `crhc inventory list_all` - To list all the entries of your RHEL Inventory
 - `crhc inventory --display_name` - To search in RHEL Inventory by `display_name`
@@ -92,6 +96,10 @@ The main idea of this script is to collect the information from `console.redhat.
 - `crhc swatch socket_summary` - To list a summary of sockets based on your Subscription Watch Inventory
 - `crhc endpoint list` - To list all the available API endpoints on `console.redhat.com`
 - `crhc get <API ENDPOINT>` - Here you should be able to query the API endpoint directly
+- `crhc login --token <user api token here>` - The way to inform the token that you can obtain from [https://console.redhat.com/openshift/token](https://console.redhat.com/openshift/token)
+- `crhc logout` - Used to cleanup the local conf file, removing all the token information
+- `crhc token` - This will print the access_token. This can be used with `curl`, for example.
+- `crhc whoami` - This option will show some information regarding to the user who requested the token
 
 Note. All of them will generate the output in a `JSON` format, so you can use the output as input for any of your own script or also to `jq` command.
 
@@ -164,6 +172,12 @@ $ ./crhc.py get /api/inventory/v1/hosts
             "rhel_machine_id": null,
             ...
 ```
+
+### Using the token with the curl command
+```
+$ curl -s -H "Authorization: Bearer $(./crhc token)" https://api.openshift.com/api/accounts_mgmt/v1/current_account | json_reformat
+```
+
 
 ---
 
