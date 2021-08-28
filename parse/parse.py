@@ -5,7 +5,7 @@ Module responsible for the main menu
 import sys
 import json
 from execution import execution
-from credential import credential
+from credential import token
 
 
 def inventory_sub_menu():
@@ -59,7 +59,6 @@ def swatch_sub_menu():
 
     try:
         if (sys.argv[1] == "swatch") and (sys.argv[2] == "list"):
-            # print("executing inventory list")
             response = execution.swatch_list()
             print(json.dumps(response, indent=4))
 
@@ -69,7 +68,6 @@ def swatch_sub_menu():
 
     try:
         if (sys.argv[1] == "swatch") and (sys.argv[2] == "list_all"):
-            # print("executing inventory list")
             response = execution.swatch_list_all()
             print(json.dumps(response, indent=4))
             sys.exit()
@@ -78,26 +76,7 @@ def swatch_sub_menu():
 
     try:
         if (sys.argv[1] == "swatch") and (sys.argv[2] == "socket_summary"):
-            # print("executing inventory list")
             execution.swatch_socket_summary()
-            sys.exit()
-    except IndexError:
-        ...
-
-
-def user_sub_menu():
-    """
-    The User sub menu
-    """
-
-    # To present the available options
-    if len(sys.argv) == 2:
-        print("  set - Set the Username and Password. AT THIS MOMENT THE PASSWORD WILL BE STORED CLEAR TEXT!")
-
-    try:
-        if (sys.argv[1] == "user") and (sys.argv[2] == "set"):
-            # print("executing inventory list")
-            credential.set_credential()
             sys.exit()
     except IndexError:
         ...
@@ -138,6 +117,67 @@ def get_sub_menu():
             response = execution.get_command(sys.argv[2])
             if response:
                 print(json.dumps(response, indent=4))
+            sys.exit()
+    except IndexError:
+        ...
+
+
+def login_sub_menu():
+    """
+    Function responsible for pass the token and create the necessary configuration file
+    that will be used from this point.
+    """
+
+    # To present the available options
+    if len(sys.argv) == 2:
+        print("  In order to log in it is mandatory to use '--token'")
+        print("  You can obtain a token at: https://console.redhat.com/openshift/token .")
+
+    try:
+        if (sys.argv[1] == "login") and (sys.argv[2] == "--token"):
+            secret = sys.argv[3]
+            token.set_token(secret)
+            sys.exit()
+    except IndexError:
+        ...
+
+
+def logout_sub_menu():
+    """
+    Function responsile for remove all the content from the .conf file. This will remove all the
+    current information available in the local machine.
+    """
+    try:
+        if sys.argv[1] == "logout":
+            token.delete_token()
+            sys.exit()
+    except IndexError:
+        ...
+
+
+def token_sub_menu():
+    """
+    Here you can see the full access_key and use it in order to access the API 
+    endpoint, for example
+    """
+    try:
+        if sys.argv[1] == "token":
+            print(token.get_token())
+            sys.exit()
+    except IndexError:
+        ...
+
+
+def whoami_sub_menu():
+    """
+    Retrieving the user information from c.rh.c API endpoint
+    """
+    try:
+        if sys.argv[1] == "whoami":
+            response = execution.whoami()
+            if response:
+                print(json.dumps(response, indent=4))
+
             sys.exit()
     except IndexError:
         ...
@@ -193,7 +233,7 @@ def main_menu():
             # print("swatch")
             get_sub_menu()
 
-        elif sys.argv[1] == "user":
+        elif sys.argv[1] == "login":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
                     print("user help here")
@@ -202,7 +242,40 @@ def main_menu():
                 ...
 
             # print("swatch")
-            user_sub_menu()
+            login_sub_menu()
+
+        elif sys.argv[1] == "logout":
+            try:
+                if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
+                    print("user help here")
+                    sys.exit()
+            except IndexError:
+                ...
+
+            # print("swatch")
+            logout_sub_menu()
+
+        elif sys.argv[1] == "token":
+            try:
+                if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
+                    print("user help here")
+                    sys.exit()
+            except IndexError:
+                ...
+
+            # print("swatch")
+            token_sub_menu()
+
+        elif sys.argv[1] == "whoami":
+            try:
+                if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
+                    print("user help here")
+                    sys.exit()
+            except IndexError:
+                ...
+
+            # print("swatch")
+            whoami_sub_menu()
 
         elif (sys.argv[1] == "--help") or (sys.argv[1] == "-h"):
             print("This help!")
@@ -222,7 +295,10 @@ def main_menu():
         print("  endpoint")
         print("  get")
         print("")
-        print("  user")
+        print("  login")
+        print("  logout")
+        print("  token")
+        print("  whoami")
         print("")
         print("Flags:")
         print("  -h, --help                         help for crhc")

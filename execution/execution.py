@@ -5,18 +5,19 @@ Module responsible for execute all the API calls.
 import json
 import sys
 import requests
-from credential import credential
+from credential import token
 
-credential_obj = credential.read_credential()
+# USER = ""
+# PASSWORD = ""
 
-USER = ""
-PASSWORD = ""
+access_token = token.get_token()
+# access_token = token.refresh_token()
 
-try:
-    USER = credential_obj[0]
-    PASSWORD = credential_obj[1]
-except TypeError:
-    ...
+# try:
+#     USER = credential_obj[0]
+#     PASSWORD = credential_obj[1]
+# except TypeError:
+#     ...
 
 
 def check_authentication(response):
@@ -25,8 +26,9 @@ def check_authentication(response):
     ask for the customer to rerun the command './crhc user set'
     """
     if response.status_code != 200:
-        print("You are not authenticated yet.")
-        print("Please, use './crhc user set', set the username and password and try again.")
+        # print("You are not authenticated yet.")
+        # print("Please, use './crhc user set', set the username and password and try again.")
+        print("Error: Failed to create C.RH.C connection: Not logged in, credentials aren't set, run the 'crhc login' command")
         sys.exit()
 
 
@@ -35,7 +37,8 @@ def inventory_list():
     This def will collect the first 50 HBI entries
     """
     url = "https://console.redhat.com/api/inventory/v1/hosts"
-    response = requests.get(url, auth=(USER, PASSWORD))
+    response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+    # response = requests.get(url, auth=(USER, PASSWORD))
     check_authentication(response)
     print(json.dumps(response.json(), indent=4))
 
@@ -45,13 +48,15 @@ def inventory_list_all():
     This def will collect all the HBI entries
     """
     url = "https://console.redhat.com/api/inventory/v1/hosts"
-    response = requests.get(url, auth=(USER, PASSWORD))
+    # response = requests.get(url, auth=(USER, PASSWORD))
+    response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     check_authentication(response)
     num_of_pages = round(response.json()['total'] / 50 + 1)
 
     for page in range(1, num_of_pages + 1):
         url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=50&page=" + str(page)
-        response = requests.get(url, auth=(USER, PASSWORD))
+        # response = requests.get(url, auth=(USER, PASSWORD))
+        response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
         print(json.dumps(response.json(), indent=4))
 
 
@@ -60,7 +65,8 @@ def inventory_list_search_by_name(fqdn):
     This def will search the HBI entries by keyword
     """
     url = "https://console.redhat.com/api/inventory/v1/hosts?hostname_or_id=" + fqdn
-    response = requests.get(url, auth=(USER, PASSWORD))
+    # response = requests.get(url, auth=(USER, PASSWORD))
+    response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     check_authentication(response)
     print(json.dumps(response.json(), indent=4))
 
@@ -70,7 +76,8 @@ def swatch_list():
     This def will collect the first 100 entries from Subscription Watch
     """
     url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=0&sort=display_name"
-    response = requests.get(url, auth=(USER, PASSWORD))
+    # response = requests.get(url, auth=(USER, PASSWORD))
+    response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     check_authentication(response)
     return response.json()
 
@@ -80,7 +87,8 @@ def swatch_list_all():
     This def will collect all the entries from Subscription Watch
     """
     url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=0&sort=display_name"
-    response = requests.get(url, auth=(USER, PASSWORD))
+    # response = requests.get(url, auth=(USER, PASSWORD))
+    response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     check_authentication(response)
     num_of_pages = round(response.json()['meta']['count'] / 100 + 1)
 
@@ -92,7 +100,8 @@ def swatch_list_all():
         url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=" + str(count) + "&sort=display_name"
         count = count + 100
 
-        response = requests.get(url, auth=(USER, PASSWORD))
+        # response = requests.get(url, auth=(USER, PASSWORD))
+        response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
 
         for entry in response.json()['data']:
             full_list.append(entry)
@@ -131,7 +140,6 @@ def swatch_socket_summary():
 
         total_socket_count = total_socket_count + server['sockets']
 
-
     print("Public Cloud ........: {}".format(cloud_count))
     print("Virtualized RHEL ....: {}".format(vm_with_no_host_guest_mapping))
     print("Physical RHEL .......: {}".format(baremetal_count))
@@ -140,13 +148,13 @@ def swatch_socket_summary():
     print("Total # of Sockets ..: {}".format(total_socket_count))
 
 
-
 def endpoint_list():
     """
     This def will collect the API endpoints and will list them
     """
     url = "https://console.redhat.com/api"
-    response = requests.get(url, auth=(USER, PASSWORD))
+    # response = requests.get(url, auth=(USER, PASSWORD))
+    response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     check_authentication(response)
     return response.json()
     # print(json.dumps(response.json(), indent=4))
@@ -164,7 +172,8 @@ def get_command(api_url):
 
         # retrieving the openapi json file
         url = "https://console.redhat.com/" + api_url + "/v1/openapi.json"
-        response = requests.get(url, auth=(USER, PASSWORD))
+        # response = requests.get(url, auth=(USER, PASSWORD))
+        response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
         check_authentication(response)
 
         available_paths = response.json()['paths'].keys()
@@ -174,6 +183,19 @@ def get_command(api_url):
     else:
         # retrieving the full url
         url = "https://console.redhat.com/" + api_url
-        response = requests.get(url, auth=(USER, PASSWORD))
+        # response = requests.get(url, auth=(USER, PASSWORD))
+        response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
         check_authentication(response)
         return response.json()
+
+
+def whoami():
+    """
+    Used to retrieve the current user information via API
+    """
+    url = "https://api.openshift.com/api/accounts_mgmt/v1/current_account"
+    # response = requests.get(url, auth=(USER, PASSWORD))
+    response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+    check_authentication(response)
+    return response.json()
+    # print(json.dumps(response.json(), indent=4))
