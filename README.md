@@ -2,6 +2,12 @@
 
 This project contains the `crhc` command line tool that simplifies the use of the C.RH.C API available at `console.redhat.com`
 
+---
+
+**Disclaimer**: This project or the binary files available in the `Releases` area are `NOT` delivered and/or released by Red Hat. This is an independent project to help customers and Red Hat Support team to collect the data from `console.redhat.com` for reporting or troubleshooting purposes.
+
+---
+
 ## Table of Content
  - [link](#Binary_File) - You can download the binary file
  - [link](#Source_Code) - You can clone the repository and use from the source code
