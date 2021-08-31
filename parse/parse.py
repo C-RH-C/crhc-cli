@@ -6,6 +6,7 @@ import sys
 import json
 from execution import execution
 from credential import token
+access_token = token.get_token()
 
 
 def inventory_sub_menu():
@@ -21,14 +22,18 @@ def inventory_sub_menu():
 
     try:
         if (sys.argv[1] == "inventory") and (sys.argv[2] == "list"):
-            execution.inventory_list()
+            # execution.inventory_list()
+            response = execution.inventory_list()
+            # print(response)
+            print(json.dumps(response, indent=4))
             sys.exit()
     except IndexError:
         ...
 
     try:
         if (sys.argv[1] == "inventory") and (sys.argv[2] == "list_all"):
-            execution.inventory_list_all()
+            response = execution.inventory_list_all()
+            print(json.dumps(response, indent=4))
             sys.exit()
     except IndexError:
         ...
@@ -40,7 +45,8 @@ def inventory_sub_menu():
                 print("Please, pass the FQDN or Partial FQDN to --display_name, for example '--display_name virt-who-esxi'")
                 sys.exit()
             fqdn = sys.argv[3]
-            execution.inventory_list_search_by_name(fqdn)
+            response = execution.inventory_list_search_by_name(fqdn)
+            print(json.dumps(response, indent=4))
             sys.exit()
     except IndexError:
         ...

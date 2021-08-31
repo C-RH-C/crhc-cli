@@ -10,7 +10,7 @@ from credential import token
 # USER = ""
 # PASSWORD = ""
 
-access_token = token.get_token()
+# access_token = token.get_token()
 # access_token = token.refresh_token()
 
 # try:
@@ -19,6 +19,8 @@ access_token = token.get_token()
 # except TypeError:
 #     ...
 
+# FIELDS_TO_RETRIEVE = "?fields[system_profile]=number_of_cpus,number_of_sockets,cores_per_socket,system_memory_bytes,bios_release_date,bios_vendor,bios_version,operating_system,os_kernel_version,os_release,infrastructure_type,infrastructure_vendor,insights_client_version"
+FIELDS_TO_RETRIEVE = ""
 
 def check_authentication(response):
     """
@@ -36,45 +38,145 @@ def inventory_list():
     """
     This def will collect the first 50 HBI entries
     """
+    access_token = token.get_token()
+
     url = "https://console.redhat.com/api/inventory/v1/hosts"
     response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     # response = requests.get(url, auth=(USER, PASSWORD))
     check_authentication(response)
-    print(json.dumps(response.json(), indent=4))
+
+    list_of_servers = []
+    inventory_full_detail = {'results':'', 'total': response.json()['total']}
+    inventory_full_detail['results'] = list_of_servers
+
+    stage_list = []
+    stage_dic = {'server': stage_list}
+    
+
+    for server in response.json()['results']:
+
+        access_token = token.get_token()
+
+        try:
+            stage_dic['server'] = server
+        except json.decoder.JSONDecodeError:
+            stage_dic['server'] = {}
+
+        server_id = server['id']
+        url = "https://console.redhat.com/api/inventory/v1/hosts/" + server_id + "/system_profile" + FIELDS_TO_RETRIEVE
+        
+        response_system_profile = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+        try:
+            stage_dic['system_profile'] = response_system_profile.json()['results'][0]['system_profile']
+        except json.decoder.JSONDecodeError:
+            stage_dic['system_profile'] = {}
+
+        list_of_servers.append(stage_dic)
+        stage_dic = {}
+
+    return inventory_full_detail
 
 
 def inventory_list_all():
     """
     This def will collect all the HBI entries
     """
+    access_token = token.get_token()
+
     url = "https://console.redhat.com/api/inventory/v1/hosts"
-    # response = requests.get(url, auth=(USER, PASSWORD))
     response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+    # response = requests.get(url, auth=(USER, PASSWORD))
     check_authentication(response)
+
     num_of_pages = round(response.json()['total'] / 50 + 1)
+
+    list_of_servers = []
+    inventory_full_detail = {'results':'', 'total': response.json()['total']}
+    inventory_full_detail['results'] = list_of_servers
+
+    stage_list = []
+    stage_dic = {'server': stage_list}
+
 
     for page in range(1, num_of_pages + 1):
         url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=50&page=" + str(page)
         # response = requests.get(url, auth=(USER, PASSWORD))
         response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
-        print(json.dumps(response.json(), indent=4))
+        # print(json.dumps(response.json(), indent=4))
+
+
+        for server in response.json()['results']:
+
+            access_token = token.get_token()
+
+            try:
+                stage_dic['server'] = server
+            except json.decoder.JSONDecodeError:
+                stage_dic['server'] = {}
+
+            server_id = server['id']
+            url = "https://console.redhat.com/api/inventory/v1/hosts/" + server_id + "/system_profile" + FIELDS_TO_RETRIEVE
+            
+            response_system_profile = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+            try:
+                stage_dic['system_profile'] = response_system_profile.json()['results'][0]['system_profile']
+            except json.decoder.JSONDecodeError:
+                stage_dic['system_profile'] = {}
+            
+            list_of_servers.append(stage_dic)
+            stage_dic = {}
+
+    return inventory_full_detail
 
 
 def inventory_list_search_by_name(fqdn):
     """
     This def will search the HBI entries by keyword
     """
+    access_token = token.get_token()
+
     url = "https://console.redhat.com/api/inventory/v1/hosts?hostname_or_id=" + fqdn
-    # response = requests.get(url, auth=(USER, PASSWORD))
+
     response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+    # response = requests.get(url, auth=(USER, PASSWORD))
     check_authentication(response)
-    print(json.dumps(response.json(), indent=4))
+
+    list_of_servers = []
+    inventory_full_detail = {'results':'', 'total': response.json()['total']}
+    inventory_full_detail['results'] = list_of_servers
+
+    stage_list = []
+    stage_dic = {'server': stage_list}
+    
+
+    for server in response.json()['results']:
+
+        access_token = token.get_token()
+
+        pass
+        stage_dic['server'] = server
+
+        server_id = server['id']
+        url = "https://console.redhat.com/api/inventory/v1/hosts/" + server_id + "/system_profile" + FIELDS_TO_RETRIEVE
+        
+        response_system_profile = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+        try:
+            stage_dic['system_profile'] = response_system_profile.json()['results'][0]['system_profile']
+        except json.decoder.JSONDecodeError:
+            stage_dic['system_profile'] = {}
+
+        list_of_servers.append(stage_dic)
+        stage_dic = {}
+
+    return inventory_full_detail
 
 
 def swatch_list():
     """
     This def will collect the first 100 entries from Subscription Watch
     """
+    access_token = token.get_token()
+
     url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=0&sort=display_name"
     # response = requests.get(url, auth=(USER, PASSWORD))
     response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
@@ -86,6 +188,8 @@ def swatch_list_all():
     """
     This def will collect all the entries from Subscription Watch
     """
+    access_token = token.get_token()
+
     url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=0&sort=display_name"
     # response = requests.get(url, auth=(USER, PASSWORD))
     response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
@@ -115,6 +219,7 @@ def swatch_socket_summary():
     This def will present all the usage information in socket and
     summary format from Subscription Watch
     """
+    access_token = token.get_token()
 
     item_list = swatch_list_all()
 
@@ -152,6 +257,8 @@ def endpoint_list():
     """
     This def will collect the API endpoints and will list them
     """
+    access_token = token.get_token()
+
     url = "https://console.redhat.com/api"
     # response = requests.get(url, auth=(USER, PASSWORD))
     response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
@@ -164,6 +271,7 @@ def get_command(api_url):
     """
     This def will call the API endpoint directly
     """
+    access_token = token.get_token()
 
     # Testing if the customer is passing the full endpoint path or just the
     # initial endpoint url. When passing the short one, the script will test
@@ -193,6 +301,8 @@ def whoami():
     """
     Used to retrieve the current user information via API
     """
+    access_token = token.get_token()
+
     url = "https://api.openshift.com/api/accounts_mgmt/v1/current_account"
     # response = requests.get(url, auth=(USER, PASSWORD))
     response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
