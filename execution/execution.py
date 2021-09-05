@@ -6,6 +6,11 @@ import json
 import sys
 import requests
 from credential import token
+import os
+import time
+
+CURRENT_VERSION = "1.2.1"
+# CURRENT_VERSION = "1.1.0"
 
 # USER = ""
 # PASSWORD = ""
@@ -316,3 +321,51 @@ def whoami():
     check_authentication(response)
     return response.json()
     # print(json.dumps(response.json(), indent=4))
+
+
+def update_check():
+    """
+    Checking if there is any new available version on GitHub, if yes, it will
+    let the user aware to download it.
+    """
+
+    home_dir = os.path.expanduser('~')
+
+    # In case the file be not around yet.
+    answer = ""
+
+    if os.path.exists(home_dir + "/.crhc.version"):
+        file_age = (time.time() - (os.stat(home_dir + "/.crhc.version").st_mtime))
+        # print(int(file_age))
+
+        # 43200 sec == 12h
+        if int(file_age) < 43200:
+            file_ref = open(home_dir + "/.crhc.version")
+            available_version = file_ref.read()
+
+            if int(available_version.replace(".","")) > int(CURRENT_VERSION.replace(".","")):
+                answer = "Please, download the latests version from https://github.com/C-RH-C/crhc-cli/releases/latest\n\
+Current Version: {}\nNew Version: {}".format(CURRENT_VERSION, available_version)
+            else:
+                answer = ""
+        else:
+            os.remove(home_dir + "/.crhc.version")
+
+        pass
+    else:
+        access_token = token.get_token()
+
+        url = "https://github.com/C-RH-C/crhc-cli/releases/latest"
+        response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+        available_version = response.url.split("/")[7]
+
+        file_obj = open(home_dir + "/.crhc.version", "w")
+        file_obj.write(available_version)
+
+        if int(available_version.replace(".","")) > int(CURRENT_VERSION.replace(".","")):
+                answer = "Please, download the latests version from https://github.com/C-RH-C/crhc-cli/releases/latest\n\
+Current Version: {}\nNew Version: {}".format(CURRENT_VERSION, available_version)
+        else:
+            answer = ""
+
+    return answer
