@@ -20,6 +20,7 @@ from credential import token
 #     ...
 
 # FIELDS_TO_RETRIEVE = "?fields[system_profile]=number_of_cpus,number_of_sockets,cores_per_socket,system_memory_bytes,bios_release_date,bios_vendor,bios_version,operating_system,os_kernel_version,os_release,infrastructure_type,infrastructure_vendor,insights_client_version"
+# FIELDS_TO_RETRIEVE = "?fields[system_profile]=number_of_sockets"
 FIELDS_TO_RETRIEVE = ""
 
 def check_authentication(response):
@@ -70,6 +71,8 @@ def inventory_list():
             stage_dic['system_profile'] = response_system_profile.json()['results'][0]['system_profile']
         except json.decoder.JSONDecodeError:
             stage_dic['system_profile'] = {}
+        except KeyError:
+            stage_dic['system_profile'] = {}
 
         list_of_servers.append(stage_dic)
         stage_dic = {}
@@ -83,12 +86,12 @@ def inventory_list_all():
     """
     access_token = token.get_token()
 
-    url = "https://console.redhat.com/api/inventory/v1/hosts"
+    url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=1"
     response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     # response = requests.get(url, auth=(USER, PASSWORD))
     check_authentication(response)
 
-    num_of_pages = round(response.json()['total'] / 50 + 1)
+    num_of_pages = int(response.json()['total'] / 50 + 1)
 
     list_of_servers = []
     inventory_full_detail = {'results':'', 'total': response.json()['total']}
@@ -122,7 +125,9 @@ def inventory_list_all():
                 stage_dic['system_profile'] = response_system_profile.json()['results'][0]['system_profile']
             except json.decoder.JSONDecodeError:
                 stage_dic['system_profile'] = {}
-            
+            except KeyError:
+                stage_dic['system_profile'] = {}
+
             list_of_servers.append(stage_dic)
             stage_dic = {}
 
@@ -163,6 +168,8 @@ def inventory_list_search_by_name(fqdn):
         try:
             stage_dic['system_profile'] = response_system_profile.json()['results'][0]['system_profile']
         except json.decoder.JSONDecodeError:
+            stage_dic['system_profile'] = {}
+        except KeyError:
             stage_dic['system_profile'] = {}
 
         list_of_servers.append(stage_dic)
