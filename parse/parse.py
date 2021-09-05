@@ -188,6 +188,10 @@ def whoami_sub_menu():
     except IndexError:
         ...
 
+def update_check():
+
+    return execution.update_check()
+
 
 def main_menu():
     """
@@ -310,3 +314,5 @@ def main_menu():
         print("  -h, --help                         help for crhc")
         print("")
         print("Use \"crhc [command] --help\" for more information about a command.")
+        print("")
+        print("{}".format(update_check()))
