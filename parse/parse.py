@@ -2,9 +2,11 @@
 Module responsible for the main menu
 """
 
+import csv
 import sys
 import json
 from execution import execution
+from report import report
 from credential import token
 access_token = token.get_token()
 
@@ -20,36 +22,112 @@ def inventory_sub_menu():
         print("  list_all - List all the inventory entries")
         print("  --display_name - Please, type the FQDN or Partial Hostname")
 
-    try:
-        if (sys.argv[1] == "inventory") and (sys.argv[2] == "list"):
-            # execution.inventory_list()
-            response = execution.inventory_list()
-            # print(response)
-            print(json.dumps(response, indent=4))
-            sys.exit()
-    except IndexError:
-        ...
+    if len(sys.argv) == 3:
 
-    try:
-        if (sys.argv[1] == "inventory") and (sys.argv[2] == "list_all"):
-            response = execution.inventory_list_all()
-            print(json.dumps(response, indent=4))
-            sys.exit()
-    except IndexError:
-        ...
-
-    try:
-        if (sys.argv[1] == "inventory") and (sys.argv[2] == "--display_name"):
-
-            if len(sys.argv) == 3:
-                print("Please, pass the FQDN or Partial FQDN to --display_name, for example '--display_name virt-who-esxi'")
+        # To print in JSON format
+        try:
+            if (sys.argv[1] == "inventory") and (sys.argv[2] == "list"):
+                # execution.inventory_list()
+                response = execution.inventory_list()
+                # print(response)
+                print(json.dumps(response, indent=4))
                 sys.exit()
-            fqdn = sys.argv[3]
-            response = execution.inventory_list_search_by_name(fqdn)
-            print(json.dumps(response, indent=4))
-            sys.exit()
-    except IndexError:
-        ...
+        except IndexError:
+            ...
+
+        # To print in JSON format
+        try:
+            if (sys.argv[1] == "inventory") and (sys.argv[2] == "list_all"):
+                print("This process can spend some minutes according to the number of servers in your account.")
+                response = execution.inventory_list_all()
+                print(json.dumps(response, indent=4))
+                sys.exit()
+        except IndexError:
+            ...
+
+        # To print in JSON format
+        try:
+            if (sys.argv[1] == "inventory") and (sys.argv[2] == "--display_name"):
+
+                if len(sys.argv) == 3:
+                    print("Please, pass the FQDN or Partial FQDN to --display_name, for example '--display_name virt-who-esxi'")
+                    sys.exit()
+                fqdn = sys.argv[3]
+                response = execution.inventory_list_search_by_name(fqdn)
+                print(json.dumps(response, indent=4))
+                sys.exit()
+        except IndexError:
+            ...
+
+    # To print in JSON format
+    if len(sys.argv) == 4 and (sys.argv[2]) == "--display_name":
+        try:
+            if (sys.argv[1] == "inventory") and (sys.argv[2] == "--display_name"):
+
+                if len(sys.argv) == 3:
+                    print("Please, pass the FQDN or Partial FQDN to --display_name, for example '--display_name virt-who-esxi'")
+                    sys.exit()
+                fqdn = sys.argv[3]
+                response = execution.inventory_list_search_by_name(fqdn)
+                print(json.dumps(response, indent=4))
+                sys.exit()
+        except IndexError:
+            ...
+
+    # To print in CSV format
+    if len(sys.argv) == 5 and (sys.argv[2]) == "--display_name" and (sys.argv[4]) == "--csv":
+        try:
+            if (sys.argv[1] == "inventory") and (sys.argv[2] == "--display_name"):
+
+                if len(sys.argv) == 3:
+                    print("Please, pass the FQDN or Partial FQDN to --display_name, for example '--display_name virt-who-esxi'")
+                    sys.exit()
+                fqdn = sys.argv[3]
+                response = execution.inventory_list_search_by_name(fqdn)
+                report.csv_report_inventory(response)
+                # print(json.dumps(response, indent=4))
+                sys.exit()
+        except IndexError:
+            ...
+
+
+    if len(sys.argv) == 4 and (sys.argv[3]) == "--help":
+        print("  --csv - List the inventory entries in CSV format")
+
+
+    if len(sys.argv) == 4:
+
+        # To print in CSV format
+        try:
+            if (sys.argv[1] == "inventory") and (sys.argv[2] == "list") and (sys.argv[3] == "--csv"):
+                # execution.inventory_list()
+                response = execution.inventory_list()
+                report.csv_report_inventory(response)
+                sys.exit()
+        except IndexError:
+            ...
+
+        # To print in CSV format
+        try:
+            if (sys.argv[1] == "inventory") and (sys.argv[2] == "list_all") and (sys.argv[3] == "--csv"):
+                # execution.inventory_list()
+                print("This process can spend some minutes according to the number of servers in your account.")
+                response = execution.inventory_list_all()
+                report.csv_report_inventory(response)
+                sys.exit()
+        except IndexError:
+            ...
+
+        # To print in CSV format
+        try:
+            if (sys.argv[1] == "inventory") and (sys.argv[2] == "--display_name") and (sys.argv[4] == "--csv"):
+                # execution.inventory_list()
+                response = execution.inventory_list_search_by_name()
+                report.csv_report_inventory(response)
+                sys.exit()
+        except IndexError:
+            ...
+
 
 
 def swatch_sub_menu():
@@ -63,29 +141,61 @@ def swatch_sub_menu():
         print("  list_all - List all the swatch entries")
         print("  socket_summary - List all the swatch entries")
 
-    try:
-        if (sys.argv[1] == "swatch") and (sys.argv[2] == "list"):
-            response = execution.swatch_list()
-            print(json.dumps(response, indent=4))
+    if len(sys.argv) == 3:
 
-            sys.exit()
-    except IndexError:
-        ...
+        # To print in JSON format
+        try:
+            if (sys.argv[1] == "swatch") and (sys.argv[2] == "list"):
+                response = execution.swatch_list()
+                print(json.dumps(response, indent=4))
 
-    try:
-        if (sys.argv[1] == "swatch") and (sys.argv[2] == "list_all"):
-            response = execution.swatch_list_all()
-            print(json.dumps(response, indent=4))
-            sys.exit()
-    except IndexError:
-        ...
+                sys.exit()
+        except IndexError:
+            ...
 
-    try:
-        if (sys.argv[1] == "swatch") and (sys.argv[2] == "socket_summary"):
-            execution.swatch_socket_summary()
-            sys.exit()
-    except IndexError:
-        ...
+        # To print in JSON format
+        try:
+            if (sys.argv[1] == "swatch") and (sys.argv[2] == "list_all"):
+                response = execution.swatch_list_all()
+                print(json.dumps(response, indent=4))
+                sys.exit()
+        except IndexError:
+            ...
+
+        # To print in JSON format
+        try:
+            if (sys.argv[1] == "swatch") and (sys.argv[2] == "socket_summary"):
+                execution.swatch_socket_summary()
+                sys.exit()
+        except IndexError:
+            ...
+
+
+    if len(sys.argv) == 4 and (sys.argv[3]) == "--help":
+        print("  --csv - List the swatch entries in CSV format")
+
+    if len(sys.argv) == 4:
+
+        # To print in CSV format
+        try:
+            if (sys.argv[1] == "swatch") and (sys.argv[2] == "list") and (sys.argv[3] == "--csv"):
+                response = execution.swatch_list()
+                report.csv_report_swatch(response)
+                # print(json.dumps(response, indent=4))
+
+                sys.exit()
+        except IndexError:
+            ...
+
+        # To print in CSV format
+        try:
+            if (sys.argv[1] == "swatch") and (sys.argv[2] == "list_all") and (sys.argv[3] == "--csv"):
+                response = execution.swatch_list_all()
+                report.csv_report_swatch(response)
+                # print(json.dumps(response, indent=4))
+                sys.exit()
+        except IndexError:
+            ...
 
 
 def endpoint_sub_menu():

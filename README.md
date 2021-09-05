@@ -97,8 +97,13 @@ The main idea of this script is to collect the information from `console.redhat.
 - `crhc inventory list` - To list the first 50 entries of your RHEL Inventory
 - `crhc inventory list_all` - To list all the entries of your RHEL Inventory
 - `crhc inventory --display_name` - To search in RHEL Inventory by `display_name`
+- `crhc inventory list --csv` - To generate the output in csv file. A new file `/tmp/inventory_report.csv` will be created.
+- `crhc inventory list_all --csv` - To generate the output in csv file. A new file `/tmp/inventory_report.csv` will be created.
+- `crhc inventory --display_name <short name or fqdn> --csv` - To generate the output in csv file. A new file `/tmp/inventory_report.csv` will be created.
 - `crhc swatch list` - To list the first 100 entries of your Subscription Watch Inventory
 - `crhc swatch list_all` - To list all the entries of your Subscription Watch Inventory
+- `crhc swatch list --csv` - To generate the output in csv file. A new file `/tmp/swatch_report.csv` will be created.
+- `crhc swatch list_all --csv` - To generate the output in csv file. A new file `/tmp/swatch_report.csv` will be created.
 - `crhc swatch socket_summary` - To list a summary of sockets based on your Subscription Watch Inventory
 - `crhc endpoint list` - To list all the available API endpoints on `console.redhat.com`
 - `crhc get <API ENDPOINT>` - Here you should be able to query the API endpoint directly
@@ -188,11 +193,17 @@ $ curl -s -H "Authorization: Bearer $(./crhc token)" https://api.openshift.com/a
 ---
 
 ### Exporting Inventory data to CSV
-If you would like to export the Inventory data to a `CSV` file, follow the steps below
-```
-echo "id,updated,fqdn,display_name,ansible_host,cpu_model,number_of_cpus,number_of_sockets,core_socket,system_memory_bytes,bios_vendor,bios_version,bios_release_date,os_release,os_kernel_version,arch,last_boot_time,infrastructure_type,infrastructure_vendor,insights_client_version,created,insights_id,reporter,rhel_machine_id,tuned_profile,sap_system,sap_version" >/tmp/inventory_report.csv
 
-./crhc inventory list_all | jq .results[] | jq -r '.server.id + "," + .server.updated + "," + .server.fqdn + "," + .server.display_name + "," + .server.ansible_host + ",\"" + .system_profile.cpu_model + "\"," + (.system_profile.number_of_cpus|tostring) + "," + (.system_profile.number_of_sockets|tostring) + "," + (.system_profile.core_socket|tostring) + "," + (.system_profile.system_memory_bytes|tostring) + ",\"" + .system_profile.bios_vendor + "\"," + .system_profile.bios_version + "," + .system_profile.bios_release_date + "," + .system_profile.os_release + "," + .system_profile.os_kernel_version + "," + .system_profile.arch + "," + .system_profile.last_boot_time + "," + .system_profile.infrastructure_type + "," + .system_profile.infrastructure_vendor + "," + .system_profile.insights_client_version + "," + .server.created + "," + .server.insights_id + "," + .server.reporter + "," + .server.rhel_machine_id + "," + .system_profile.tuned_profile + "," + (.system_profile.sap_system|tostring) + "," + .system_profile.sap_version' >>/tmp/inventory_report.csv
+**Easy and Simple Way?**
+```
+$ ./crhc inventory list_all --csv
+```
+
+Or if you would like to do a similar process using the `jq` parser, you can copy/paste the commands below.
+```
+$ echo "id,updated,fqdn,display_name,ansible_host,cpu_model,number_of_cpus,number_of_sockets,core_socket,system_memory_bytes,bios_vendor,bios_version,bios_release_date,os_release,os_kernel_version,arch,last_boot_time,infrastructure_type,infrastructure_vendor,insights_client_version,created,insights_id,reporter,rhel_machine_id,tuned_profile,sap_system,sap_version" >/tmp/inventory_report.csv
+
+$ ./crhc inventory list_all | jq .results[] | jq -r '.server.id + "," + .server.updated + "," + .server.fqdn + "," + .server.display_name + "," + .server.ansible_host + ",\"" + .system_profile.cpu_model + "\"," + (.system_profile.number_of_cpus|tostring) + "," + (.system_profile.number_of_sockets|tostring) + "," + (.system_profile.core_socket|tostring) + "," + (.system_profile.system_memory_bytes|tostring) + ",\"" + .system_profile.bios_vendor + "\"," + .system_profile.bios_version + "," + .system_profile.bios_release_date + "," + .system_profile.os_release + "," + .system_profile.os_kernel_version + "," + .system_profile.arch + "," + .system_profile.last_boot_time + "," + .system_profile.infrastructure_type + "," + .system_profile.infrastructure_vendor + "," + .system_profile.insights_client_version + "," + .server.created + "," + .server.insights_id + "," + .server.reporter + "," + .server.rhel_machine_id + "," + .system_profile.tuned_profile + "," + (.system_profile.sap_system|tostring) + "," + .system_profile.sap_version' >>/tmp/inventory_report.csv
 ```
 This should be enough to export the data and create the file `/tmp/inventory_report.csv` with some Inventory information. In a sequence you can see the fields
 - id
@@ -225,11 +236,16 @@ This should be enough to export the data and create the file `/tmp/inventory_rep
 
 
 ### Exporting Subscription Watch data to CSV
-If you would like to export the Subscription Watch to a `CSV` file, follow the steps below
+**Easy and Simple Way?**
 ```
-echo "display_name,hardware_type,inventory_id,insights_id,is_hypervisor,number_of_guests,is_unmapped_guest,last_seen,measurement_type,sockets,cores,subscription_manager_id,cloud_provider" >/tmp/swatch_report.csv
+$ ./crhc swatch list_all --csv
+```
 
-./crhc swatch list_all | jq -r '.data[] | .display_name + "," + .hardware_type + "," + .inventory_id + "," + (.insights_id|tostring) + "," + (.is_hypervisor|tostring) + "," + (.number_of_guests|tostring) + "," + (.is_unmapped_guest|tostring) + "," + .last_seen + "," + .measurement_type + "," + (.sockets|tostring) + "," + (.cores|tostring) + "," + .subscription_manager_id + "," + .cloud_provider' >>/tmp/swatch_report.csv
+Or if you would like to do a similar process using the `jq` parser, you can copy/paste the commands below.
+```
+$ echo "display_name,hardware_type,inventory_id,insights_id,is_hypervisor,number_of_guests,is_unmapped_guest,last_seen,measurement_type,sockets,cores,subscription_manager_id,cloud_provider" >/tmp/swatch_report.csv
+
+$ ./crhc swatch list_all | jq -r '.data[] | .display_name + "," + .hardware_type + "," + .inventory_id + "," + (.insights_id|tostring) + "," + (.is_hypervisor|tostring) + "," + (.number_of_guests|tostring) + "," + (.is_unmapped_guest|tostring) + "," + .last_seen + "," + .measurement_type + "," + (.sockets|tostring) + "," + (.cores|tostring) + "," + .subscription_manager_id + "," + .cloud_provider' >>/tmp/swatch_report.csv
 ```
 This should be enough to export the data and create the file `/tmp/swatch_report.csv` with the whole Subscription Watch information. In a sequence you can see the fields
 - display_name
