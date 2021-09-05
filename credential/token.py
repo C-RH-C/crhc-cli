@@ -82,7 +82,7 @@ def get_token():
 
         # Conditional to check if the token is expired. In case of affirmative, the same
         # will be refreshed.
-        if current_time_epoch >= exp_date_from_token:
+        if (current_time_epoch + 100) >= exp_date_from_token:
             refresh_token()
 
     except jwt.exceptions.DecodeError:
