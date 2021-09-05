@@ -9,7 +9,7 @@ from credential import token
 import os
 import time
 
-CURRENT_VERSION = "1.2.1"
+CURRENT_VERSION = "1.3.2"
 # CURRENT_VERSION = "1.1.0"
 
 # USER = ""
