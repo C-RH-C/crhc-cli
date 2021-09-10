@@ -2,27 +2,13 @@
 Module responsible for execute all the API calls.
 """
 
+from crhc import CURRENT_VERSION
 import json
 import sys
 import requests
 from credential import token
 import os
 import time
-
-CURRENT_VERSION = "1.3.2"
-# CURRENT_VERSION = "1.1.0"
-
-# USER = ""
-# PASSWORD = ""
-
-# access_token = token.get_token()
-# access_token = token.refresh_token()
-
-# try:
-#     USER = credential_obj[0]
-#     PASSWORD = credential_obj[1]
-# except TypeError:
-#     ...
 
 # FIELDS_TO_RETRIEVE = "?fields[system_profile]=number_of_cpus,number_of_sockets,cores_per_socket,system_memory_bytes,bios_release_date,bios_vendor,bios_version,operating_system,os_kernel_version,os_release,infrastructure_type,infrastructure_vendor,insights_client_version"
 # FIELDS_TO_RETRIEVE = "?fields[system_profile]=number_of_sockets"

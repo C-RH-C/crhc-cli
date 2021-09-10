@@ -2,6 +2,7 @@
 Module responsible for the main menu
 """
 
+from crhc import CURRENT_VERSION
 import csv
 import sys
 import json
@@ -401,6 +402,10 @@ def main_menu():
             print("This help!")
             # main_menu()
 
+        elif (sys.argv[1] == "--version") or (sys.argv[1] == "-v"):
+            print(CURRENT_VERSION)
+
+
         else:
             print("invalid option")
     else:
@@ -422,6 +427,7 @@ def main_menu():
         print("")
         print("Flags:")
         print("  -h, --help                         help for crhc")
+        print("  -v, --version                      crhc version")
         print("")
         print("Use \"crhc [command] --help\" for more information about a command.")
         print("")
