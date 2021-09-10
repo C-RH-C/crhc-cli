@@ -111,6 +111,7 @@ The main idea of this script is to collect the information from `console.redhat.
 - `crhc logout` - Used to cleanup the local conf file, removing all the token information
 - `crhc token` - This will print the access_token. This can be used with `curl`, for example.
 - `crhc whoami` - This option will show some information regarding to the user who requested the token
+- `crhc {--version|-v}` - This option will present the app version
 
 Note. All of them will generate the output in a `JSON` format, so you can use the output as input for any of your own script or also to `jq` command.
 
