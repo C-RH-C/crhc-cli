@@ -38,7 +38,8 @@ def csv_report_inventory(json_obj):
                    "rhel_machine_id",
                    "tuned_profile",
                    "sap_system",
-                   "sap_version"]
+                   "sap_version",
+                   "syspurpose_sla"]
 
     report_list.append(stage_lst)
     stage_lst = []    
@@ -179,7 +180,21 @@ def csv_report_inventory(json_obj):
             stage_lst.append(entries['system_profile']['sap_version'])
         except KeyError:
             stage_lst.append("Not available")
-        
+
+        # Checking for syspurpose_sla information that came via fact
+        if len(entries['server']['facts']) == 0:
+            stage_lst.append("Not available")
+        elif len(entries['server']['facts']) > 0:
+            count = 0
+            for source in entries['server']['facts']:
+                try:
+                    if source['facts']['SYSPURPOSE_SLA']:
+                        stage_lst.append(source['facts']['SYSPURPOSE_SLA'])
+                except KeyError:
+                    count = count + 1
+
+            if count != 0:
+                stage_lst.append("Not available")
         
         report_list.append(stage_lst)
         stage_lst = []

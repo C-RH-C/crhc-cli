@@ -106,7 +106,7 @@ def inventory_list_all():
     stage_dic = {'server': stage_list}
 
 
-    for page in range(1, num_of_pages + 1):
+    for page in range(1, num_of_pages):
         url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=50&page=" + str(page)
         # response = requests.get(url, auth=(USER, PASSWORD))
         response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
