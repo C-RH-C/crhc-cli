@@ -2,17 +2,18 @@
 Module responsible for execute all the API calls.
 """
 
-from crhc import CURRENT_VERSION
 import json
 import sys
-import requests
-from credential import token
 import os
 import time
+import requests
+from credential import token
+from crhc import CURRENT_VERSION
 
 # FIELDS_TO_RETRIEVE = "?fields[system_profile]=number_of_cpus,number_of_sockets,cores_per_socket,system_memory_bytes,bios_release_date,bios_vendor,bios_version,operating_system,os_kernel_version,os_release,infrastructure_type,infrastructure_vendor,insights_client_version"
 # FIELDS_TO_RETRIEVE = "?fields[system_profile]=number_of_sockets"
 FIELDS_TO_RETRIEVE = ""
+
 
 def check_authentication(response):
     """
@@ -38,12 +39,11 @@ def inventory_list():
     check_authentication(response)
 
     list_of_servers = []
-    inventory_full_detail = {'results':'', 'total': response.json()['total']}
+    inventory_full_detail = {'results': '', 'total': response.json()['total']}
     inventory_full_detail['results'] = list_of_servers
 
     stage_list = []
     stage_dic = {'server': stage_list}
-    
 
     for server in response.json()['results']:
 
@@ -56,7 +56,7 @@ def inventory_list():
 
         server_id = server['id']
         url = "https://console.redhat.com/api/inventory/v1/hosts/" + server_id + "/system_profile" + FIELDS_TO_RETRIEVE
-        
+
         response_system_profile = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
         try:
             stage_dic['system_profile'] = response_system_profile.json()['results'][0]['system_profile']
@@ -85,19 +85,17 @@ def inventory_list_all():
     num_of_pages = int(response.json()['total'] / 50 + 1)
 
     list_of_servers = []
-    inventory_full_detail = {'results':'', 'total': response.json()['total']}
+    inventory_full_detail = {'results': '', 'total': response.json()['total']}
     inventory_full_detail['results'] = list_of_servers
 
     stage_list = []
     stage_dic = {'server': stage_list}
-
 
     for page in range(1, num_of_pages):
         url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=50&page=" + str(page)
         # response = requests.get(url, auth=(USER, PASSWORD))
         response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
         # print(json.dumps(response.json(), indent=4))
-
 
         for server in response.json()['results']:
 
@@ -110,7 +108,7 @@ def inventory_list_all():
 
             server_id = server['id']
             url = "https://console.redhat.com/api/inventory/v1/hosts/" + server_id + "/system_profile" + FIELDS_TO_RETRIEVE
-            
+
             response_system_profile = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
             try:
                 stage_dic['system_profile'] = response_system_profile.json()['results'][0]['system_profile']
@@ -138,23 +136,21 @@ def inventory_list_search_by_name(fqdn):
     check_authentication(response)
 
     list_of_servers = []
-    inventory_full_detail = {'results':'', 'total': response.json()['total']}
+    inventory_full_detail = {'results': '', 'total': response.json()['total']}
     inventory_full_detail['results'] = list_of_servers
 
     stage_list = []
     stage_dic = {'server': stage_list}
-    
 
     for server in response.json()['results']:
 
         access_token = token.get_token()
 
-        pass
         stage_dic['server'] = server
 
         server_id = server['id']
         url = "https://console.redhat.com/api/inventory/v1/hosts/" + server_id + "/system_profile" + FIELDS_TO_RETRIEVE
-        
+
         response_system_profile = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
         try:
             stage_dic['system_profile'] = response_system_profile.json()['results'][0]['system_profile']
@@ -329,7 +325,7 @@ def update_check():
             file_ref = open(home_dir + "/.crhc.version")
             available_version = file_ref.read()
 
-            if int(available_version.replace(".","")) > int(CURRENT_VERSION.replace(".","")):
+            if int(available_version.replace(".", "")) > int(CURRENT_VERSION.replace(".", "")):
                 answer = "Please, download the latests version from https://github.com/C-RH-C/crhc-cli/releases/latest\n\
 Current Version: {}\nNew Version: {}".format(CURRENT_VERSION, available_version)
             else:
@@ -337,7 +333,6 @@ Current Version: {}\nNew Version: {}".format(CURRENT_VERSION, available_version)
         else:
             os.remove(home_dir + "/.crhc.version")
 
-        pass
     else:
         access_token = token.get_token()
 
@@ -348,8 +343,8 @@ Current Version: {}\nNew Version: {}".format(CURRENT_VERSION, available_version)
         file_obj = open(home_dir + "/.crhc.version", "w")
         file_obj.write(available_version)
 
-        if int(available_version.replace(".","")) > int(CURRENT_VERSION.replace(".","")):
-                answer = "Please, download the latests version from https://github.com/C-RH-C/crhc-cli/releases/latest\n\
+        if int(available_version.replace(".", "")) > int(CURRENT_VERSION.replace(".", "")):
+            answer = "Please, download the latests version from https://github.com/C-RH-C/crhc-cli/releases/latest\n\
 Current Version: {}\nNew Version: {}".format(CURRENT_VERSION, available_version)
         else:
             answer = ""

@@ -2,13 +2,15 @@
 Module responsible for the main menu
 """
 
-from crhc import CURRENT_VERSION
-import csv
+# import csv
 import sys
 import json
 from execution import execution
 from report import report
 from credential import token
+from troubleshoot import ts
+from crhc import CURRENT_VERSION
+
 access_token = token.get_token()
 
 
@@ -91,10 +93,8 @@ def inventory_sub_menu():
         except IndexError:
             ...
 
-
     if len(sys.argv) == 4 and (sys.argv[3]) == "--help":
         print("  --csv - List the inventory entries in CSV format")
-
 
     if len(sys.argv) == 4:
 
@@ -128,7 +128,6 @@ def inventory_sub_menu():
                 sys.exit()
         except IndexError:
             ...
-
 
 
 def swatch_sub_menu():
@@ -170,7 +169,6 @@ def swatch_sub_menu():
                 sys.exit()
         except IndexError:
             ...
-
 
     if len(sys.argv) == 4 and (sys.argv[3]) == "--help":
         print("  --csv - List the swatch entries in CSV format")
@@ -274,7 +272,7 @@ def logout_sub_menu():
 
 def token_sub_menu():
     """
-    Here you can see the full access_key and use it in order to access the API 
+    Here you can see the full access_key and use it in order to access the API
     endpoint, for example
     """
     try:
@@ -299,9 +297,64 @@ def whoami_sub_menu():
     except IndexError:
         ...
 
-def update_check():
 
+def troubleshoot_sub_menu():
+    """
+    The troubleshooting sub menu
+    """
+
+    # To present the available options
+    if len(sys.argv) == 2:
+        print("  dump - dump the json files, Inventory and Subscription")
+        print("  match - match the Inventory and Subscription information")
+        print("  clean - cleanup the local 'cache/temporary/dump' files")
+
+    try:
+        if (sys.argv[1] == "ts") and (sys.argv[2] == "dump"):
+            # print("executing inventory list")
+            # response = execution.endpoint_list()
+            # print(json.dumps(response, indent=4))
+            ts.dump_inv_json()
+            ts.dump_sw_json()
+            sys.exit()
+    except IndexError:
+        ...
+
+    try:
+        if (sys.argv[1] == "ts") and (sys.argv[2] == "match"):
+            # print("executing inventory list")
+            # response = execution.endpoint_list()
+            # print(json.dumps(response, indent=4))
+            ts.match_hbi_sw()
+            sys.exit()
+    except IndexError:
+        ...
+
+    try:
+        if (sys.argv[1] == "ts") and (sys.argv[2] == "clean"):
+            # print("executing inventory list")
+            # response = execution.endpoint_list()
+            # print(json.dumps(response, indent=4))
+            ts.clean()
+            sys.exit()
+    except IndexError:
+        ...
+
+
+
+def update_check():
+    """
+    Function to check the app version according to the latest available version
+    in GitHub
+    """
     return execution.update_check()
+
+
+def troubleshoot():
+    """
+    Function to call the troubleshoot submenu
+    """
+    troubleshoot_sub_menu()
 
 
 def main_menu():
@@ -405,6 +458,14 @@ def main_menu():
         elif (sys.argv[1] == "--version") or (sys.argv[1] == "-v"):
             print(CURRENT_VERSION)
 
+        elif sys.argv[1] == "ts":
+            try:
+                if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
+                    print("user help here")
+                    sys.exit()
+            except IndexError:
+                ...
+            troubleshoot()
 
         else:
             print("invalid option")
@@ -415,15 +476,16 @@ def main_menu():
         print("  crhc [command]")
         print("")
         print("Available Commands:")
-        print("  inventory")
-        print("  swatch")
-        print("  endpoint")
-        print("  get")
+        print("  inventory      Get information about Inventory")
+        print("  swatch         Get information about Subscriptions")
+        print("  endpoint       List all the available endpoints")
+        print("  get            Send a GET request")
+        print("  ts             Troubleshooting tasks")
         print("")
-        print("  login")
-        print("  logout")
-        print("  token")
-        print("  whoami")
+        print("  login          Log in")
+        print("  logout         Log out")
+        print("  token          Generates a token")
+        print("  whoami         Prints user information")
         print("")
         print("Flags:")
         print("  -h, --help                         help for crhc")

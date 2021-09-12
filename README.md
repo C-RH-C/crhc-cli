@@ -62,18 +62,20 @@ Usage:
   crhc [command]
 
 Available Commands:
-  inventory
-  swatch
-  endpoint
-  get
+  inventory      Get information about Inventory
+  swatch         Get information about Subscriptions
+  endpoint       List all the available endpoints
+  get            Send a GET request
+  ts             Troubleshooting tasks
 
-  login
-  logout
-  token
-  whoami
+  login          Log in
+  logout         Log out
+  token          Generates a token
+  whoami         Prints user information
 
 Flags:
   -h, --help                         help for crhc
+  -v, --version                      crhc version
 
 Use "crhc [command] --help" for more information about a command.
 ```
@@ -112,6 +114,10 @@ The main idea of this script is to collect the information from `console.redhat.
 - `crhc token` - This will print the access_token. This can be used with `curl`, for example.
 - `crhc whoami` - This option will show some information regarding to the user who requested the token
 - `crhc {--version|-v}` - This option will present the app version
+- `crhc ts dump` - Export the whole Inventory and Subscription information in json format. 2 files will be created.
+- `crhc ts match` - If the files mentioned above are not around, this feature will call the `dump` and after that will check both files and will create the 3rd one with the whole information correlated accordingly.
+- `crhc ts clean` - This will cleanup all the temporary/cache files.
+- `crhc --version` - It will print out the current version of `crhc`.
 
 Note. All of them will generate the output in a `JSON` format, so you can use the output as input for any of your own script or also to `jq` command.
 
@@ -234,6 +240,12 @@ This should be enough to export the data and create the file `/tmp/inventory_rep
 - tuned_profile
 - sap_system
 - sap_version
+- syspurpose_sla
+- installed_product
+- has_satellite_package
+- has_openshift_package
+- hypervisor_fqdn
+- hypervisor_uuid
 
 
 ### Exporting Subscription Watch data to CSV
@@ -263,6 +275,37 @@ This should be enough to export the data and create the file `/tmp/swatch_report
 - subscription_manager_id
 - cloud_provider
 
+---
+### Analysing the Customer Data
+Please, copy the files sent by the customer according to below. Let's assume the customer sent two files `full_inventory.json` and `full_swatch.json`, once you received them, let's execute the commands below
+```
+$ cp full_inventory.json /tmp/inventory.json
+$ cp full_swatch.json /tmp/swatch.json
+```
+After that, you can execute the command `crhc ts match` and the output will be as below
+```
+$ ./crhc ts match
+File /tmp/inventory.json already in place, using it.
+File /tmp/swatch.json already in place, using it.
+File /tmp/match_inv_sw.csv created
+```
+Note. Once the files `/tmp/inventory.json` and `/tmp/swatch.json` are in place, they will be used for this analysis and as result, the file `/tmp/match_inv_sw.csv` will be created. This is the file that will be used for troubleshooting process.
+
+---
+### New Versions
+Once a new version get available, the `crhc` will let you know.
+```
+...
+Use "crhc [command] --help" for more information about a command.
+
+Please, download the latests version from https://github.com/C-RH-C/crhc-cli/releases/latest
+Current Version: 1.3.1
+New Version: 1.3.2
+```
+
+You can safely download the latest version in the [link](https://github.com/C-RH-C/crhc-cli/releases/latest) and overwrite the current one. All the fix and new features will be already available.
+
+Note. The current `token` configuration will still valid. It's not necessary to rerun the `token` process when updating the `crhc` version.
 
 ---
 ## Contribution

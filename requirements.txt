@@ -1,5 +1,6 @@
 altgraph==0.17
 astroid==2.6.6
+attrs==21.2.0
 certifi==2021.5.30
 cffi==1.14.6
 charset-normalizer==2.0.4
@@ -7,9 +8,13 @@ cryptography==3.4.8
 flake8==3.9.2
 idna==3.2
 importlib-metadata==4.6.4
+iniconfig==1.1.1
 isort==5.9.3
 lazy-object-proxy==1.6.0
 mccabe==0.6.1
+packaging==21.0
+pluggy==1.0.0
+py==1.10.0
 pyasn1==0.4.8
 pycodestyle==2.7.0
 pycparser==2.20
@@ -18,6 +23,8 @@ pyinstaller==4.5.1
 pyinstaller-hooks-contrib==2021.2
 PyJWT==2.1.0
 pylint==2.9.6
+pyparsing==2.4.7
+pytest==6.2.5
 requests==2.26.0
 rsa==4.7.2
 toml==0.10.2
