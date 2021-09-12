@@ -111,7 +111,11 @@ def refresh_token():
 
     refresh = requests.post(token_url, data=body)
     full_response = refresh.json()
-    access_token = refresh.json()['access_token']
+    try:
+        access_token = refresh.json()['access_token']
+    except KeyError:
+        access_token = "Error: Failed to create C.RH.C connection: Not logged in, credentials aren't set, run the 'crhc login' command"
+
 
     home_dir = os.path.expanduser('~')
     file_obj = open(home_dir + CONF_FILE, "w")
