@@ -204,7 +204,7 @@ def csv_report_inventory(json_obj):
                 stage_lst.append("Not available")
 
         # Checking for installed products
-        if (entries['server']['reporter'] == "puptoo") or (entries[0]['server']['reporter'] == "yupana"):
+        if (entries['server']['reporter'] == "puptoo") or (entries['server']['reporter'] == "yupana"):
             try:
                 if len(entries['system_profile']['installed_products']) > 0:
                     for ids in entries['system_profile']['installed_products']:
@@ -214,7 +214,6 @@ def csv_report_inventory(json_obj):
                     installed_product_lst = []
             except KeyError:
                 stage_lst.append("No installed product key available")
-
         elif entries['server']['reporter'] == "rhsm-conduit":
             try:
                 if len(entries['server']['facts'][0]['facts']['RH_PROD']) > 0:
