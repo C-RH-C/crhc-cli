@@ -44,8 +44,8 @@ def set_token(token):
         sys.exit()
 
     home_dir = os.path.expanduser('~')
-    file_obj = open(home_dir + CONF_FILE, "w")
-    file_obj.write(json.dumps(full_response, indent=4))
+    with open(home_dir + CONF_FILE, "w") as file_obj:
+        file_obj.write(json.dumps(full_response, indent=4))
 
 
 def get_token():
@@ -64,6 +64,8 @@ def get_token():
         file_obj = open(home_dir + CONF_FILE, "r")
         token_info = json.load(file_obj)
     except FileNotFoundError:
+        delete_token()
+    except json.decoder.JSONDecodeError:
         delete_token()
 
     try:
@@ -118,8 +120,8 @@ def refresh_token():
 
 
     home_dir = os.path.expanduser('~')
-    file_obj = open(home_dir + CONF_FILE, "w")
-    file_obj.write(json.dumps(full_response, indent=4))
+    with open(home_dir + CONF_FILE, "w") as file_obj:
+        file_obj.write(json.dumps(full_response, indent=4))
 
     return access_token
 
@@ -130,5 +132,5 @@ def delete_token():
     """
 
     home_dir = os.path.expanduser('~')
-    file_obj = open(home_dir + CONF_FILE, "w")
-    file_obj.write("{}")
+    with open(home_dir + CONF_FILE, "w") as file_obj:
+        file_obj.write("{}")
