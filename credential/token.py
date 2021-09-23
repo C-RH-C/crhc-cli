@@ -46,6 +46,7 @@ def set_token(token):
     home_dir = os.path.expanduser('~')
     file_obj = open(home_dir + CONF_FILE, "w")
     file_obj.write(json.dumps(full_response, indent=4))
+    file_obj.close
 
 
 def get_token():
@@ -120,6 +121,7 @@ def refresh_token():
     home_dir = os.path.expanduser('~')
     file_obj = open(home_dir + CONF_FILE, "w")
     file_obj.write(json.dumps(full_response, indent=4))
+    file_obj.close
 
     return access_token
 
