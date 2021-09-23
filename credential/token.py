@@ -65,6 +65,8 @@ def get_token():
         token_info = json.load(file_obj)
     except FileNotFoundError:
         delete_token()
+    except json.decoder.JSONDecodeError:
+        delete_token()
 
     try:
         access_token = token_info['access_token']
