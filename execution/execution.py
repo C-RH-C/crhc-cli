@@ -91,6 +91,10 @@ def inventory_list_all():
     stage_list = []
     stage_dic = {'server': stage_list}
 
+    # Just to collect the information when the # of hosts is up to 50
+    if num_of_pages == 1:
+        num_of_pages = num_of_pages + 1
+
     for page in range(1, num_of_pages):
         url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=50&page=" + str(page)
         # response = requests.get(url, auth=(USER, PASSWORD))
