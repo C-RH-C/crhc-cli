@@ -267,6 +267,15 @@ def csv_report_inventory(json_obj):
                     except KeyError:
                         # count = count + 1
                         ...
+                if source['namespace'] == "rhsm":
+                    try:
+                        if source['facts']['VM_HOST']:
+                            stage_lst.append(source['facts']['VM_HOST'])
+                            stage_lst.append(source['facts']['VM_HOST_UUID'])
+                            count = count + 1
+                    except KeyError:
+                        # count = count + 1
+                        ...
 
             if count == 0:
                 stage_lst.append("No hypervisor fqdn")
@@ -655,6 +664,15 @@ def csv_match_report(match_obj):
                         if source['facts']['virtual_host_name']:
                             stage_lst.append(source['facts']['virtual_host_name'])
                             stage_lst.append(source['facts']['satellite_instance_id'])
+                            count = count + 1
+                    except KeyError:
+                        # count = count + 1
+                        ...
+                if source['namespace'] == "rhsm":
+                    try:
+                        if source['facts']['VM_HOST']:
+                            stage_lst.append(source['facts']['VM_HOST'])
+                            stage_lst.append(source['facts']['VM_HOST_UUID'])
                             count = count + 1
                     except KeyError:
                         # count = count + 1
