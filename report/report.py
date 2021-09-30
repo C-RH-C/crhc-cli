@@ -41,7 +41,10 @@ def csv_report_inventory(json_obj):
                    "tuned_profile",
                    "sap_system",
                    "sap_version",
-                   "syspurpose_sla",
+                   "system_purpose_sla",
+                   "system_purpose_role",
+                   "system_purpose_usage",
+                   "is_simple_content_access",
                    "installed_product",
                    "has_satellite_package",
                    "has_openshift_package",
@@ -206,6 +209,54 @@ def csv_report_inventory(json_obj):
 
             if count == 0:
                 stage_lst.append("No_syspurpose_sla_key_available")
+
+        # Checking for system_purpose_role
+        if len(entries['server']['facts']) == 0:
+            stage_lst.append("No_facts_key_available")
+        elif len(entries['server']['facts']) > 0:
+            count = 0
+            for source in entries['server']['facts']:
+                try:
+                    if source['facts']['system_purpose_role']:
+                        stage_lst.append(source['facts']['system_purpose_role'])
+                        count = 1
+                except KeyError:
+                    ...
+
+            if count == 0:
+                stage_lst.append("No_system_purpose_role_key_available")
+
+        # Checking for system_purpose_usage
+        if len(entries['server']['facts']) == 0:
+            stage_lst.append("No_facts_key_available")
+        elif len(entries['server']['facts']) > 0:
+            count = 0
+            for source in entries['server']['facts']:
+                try:
+                    if source['facts']['system_purpose_usage']:
+                        stage_lst.append(source['facts']['system_purpose_usage'])
+                        count = 1
+                except KeyError:
+                    ...
+
+            if count == 0:
+                stage_lst.append("No_system_purpose_usage_key_available")
+
+        # Checking for is_simple_content_access
+        if len(entries['server']['facts']) == 0:
+            stage_lst.append("No_facts_key_available")
+        elif len(entries['server']['facts']) > 0:
+            count = 0
+            for source in entries['server']['facts']:
+                try:
+                    if source['facts']['is_simple_content_access']:
+                        stage_lst.append(source['facts']['is_simple_content_access'])
+                        count = 1
+                except KeyError:
+                    ...
+
+            if count == 0:
+                stage_lst.append("No_is_simple_content_access_key_available")
 
         # Checking for installed products
         if (entries['server']['reporter'] == "puptoo") or (entries['server']['reporter'] == "yupana"):
@@ -435,7 +486,12 @@ def csv_match_report(match_obj):
                    "tuned_profile",
                    "sap_system",
                    "sap_version",
-                   "syspurpose_sla",
+                   "system_purpose_sla",
+
+                   "system_purpose_role",
+                   "system_purpose_usage",
+                   "is_simple_content_access",
+                   
                    "installed_product",
                    "has_satellite_package",
                    "has_openshift_package",
@@ -597,8 +653,8 @@ def csv_match_report(match_obj):
         except KeyError:
             stage_lst.append("No_sap_version_key_available")
         
-        if entries['server']['id'] == "d3abaa90-fdb1-4657-b2e6-c286fff90b9b":
-            print("here")
+        # if entries['server']['id'] == "d3abaa90-fdb1-4657-b2e6-c286fff90b9b":
+        #     print("here")
 
         # Checking for syspurpose_sla information that came via fact
         if len(entries['server']['facts']) == 0:
@@ -615,6 +671,55 @@ def csv_match_report(match_obj):
 
             if count == 0:
                 stage_lst.append("No_syspurpose_sla_key_available")
+
+        # Checking for system_purpose_role
+        if len(entries['server']['facts']) == 0:
+            stage_lst.append("No_facts_key_available")
+        elif len(entries['server']['facts']) > 0:
+            count = 0
+            for source in entries['server']['facts']:
+                try:
+                    if source['facts']['system_purpose_role']:
+                        stage_lst.append(source['facts']['system_purpose_role'])
+                        count = 1
+                except KeyError:
+                    ...
+
+            if count == 0:
+                stage_lst.append("No_system_purpose_role_key_available")
+
+        # Checking for system_purpose_usage
+        if len(entries['server']['facts']) == 0:
+            stage_lst.append("No_facts_key_available")
+        elif len(entries['server']['facts']) > 0:
+            count = 0
+            for source in entries['server']['facts']:
+                try:
+                    if source['facts']['system_purpose_usage']:
+                        stage_lst.append(source['facts']['system_purpose_usage'])
+                        count = 1
+                except KeyError:
+                    ...
+
+            if count == 0:
+                stage_lst.append("No_system_purpose_usage_key_available")
+
+        # Checking for is_simple_content_access
+        if len(entries['server']['facts']) == 0:
+            stage_lst.append("No_facts_key_available")
+        elif len(entries['server']['facts']) > 0:
+            count = 0
+            for source in entries['server']['facts']:
+                try:
+                    if source['facts']['is_simple_content_access']:
+                        stage_lst.append(source['facts']['is_simple_content_access'])
+                        count = 1
+                except KeyError:
+                    ...
+
+            if count == 0:
+                stage_lst.append("No_is_simple_content_access_key_available")
+
 
         # Checking for installed products
         if (entries['server']['reporter'] == "puptoo") or (entries['server']['reporter'] == "yupana"):
