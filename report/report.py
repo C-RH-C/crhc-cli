@@ -227,6 +227,8 @@ def csv_report_inventory(json_obj):
 
                     stage_lst.append(installed_product_lst)
                     installed_product_lst = []
+                elif len(entries['server']['facts'][0]['facts']['RH_PROD']) == 0:
+                    stage_lst.append("No_installed_products_key_available")
             except KeyError:
                 stage_lst.append("No_installed_products_key_available")
 
@@ -595,8 +597,8 @@ def csv_match_report(match_obj):
         except KeyError:
             stage_lst.append("No_sap_version_key_available")
         
-        # if entries['server']['id'] == "0d0345aa-8179-423e-a57e-cd6ba175ad01":
-        #     print("here")
+        if entries['server']['id'] == "d3abaa90-fdb1-4657-b2e6-c286fff90b9b":
+            print("here")
 
         # Checking for syspurpose_sla information that came via fact
         if len(entries['server']['facts']) == 0:
@@ -634,6 +636,8 @@ def csv_match_report(match_obj):
 
                     stage_lst.append(installed_product_lst)
                     installed_product_lst = []
+                elif len(entries['server']['facts'][0]['facts']['RH_PROD']) == 0:
+                    stage_lst.append("No_installed_products_key_available")
             except KeyError:
                 stage_lst.append("No_installed_products_key_available")
 
