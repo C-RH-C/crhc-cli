@@ -56,152 +56,156 @@ def csv_report_inventory(json_obj):
         try:
             stage_lst.append(entries['server']['id'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_id_key_available")
 
         try:
             stage_lst.append(entries['server']['updated'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_updated_key_available")
 
         try:
             stage_lst.append(entries['server']['fqdn'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_fqdn_key_available")
 
         try:
             stage_lst.append(entries['server']['display_name'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_display_name_key_available")
 
         try:
             stage_lst.append(entries['server']['ansible_host'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_ansible_host_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['cpu_model'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_cpu_model_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['number_of_cpus'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_number_of_cpus_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['number_of_sockets'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_number_of_sockets_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['core_socket'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_core_socket_available")
 
         try:
             stage_lst.append(entries['system_profile']['system_memory_bytes'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_system_memory_bytes_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['bios_vendor'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_bios_vendor_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['bios_version'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_bios_version_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['bios_release_date'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_bios_release_date_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['os_release'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_os_release_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['os_kernel_version'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_os_kernel_version_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['arch'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_arch_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['last_boot_time'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_last_boot_time_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['infrastructure_type'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_infrastructure_type_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['infrastructure_vendor'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_infrastructure_vendor_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['insights_client_version'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_insights_client_version_key_available")
 
         try:
             stage_lst.append(entries['server']['created'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_created_key_available")
 
         try:
             stage_lst.append(entries['server']['insights_id'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_insights_id_key_available")
 
         try:
             stage_lst.append(entries['server']['reporter'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_reporter_key_available")
 
         try:
             stage_lst.append(entries['server']['rhel_machine_id'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_rhel_machine_id_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['tuned_profile'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_tuned_profile_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['sap_system'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_sap_system_key_available")
 
         try:
             stage_lst.append(entries['system_profile']['sap_version'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_sap_version_key_available")
+        
+        # if entries['server']['id'] == "0d0345aa-8179-423e-a57e-cd6ba175ad01":
+        #     print("here")
 
         # Checking for syspurpose_sla information that came via fact
         if len(entries['server']['facts']) == 0:
-            stage_lst.append("Not available")
+            stage_lst.append("No_facts_key_available")
         elif len(entries['server']['facts']) > 0:
             count = 0
             for source in entries['server']['facts']:
                 try:
                     if source['facts']['SYSPURPOSE_SLA']:
                         stage_lst.append(source['facts']['SYSPURPOSE_SLA'])
+                        count = 1
                 except KeyError:
-                    count = count + 1
+                    ...
 
-            if count != 0:
-                stage_lst.append("Not available")
+            if count == 0:
+                stage_lst.append("No_syspurpose_sla_key_available")
 
         # Checking for installed products
         if (entries['server']['reporter'] == "puptoo") or (entries['server']['reporter'] == "yupana"):
@@ -213,7 +217,8 @@ def csv_report_inventory(json_obj):
                     stage_lst.append(installed_product_lst)
                     installed_product_lst = []
             except KeyError:
-                stage_lst.append("No installed product key available")
+                stage_lst.append("No_installed_products_key_available")
+
         elif entries['server']['reporter'] == "rhsm-conduit":
             try:
                 if len(entries['server']['facts'][0]['facts']['RH_PROD']) > 0:
@@ -223,7 +228,7 @@ def csv_report_inventory(json_obj):
                     stage_lst.append(installed_product_lst)
                     installed_product_lst = []
             except KeyError:
-                stage_lst.append("No installed product key available")
+                stage_lst.append("No_installed_products_key_available")
 
         # Checking for satellite packages
         try:
@@ -236,7 +241,7 @@ def csv_report_inventory(json_obj):
             else:
                 stage_lst.append("FALSE")
         except KeyError:
-            stage_lst.append("No installed packages key available")
+            stage_lst.append("No_installed_packages_key_available")
 
         # Checking for openshift packages
         try:
@@ -249,12 +254,12 @@ def csv_report_inventory(json_obj):
             else:
                 stage_lst.append("FALSE")
         except KeyError:
-            stage_lst.append("No installed packages key available")
+            stage_lst.append("No_installed_packages_key_available")
 
         # Checking the hypervisor that this guest belongs
         if len(entries['server']['facts']) == 0:
-            stage_lst.append("No facts")
-            stage_lst.append("No facts")
+            stage_lst.append("No_facts_key_available")
+            stage_lst.append("No_facts_key_available")
         elif len(entries['server']['facts']) > 0:
             count = 0
             for source in entries['server']['facts']:
@@ -278,8 +283,8 @@ def csv_report_inventory(json_obj):
                         ...
 
             if count == 0:
-                stage_lst.append("No hypervisor fqdn")
-                stage_lst.append("No hypervisor uuid")
+                stage_lst.append("No_hypervisor_fqdn")
+                stage_lst.append("No_hypervisor_uuid")
 
         report_list.append(stage_lst)
         stage_lst = []
@@ -451,185 +456,191 @@ def csv_match_report(match_obj):
     report_list.append(stage_lst)
     stage_lst = []
 
-    for entries in match_obj:
+    for elements in match_obj:
+        entries = elements[0]
+        sw_entries = elements[1]
         pass
         try:
-            stage_lst.append(entries[0]['server']['id'])
+            stage_lst.append(entries['server']['id'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_id_key_available")
 
         try:
-            stage_lst.append(entries[0]['server']['updated'])
+            stage_lst.append(entries['server']['updated'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_updated_key_available")
 
         try:
-            stage_lst.append(entries[0]['server']['fqdn'])
+            stage_lst.append(entries['server']['fqdn'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_fqdn_key_available")
 
         try:
-            stage_lst.append(entries[0]['server']['display_name'])
+            stage_lst.append(entries['server']['display_name'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_display_name_key_available")
 
         try:
-            stage_lst.append(entries[0]['server']['ansible_host'])
+            stage_lst.append(entries['server']['ansible_host'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_ansible_host_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['cpu_model'])
+            stage_lst.append(entries['system_profile']['cpu_model'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_cpu_model_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['number_of_cpus'])
+            stage_lst.append(entries['system_profile']['number_of_cpus'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_number_of_cpus_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['number_of_sockets'])
+            stage_lst.append(entries['system_profile']['number_of_sockets'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_number_of_sockets_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['core_socket'])
+            stage_lst.append(entries['system_profile']['core_socket'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_core_socket_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['system_memory_bytes'])
+            stage_lst.append(entries['system_profile']['system_memory_bytes'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_system_memory_bytes_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['bios_vendor'])
+            stage_lst.append(entries['system_profile']['bios_vendor'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_bios_vendor_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['bios_version'])
+            stage_lst.append(entries['system_profile']['bios_version'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_bios_version_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['bios_release_date'])
+            stage_lst.append(entries['system_profile']['bios_release_date'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_bios_release_date_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['os_release'])
+            stage_lst.append(entries['system_profile']['os_release'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_os_release_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['os_kernel_version'])
+            stage_lst.append(entries['system_profile']['os_kernel_version'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_os_kernel_version_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['arch'])
+            stage_lst.append(entries['system_profile']['arch'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_arch_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['last_boot_time'])
+            stage_lst.append(entries['system_profile']['last_boot_time'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_last_boot_time_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['infrastructure_type'])
+            stage_lst.append(entries['system_profile']['infrastructure_type'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_infrastructure_type_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['infrastructure_vendor'])
+            stage_lst.append(entries['system_profile']['infrastructure_vendor'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_infrastructure_vendor_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['insights_client_version'])
+            stage_lst.append(entries['system_profile']['insights_client_version'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_insights_client_version_key_available")
 
         try:
-            stage_lst.append(entries[0]['server']['created'])
+            stage_lst.append(entries['server']['created'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_created_key_available")
 
         try:
-            stage_lst.append(entries[0]['server']['insights_id'])
+            stage_lst.append(entries['server']['insights_id'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_insights_id_key_available")
 
         try:
-            stage_lst.append(entries[0]['server']['reporter'])
+            stage_lst.append(entries['server']['reporter'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_reporter_key_available")
 
         try:
-            stage_lst.append(entries[0]['server']['rhel_machine_id'])
+            stage_lst.append(entries['server']['rhel_machine_id'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_rhel_machine_id_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['tuned_profile'])
+            stage_lst.append(entries['system_profile']['tuned_profile'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_tuned_profile_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['sap_system'])
+            stage_lst.append(entries['system_profile']['sap_system'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_sap_system_key_available")
 
         try:
-            stage_lst.append(entries[0]['system_profile']['sap_version'])
+            stage_lst.append(entries['system_profile']['sap_version'])
         except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("No_sap_version_key_available")
+        
+        # if entries['server']['id'] == "0d0345aa-8179-423e-a57e-cd6ba175ad01":
+        #     print("here")
 
         # Checking for syspurpose_sla information that came via fact
-        if len(entries[0]['server']['facts']) == 0:
-            stage_lst.append("Not available")
-        elif len(entries[0]['server']['facts']) > 0:
+        if len(entries['server']['facts']) == 0:
+            stage_lst.append("No_facts_key_available")
+        elif len(entries['server']['facts']) > 0:
             count = 0
-            for source in entries[0]['server']['facts']:
+            for source in entries['server']['facts']:
                 try:
                     if source['facts']['SYSPURPOSE_SLA']:
                         stage_lst.append(source['facts']['SYSPURPOSE_SLA'])
+                        count = 1
                 except KeyError:
-                    count = count + 1
+                    ...
 
-            if count != 0:
-                stage_lst.append("Not available")
+            if count == 0:
+                stage_lst.append("No_syspurpose_sla_key_available")
 
         # Checking for installed products
-        if (entries[0]['server']['reporter'] == "puptoo") or (entries[0]['server']['reporter'] == "yupana"):
+        if (entries['server']['reporter'] == "puptoo") or (entries['server']['reporter'] == "yupana"):
             try:
-                if len(entries[0]['system_profile']['installed_products']) > 0:
-                    for ids in entries[0]['system_profile']['installed_products']:
+                if len(entries['system_profile']['installed_products']) > 0:
+                    for ids in entries['system_profile']['installed_products']:
                         installed_product_lst.append(ids['id'])
 
                     stage_lst.append(installed_product_lst)
                     installed_product_lst = []
             except KeyError:
-                stage_lst.append("No installed product key available")
+                stage_lst.append("No_installed_products_key_available")
 
-        elif entries[0]['server']['reporter'] == "rhsm-conduit":
+        elif entries['server']['reporter'] == "rhsm-conduit":
             try:
-                if len(entries[0]['server']['facts'][0]['facts']['RH_PROD']) > 0:
-                    for ids in entries[0]['server']['facts'][0]['facts']['RH_PROD']:
+                if len(entries['server']['facts'][0]['facts']['RH_PROD']) > 0:
+                    for ids in entries['server']['facts'][0]['facts']['RH_PROD']:
                         installed_product_lst.append(ids)
 
                     stage_lst.append(installed_product_lst)
                     installed_product_lst = []
             except KeyError:
-                stage_lst.append("No installed product key available")
+                stage_lst.append("No_installed_products_key_available")
 
         # Checking for satellite packages
         try:
             count = 0
-            for pkg in entries[0]['system_profile']['installed_packages']:
+            for pkg in entries['system_profile']['installed_packages']:
                 if "satellite" in pkg:
                     count = count + 1
             if count > 0:
@@ -637,12 +648,12 @@ def csv_match_report(match_obj):
             else:
                 stage_lst.append("FALSE")
         except KeyError:
-            stage_lst.append("No installed packages key available")
+            stage_lst.append("No_installed_packages_key_available")
 
         # Checking for openshift packages
         try:
             count = 0
-            for pkg in entries[0]['system_profile']['installed_packages']:
+            for pkg in entries['system_profile']['installed_packages']:
                 if "openshift" in pkg:
                     count = count + 1
             if count > 0:
@@ -650,15 +661,15 @@ def csv_match_report(match_obj):
             else:
                 stage_lst.append("FALSE")
         except KeyError:
-            stage_lst.append("No installed packages key available")
+            stage_lst.append("No_installed_packages_key_available")
 
         # Checking the hypervisor that this guest belongs
-        if len(entries[0]['server']['facts']) == 0:
-            stage_lst.append("No facts")
-            stage_lst.append("No facts")
-        elif len(entries[0]['server']['facts']) > 0:
+        if len(entries['server']['facts']) == 0:
+            stage_lst.append("No_facts_key_available")
+            stage_lst.append("No_facts_key_available")
+        elif len(entries['server']['facts']) > 0:
             count = 0
-            for source in entries[0]['server']['facts']:
+            for source in entries['server']['facts']:
                 if source['namespace'] == "satellite":
                     try:
                         if source['facts']['virtual_host_name']:
@@ -679,10 +690,10 @@ def csv_match_report(match_obj):
                         ...
 
             if count == 0:
-                stage_lst.append("No hypervisor fqdn")
-                stage_lst.append("No hypervisor uuid")
+                stage_lst.append("No_hypervisor_fqdn")
+                stage_lst.append("No_hypervisor_uuid")
 
-        if entries[1] == "not in swatch":
+        if sw_entries == "not in swatch":
             stage_lst.append("Not in sw")
             stage_lst.append("Not in sw")
             stage_lst.append("Not in sw")
@@ -699,67 +710,67 @@ def csv_match_report(match_obj):
 
         else:
             try:
-                stage_lst.append(entries[1]['display_name'])
+                stage_lst.append(sw_entries['display_name'])
             except KeyError:
                 stage_lst.append("Not in sw")
 
             try:
-                stage_lst.append(entries[1]['hardware_type'])
+                stage_lst.append(sw_entries['hardware_type'])
             except KeyError:
                 stage_lst.append("Not in sw")
 
             try:
-                stage_lst.append(entries[1]['inventory_id'])
+                stage_lst.append(sw_entries['inventory_id'])
             except KeyError:
                 stage_lst.append("Not in sw")
 
             try:
-                stage_lst.append(entries[1]['insights_id'])
+                stage_lst.append(sw_entries['insights_id'])
             except KeyError:
                 stage_lst.append("Not in sw")
 
             try:
-                stage_lst.append(entries[1]['is_hypervisor'])
+                stage_lst.append(sw_entries['is_hypervisor'])
             except KeyError:
                 stage_lst.append("Not in sw")
 
             try:
-                stage_lst.append(entries[1]['number_of_guests'])
+                stage_lst.append(sw_entries['number_of_guests'])
             except KeyError:
                 stage_lst.append("Not in sw")
 
             try:
-                stage_lst.append(entries[1]['is_unmapped_guest'])
+                stage_lst.append(sw_entries['is_unmapped_guest'])
             except KeyError:
                 stage_lst.append("Not in sw")
 
             try:
-                stage_lst.append(entries[1]['last_seen'])
+                stage_lst.append(sw_entries['last_seen'])
             except KeyError:
                 stage_lst.append("Not in sw")
 
             try:
-                stage_lst.append(entries[1]['measurement_type'])
+                stage_lst.append(sw_entries['measurement_type'])
             except KeyError:
                 stage_lst.append("Not in sw")
 
             try:
-                stage_lst.append(entries[1]['sockets'])
+                stage_lst.append(sw_entries['sockets'])
             except KeyError:
                 stage_lst.append("Not in sw")
 
             try:
-                stage_lst.append(entries[1]['cores'])
+                stage_lst.append(sw_entries['cores'])
             except KeyError:
                 stage_lst.append("Not in sw")
 
             try:
-                stage_lst.append(entries[1]['subscription_manager_id'])
+                stage_lst.append(sw_entries['subscription_manager_id'])
             except KeyError:
                 stage_lst.append("Not in sw")
 
             try:
-                stage_lst.append(entries[1]['cloud_provider'])
+                stage_lst.append(sw_entries['cloud_provider'])
             except KeyError:
                 stage_lst.append("Not in sw")
 
