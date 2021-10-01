@@ -49,7 +49,8 @@ def csv_report_inventory(json_obj):
                    "has_satellite_package",
                    "has_openshift_package",
                    "hypervisor_fqdn",
-                   "hypervisor_uuid"]
+                   "hypervisor_uuid",
+                   "number_of_guests"]
 
     report_list.append(stage_lst)
     stage_lst = []
@@ -190,9 +191,7 @@ def csv_report_inventory(json_obj):
             stage_lst.append(entries['system_profile']['sap_version'])
         except KeyError:
             stage_lst.append("No_sap_version_key_available")
-        
-        # if entries['server']['id'] == "0d0345aa-8179-423e-a57e-cd6ba175ad01":
-        #     print("here")
+
 
         # Checking for syspurpose_sla information that came via fact
         if len(entries['server']['facts']) == 0:
@@ -282,6 +281,8 @@ def csv_report_inventory(json_obj):
                     stage_lst.append("No_installed_products_key_available")
             except KeyError:
                 stage_lst.append("No_installed_products_key_available")
+        else:
+            stage_lst.append("reporter {}".format(entries['server']['reporter']))
 
         # Checking for satellite packages
         try:
@@ -332,12 +333,39 @@ def csv_report_inventory(json_obj):
                             stage_lst.append(source['facts']['VM_HOST_UUID'])
                             count = count + 1
                     except KeyError:
-                        # count = count + 1
                         ...
 
             if count == 0:
                 stage_lst.append("No_hypervisor_fqdn")
                 stage_lst.append("No_hypervisor_uuid")
+        
+        # Counting the number of guests on top of the hypervisor
+        number_of_guests = 0
+        for each_server in json_obj['results']:
+            if len(each_server[0]['server']['facts']) > 0:
+                for elements in each_server[0]['server']['facts']:
+
+                    if elements['namespace'] == "satellite":
+                        try:
+                            if elements['facts']['virtual_host_name']:
+                                if elements['facts']['virtual_host_uuid'] == entries['server']['satellite_id']:
+                                    number_of_guests = number_of_guests + 1
+                        except KeyError:
+                            ...
+
+                    if elements['namespace'] == "rhsm":
+                        try:
+                            if elements['facts']['VM_HOST']:
+                                if elements['facts']['VM_HOST_UUID'] == entries['server']['subscription_manager_id']:
+                                    number_of_guests = number_of_guests + 1
+                        except KeyError:
+                            ...
+
+        if number_of_guests == 0:
+            stage_lst.append("No guests")
+        else:
+            stage_lst.append(number_of_guests)
+
 
         report_list.append(stage_lst)
         stage_lst = []
@@ -487,16 +515,15 @@ def csv_match_report(match_obj):
                    "sap_system",
                    "sap_version",
                    "system_purpose_sla",
-
                    "system_purpose_role",
                    "system_purpose_usage",
                    "is_simple_content_access",
-                   
                    "installed_product",
                    "has_satellite_package",
                    "has_openshift_package",
                    "hypervisor_fqdn",
                    "hypervisor_uuid",
+                   "number_of_guests",  # added
                    "sw_display_name",
                    "sw_hardware_type",
                    "sw_inventory_id",
@@ -653,9 +680,6 @@ def csv_match_report(match_obj):
         except KeyError:
             stage_lst.append("No_sap_version_key_available")
         
-        # if entries['server']['id'] == "d3abaa90-fdb1-4657-b2e6-c286fff90b9b":
-        #     print("here")
-
         # Checking for syspurpose_sla information that came via fact
         if len(entries['server']['facts']) == 0:
             stage_lst.append("No_facts_key_available")
@@ -720,7 +744,6 @@ def csv_match_report(match_obj):
             if count == 0:
                 stage_lst.append("No_is_simple_content_access_key_available")
 
-
         # Checking for installed products
         if (entries['server']['reporter'] == "puptoo") or (entries['server']['reporter'] == "yupana"):
             try:
@@ -745,6 +768,8 @@ def csv_match_report(match_obj):
                     stage_lst.append("No_installed_products_key_available")
             except KeyError:
                 stage_lst.append("No_installed_products_key_available")
+        else:
+            stage_lst.append("reporter {}".format(entries['server']['reporter']))
 
         # Checking for satellite packages
         try:
@@ -795,12 +820,39 @@ def csv_match_report(match_obj):
                             stage_lst.append(source['facts']['VM_HOST_UUID'])
                             count = count + 1
                     except KeyError:
-                        # count = count + 1
                         ...
 
             if count == 0:
                 stage_lst.append("No_hypervisor_fqdn")
                 stage_lst.append("No_hypervisor_uuid")
+        
+        # Counting the number of guests on top of the hypervisor
+        number_of_guests = 0
+        for each_server in match_obj:
+            if len(each_server[0]['server']['facts']) > 0:
+                for elements in each_server[0]['server']['facts']:
+
+                    if elements['namespace'] == "satellite":
+                        try:
+                            if elements['facts']['virtual_host_name']:
+                                if elements['facts']['virtual_host_uuid'] == entries['server']['satellite_id']:
+                                    number_of_guests = number_of_guests + 1
+                        except KeyError:
+                            ...
+
+                    if elements['namespace'] == "rhsm":
+                        try:
+                            if elements['facts']['VM_HOST']:
+                                if elements['facts']['VM_HOST_UUID'] == entries['server']['subscription_manager_id']:
+                                    number_of_guests = number_of_guests + 1
+                        except KeyError:
+                            ...
+
+        if number_of_guests == 0:
+            stage_lst.append("No guests")
+        else:
+            stage_lst.append(number_of_guests)
+
 
         if sw_entries == "not in swatch":
             stage_lst.append("Not in sw")
