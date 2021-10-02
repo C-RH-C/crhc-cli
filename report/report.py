@@ -342,8 +342,8 @@ def csv_report_inventory(json_obj):
         # Counting the number of guests on top of the hypervisor
         number_of_guests = 0
         for each_server in json_obj['results']:
-            if len(each_server[0]['server']['facts']) > 0:
-                for elements in each_server[0]['server']['facts']:
+            if len(each_server['server']['facts']) > 0:
+                for elements in each_server['server']['facts']:
 
                     if elements['namespace'] == "satellite":
                         try:
@@ -382,8 +382,6 @@ def csv_report_swatch(json_obj):
     Function to generate the CSV report for swatch
     """
 
-# echo "display_name,hardware_type,inventory_id,insights_id,is_hypervisor,number_of_guests,is_unmapped_guest,last_seen,measurement_type,sockets,cores,subscription_manager_id,cloud_provider" >/tmp/swatch_report.csv
-# ./crhc swatch list_all | jq -r '.data[] | .display_name + "," + .hardware_type + "," + .inventory_id + "," + (.insights_id|tostring) + "," + (.is_hypervisor|tostring) + "," + (.number_of_guests|tostring) + "," + (.is_unmapped_guest|tostring) + "," + .last_seen + "," + .measurement_type + "," + (.sockets|tostring) + "," + (.cores|tostring) + "," + .subscription_manager_id + "," + .cloud_provider' >>/tmp/swatch_report.csv
     report_list = []
 
     stage_lst = ["display_name",
@@ -482,7 +480,6 @@ def csv_report_swatch(json_obj):
 
 
 def csv_match_report(match_obj):
-    # print("here")
 
     report_list = []
     installed_product_lst = []
