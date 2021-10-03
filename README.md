@@ -10,10 +10,9 @@ This project contains the `crhc` command line tool that simplifies the use of th
 
 ## Table of Content
  - [link](#Binary_File) - You can download the binary file
- - [link](#Source_Code) - You can clone the repository and use from the source code
  - [link](#Usage) - Usage
  - [link](#Contribution) - Contribution
- 
+ - [link](#Source_Code) - You can clone the repository and use from the source code
 ---
 
 ## Binary_File
@@ -23,72 +22,6 @@ If for any reason the binary didn't run properly in your machine also with pytho
 ```
 $ ./crhc 
 [9554] Error loading Python lib '/tmp/_MEIWS0hNs/libpython3.6m.so.1.0': dlopen: /lib64/libm.so.6: version `GLIBC_2.29' not found (required by /tmp/_MEIWS0hNs/libpython3.6m.so.1.0)
-```
-
----
-## Source_Code
-Please, proceed with the steps below
-
-In your RHEL/CentOS/Fedora/etc with Python 3.x installed, let's execute the commands in a sequence
-```
-$ git clone https://github.com/C-RH-C/crhc-cli.git
-$ cd crhc-cli
-$ python3 -m venv ~/.virtualenv/crhc-cli
-$ source ~/.virtualenv/crhc-cli/bin/activate
-```
-
-Now, you should be in your virtual environment. You can realize your prompt will change
-```
-(crhc-cli) [user@server crhc-cli]$
-```
-
-We can continue
-```
-(crhc-cli) [user@server crhc-cli]$ pip install --upgrade pip
-(crhc-cli) [user@server crhc-cli]$ pip install -r requirements.txt
-```
-
-And finally, we are good to go.
-```
-(crhc-cli) [user@server crhc-cli]$ ./crhc.py
-```
-
-The menu will be as below
-```
-(crhc-cli) [user@server crhc-cli]$ ./crhc.py 
-Command line tool for console.redhat.com API
-
-Usage:
-  crhc [command]
-
-Available Commands:
-  inventory      Get information about Inventory
-  swatch         Get information about Subscriptions
-  endpoint       List all the available endpoints
-  get            Send a GET request
-  ts             Troubleshooting tasks
-
-  login          Log in
-  logout         Log out
-  token          Generates a token
-  whoami         Prints user information
-
-Flags:
-  -h, --help                         help for crhc
-  -v, --version                      crhc version
-
-Use "crhc [command] --help" for more information about a command.
-```
-
-Great, now it's time to generate the binary file, please, execute the step below yet in your virtual environment
-```
-(crhc-cli) [user@server crhc-cli]$ pyinstaller --onefile crhc.py
-```
-
-At the end of this process, the binary file will be available under the `dist` dir, then you can redistribute or copy to any other machine running the same python version and everything will be running with no issues.
-```
-(crhc-cli) [user@server crhc-cli]$  file dist/crhc 
-dist/crhc: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), BuildID[sha1]=f6af5bc244c001328c174a6abf855d682aa7401b, for GNU/Linux 2.6.32, stripped
 ```
 
 ---
@@ -205,16 +138,13 @@ $ curl -s -H "Authorization: Bearer $(./crhc token)" https://api.openshift.com/a
 ```
 $ ./crhc inventory list_all --csv
 ```
-
-Or if you would like to do a similar process using the `jq` parser, you can copy/paste the commands below.
-```
-$ echo "id,updated,fqdn,display_name,ansible_host,cpu_model,number_of_cpus,number_of_sockets,core_socket,system_memory_bytes,bios_vendor,bios_version,bios_release_date,os_release,os_kernel_version,arch,last_boot_time,infrastructure_type,infrastructure_vendor,insights_client_version,created,insights_id,reporter,rhel_machine_id,tuned_profile,sap_system,sap_version" >/tmp/inventory_report.csv
-
-$ ./crhc inventory list_all | jq .results[] | jq -r '.server.id + "," + .server.updated + "," + .server.fqdn + "," + .server.display_name + "," + .server.ansible_host + ",\"" + .system_profile.cpu_model + "\"," + (.system_profile.number_of_cpus|tostring) + "," + (.system_profile.number_of_sockets|tostring) + "," + (.system_profile.core_socket|tostring) + "," + (.system_profile.system_memory_bytes|tostring) + ",\"" + .system_profile.bios_vendor + "\"," + .system_profile.bios_version + "," + .system_profile.bios_release_date + "," + .system_profile.os_release + "," + .system_profile.os_kernel_version + "," + .system_profile.arch + "," + .system_profile.last_boot_time + "," + .system_profile.infrastructure_type + "," + .system_profile.infrastructure_vendor + "," + .system_profile.insights_client_version + "," + .server.created + "," + .server.insights_id + "," + .server.reporter + "," + .server.rhel_machine_id + "," + .system_profile.tuned_profile + "," + (.system_profile.sap_system|tostring) + "," + .system_profile.sap_version' >>/tmp/inventory_report.csv
-```
 This should be enough to export the data and create the file `/tmp/inventory_report.csv` with some Inventory information. In a sequence you can see the fields
 - id
+- created
 - updated
+- stale_timestamp
+- stale_warning_timestamp
+- culled_timestamp
 - fqdn
 - display_name
 - ansible_host
@@ -240,25 +170,22 @@ This should be enough to export the data and create the file `/tmp/inventory_rep
 - tuned_profile
 - sap_system
 - sap_version
-- syspurpose_sla
+- system_purpose_sla
+- system_purpose_role
+- system_purpose_usage
+- is_simple_content_access
 - installed_product
 - has_satellite_package
 - has_openshift_package
 - hypervisor_fqdn
 - hypervisor_uuid
+- number_of_guests
 
 
 ### Exporting Subscription Watch data to CSV
 **Easy and Simple Way?**
 ```
 $ ./crhc swatch list_all --csv
-```
-
-Or if you would like to do a similar process using the `jq` parser, you can copy/paste the commands below.
-```
-$ echo "display_name,hardware_type,inventory_id,insights_id,is_hypervisor,number_of_guests,is_unmapped_guest,last_seen,measurement_type,sockets,cores,subscription_manager_id,cloud_provider" >/tmp/swatch_report.csv
-
-$ ./crhc swatch list_all | jq -r '.data[] | .display_name + "," + .hardware_type + "," + .inventory_id + "," + (.insights_id|tostring) + "," + (.is_hypervisor|tostring) + "," + (.number_of_guests|tostring) + "," + (.is_unmapped_guest|tostring) + "," + .last_seen + "," + .measurement_type + "," + (.sockets|tostring) + "," + (.cores|tostring) + "," + .subscription_manager_id + "," + .cloud_provider' >>/tmp/swatch_report.csv
 ```
 This should be enough to export the data and create the file `/tmp/swatch_report.csv` with the whole Subscription Watch information. In a sequence you can see the fields
 - display_name
@@ -291,6 +218,63 @@ File /tmp/match_inv_sw.csv created
 ```
 Note. Once the files `/tmp/inventory.json` and `/tmp/swatch.json` are in place, they will be used for this analysis and as result, the file `/tmp/match_inv_sw.csv` will be created. This is the file that will be used for troubleshooting process.
 
+## **ATTENTION**
+This is an awesome report because will combine both information from Inventory and Subscriptions in a single dataset. The final result will be the file `/tmp/match_inv_sw.csv` with the respective fields.
+- id
+- created
+- updated
+- stale_timestamp
+- stale_warning_timestamp
+- culled_timestamp
+- fqdn
+- display_name
+- ansible_host
+- cpu_model
+- number_of_cpus
+- number_of_sockets
+- core_socket
+- system_memory_bytes
+- bios_vendor
+- bios_version
+- bios_release_date
+- os_release
+- os_kernel_version
+- arch
+- last_boot_time
+- infrastructure_type
+- infrastructure_vendor
+- insights_client_version
+- created
+- insights_id
+- reporter
+- rhel_machine_id
+- tuned_profile
+- sap_system
+- sap_version
+- system_purpose_sla
+- system_purpose_role
+- system_purpose_usage
+- is_simple_content_access
+- installed_product
+- has_satellite_package
+- has_openshift_package
+- hypervisor_fqdn
+- hypervisor_uuid
+- number_of_guests
+- display_name
+- hardware_type
+- inventory_id
+- insights_id
+- is_hypervisor
+- number_of_guests
+- is_unmapped_guest
+- last_seen
+- measurement_type
+- sockets
+- cores
+- subscription_manager_id
+- cloud_provider
+
 ---
 ### New Versions
 Once a new version get available, the `crhc` will let you know.
@@ -314,4 +298,74 @@ I really hope this helps you.
 
 If you need anything else of if you are facing issues trying to use it, please let me know via email or feel free to open a repository issue [here](https://github.com/C-RH-C/crhc-cli/issues)
 
+Also, if you believe this project is valuable for you, feel free to share your feedback via contacts below. This will help to push this project forward.
+
 waldirio@redhat.com / waldirio@gmail.com
+
+Thank you in advance! :)
+
+---
+## Source_Code
+Please, proceed with the steps below
+
+In your RHEL/CentOS/Fedora/etc with Python 3.x installed, let's execute the commands in a sequence
+```
+$ git clone https://github.com/C-RH-C/crhc-cli.git
+$ cd crhc-cli
+$ python3 -m venv ~/.virtualenv/crhc-cli
+$ source ~/.virtualenv/crhc-cli/bin/activate
+```
+
+Now, you should be in your virtual environment. You can realize your prompt will change
+```
+(crhc-cli) [user@server crhc-cli]$
+```
+
+We can continue
+```
+(crhc-cli) [user@server crhc-cli]$ pip install --upgrade pip
+(crhc-cli) [user@server crhc-cli]$ pip install -r requirements.txt
+```
+
+And finally, we are good to go.
+```
+(crhc-cli) [user@server crhc-cli]$ ./crhc.py
+```
+
+The menu will be as below
+```
+(crhc-cli) [user@server crhc-cli]$ ./crhc.py 
+Command line tool for console.redhat.com API
+
+Usage:
+  crhc [command]
+
+Available Commands:
+  inventory      Get information about Inventory
+  swatch         Get information about Subscriptions
+  endpoint       List all the available endpoints
+  get            Send a GET request
+  ts             Troubleshooting tasks
+
+  login          Log in
+  logout         Log out
+  token          Generates a token
+  whoami         Prints user information
+
+Flags:
+  -h, --help                         help for crhc
+  -v, --version                      crhc version
+
+Use "crhc [command] --help" for more information about a command.
+```
+
+Great, now it's time to generate the binary file, please, execute the step below yet in your virtual environment
+```
+(crhc-cli) [user@server crhc-cli]$ pyinstaller --onefile crhc.py
+```
+
+At the end of this process, the binary file will be available under the `dist` dir, then you can redistribute or copy to any other machine running the same python version and everything will be running with no issues.
+```
+(crhc-cli) [user@server crhc-cli]$  file dist/crhc 
+dist/crhc: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), BuildID[sha1]=f6af5bc244c001328c174a6abf855d682aa7401b, for GNU/Linux 2.6.32, stripped
+```
