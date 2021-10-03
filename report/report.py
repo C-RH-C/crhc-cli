@@ -15,7 +15,11 @@ def csv_report_inventory(json_obj):
     installed_product_lst = []
 
     stage_lst = ["id",
+                   "created",  # added
                    "updated",
+                   "stale_timestamp",  # added
+                   "stale_warning_timestamp",  # added
+                   "culled_timestamp",  # added
                    "fqdn",
                    "display_name",
                    "ansible_host",
@@ -56,16 +60,36 @@ def csv_report_inventory(json_obj):
     stage_lst = []
 
     for entries in json_obj['results']:
-        pass
+
         try:
             stage_lst.append(entries['server']['id'])
         except KeyError:
             stage_lst.append("No_id_key_available")
 
         try:
+            stage_lst.append(entries['server']['created'])
+        except KeyError:
+            stage_lst.append("No_created_key_available")
+
+        try:
             stage_lst.append(entries['server']['updated'])
         except KeyError:
             stage_lst.append("No_updated_key_available")
+
+        try:
+            stage_lst.append(entries['server']['stale_timestamp'])
+        except KeyError:
+            stage_lst.append("No_stale_timestamp_key_available")
+
+        try:
+            stage_lst.append(entries['server']['stale_warning_timestamp'])
+        except KeyError:
+            stage_lst.append("No_stale_warning_timestamp_key_available")
+
+        try:
+            stage_lst.append(entries['server']['culled_timestamp'])
+        except KeyError:
+            stage_lst.append("No_culled_timestamp_key_available")
 
         try:
             stage_lst.append(entries['server']['fqdn'])
@@ -485,7 +509,11 @@ def csv_match_report(match_obj):
     installed_product_lst = []
 
     stage_lst = ["id",
+                   "created",  # added
                    "updated",
+                   "stale_timestamp",  # added
+                   "stale_warning_timestamp",  # added
+                   "culled_timestamp",  # added
                    "fqdn",
                    "display_name",
                    "ansible_host",
@@ -520,7 +548,7 @@ def csv_match_report(match_obj):
                    "has_openshift_package",
                    "hypervisor_fqdn",
                    "hypervisor_uuid",
-                   "number_of_guests",  # added
+                   "number_of_guests",
                    "sw_display_name",
                    "sw_hardware_type",
                    "sw_inventory_id",
@@ -541,16 +569,36 @@ def csv_match_report(match_obj):
     for elements in match_obj:
         entries = elements[0]
         sw_entries = elements[1]
-        pass
+
         try:
             stage_lst.append(entries['server']['id'])
         except KeyError:
             stage_lst.append("No_id_key_available")
 
         try:
+            stage_lst.append(entries['server']['created'])
+        except KeyError:
+            stage_lst.append("No_created_key_available")
+
+        try:
             stage_lst.append(entries['server']['updated'])
         except KeyError:
             stage_lst.append("No_updated_key_available")
+
+        try:
+            stage_lst.append(entries['server']['stale_timestamp'])
+        except KeyError:
+            stage_lst.append("No_stale_timestamp_key_available")
+
+        try:
+            stage_lst.append(entries['server']['stale_warning_timestamp'])
+        except KeyError:
+            stage_lst.append("No_stale_warning_timestamp_key_available")
+
+        try:
+            stage_lst.append(entries['server']['culled_timestamp'])
+        except KeyError:
+            stage_lst.append("No_culled_timestamp_key_available")
 
         try:
             stage_lst.append(entries['server']['fqdn'])
