@@ -82,7 +82,14 @@ def inventory_list_all():
     # response = requests.get(url, auth=(USER, PASSWORD))
     check_authentication(response)
 
-    num_of_pages = int(response.json()['total'] / 50 + 1)
+    # Here we are checking the total number of objects and setting the correct
+    # number of pages based on that.
+    check_response = divmod(response.json()['total'], 50)
+
+    if check_response[1] == 0:
+        num_of_pages = check_response[0] + 1
+    else:
+        num_of_pages = check_response[0] + 2
 
     list_of_servers = []
     inventory_full_detail = {'results': '', 'total': response.json()['total']}
@@ -90,10 +97,6 @@ def inventory_list_all():
 
     stage_list = []
     stage_dic = {'server': stage_list}
-
-    # Just to collect the information when the # of hosts is up to 50
-    if num_of_pages == 1:
-        num_of_pages = num_of_pages + 1
 
     for page in range(1, num_of_pages):
         url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=50&page=" + str(page)
