@@ -13,7 +13,7 @@ OUTPUT_CSV = "/tmp/inventory_report.csv"
 def calling_csv_report_inventory():
     """
     Function responsible to read the template data and push against the
-    function
+    function.
     """
 
     # Reading the Input data that will be used in this test
