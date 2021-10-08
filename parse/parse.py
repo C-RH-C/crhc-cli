@@ -9,7 +9,7 @@ from execution import execution
 from report import report
 from credential import token
 from troubleshoot import ts
-from help import help
+from help import help_opt
 from crhc import CURRENT_VERSION
 
 access_token = token.get_token()
@@ -23,7 +23,7 @@ def inventory_sub_menu():
     # To present the available options
     if len(sys.argv) == 2:
         # Passing only inventory, the help menu will be presented.
-        help.help_inventory_menu()
+        help_opt.help_inventory_menu()
 
     if len(sys.argv) == 3:
 
@@ -137,7 +137,7 @@ def swatch_sub_menu():
     # To present the available options
     if len(sys.argv) == 2:
         # Passing only swatch, the help menu will be presented.
-        help.help_swatch_menu()
+        help_opt.help_swatch_menu()
 
     if len(sys.argv) == 3:
 
@@ -201,7 +201,7 @@ def endpoint_sub_menu():
     # To present the available options
     if len(sys.argv) == 2:
         # Passing only endpoint, the help menu will be presented.
-        help.help_endpoint_menu()
+        help_opt.help_endpoint_menu()
 
     try:
         if (sys.argv[1] == "endpoint") and (sys.argv[2] == "list"):
@@ -220,7 +220,7 @@ def get_sub_menu():
     # To present the available options
     if len(sys.argv) == 2:
         # Passing only the get, the help menu will be presented.
-        help.help_get_menu()
+        help_opt.help_get_menu()
 
     try:
         if (sys.argv[1] == "get") and (sys.argv[2]):
@@ -241,7 +241,7 @@ def login_sub_menu():
     # To present the available options
     if len(sys.argv) == 2:
         # Passing only login, the help menu will be presented.
-        help.help_login_menu()
+        help_opt.help_login_menu()
 
     try:
         if (sys.argv[1] == "login") and (sys.argv[2] == "--token"):
@@ -301,7 +301,7 @@ def troubleshoot_sub_menu():
     # To present the available options
     if len(sys.argv) == 2:
         # Passing only ts, the help menu will be presented.
-        help.help_ts_menu()
+        help_opt.help_ts_menu()
 
     try:
         if (sys.argv[1] == "ts") and (sys.argv[2] == "dump"):
@@ -324,7 +324,6 @@ def troubleshoot_sub_menu():
             sys.exit()
     except IndexError:
         ...
-
 
 
 def update_check():
@@ -351,7 +350,7 @@ def main_menu():
         if sys.argv[1] == "inventory":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    help.help_inventory_menu()
+                    help_opt.help_inventory_menu()
                     sys.exit()
             except IndexError:
                 ...
@@ -362,7 +361,7 @@ def main_menu():
         elif sys.argv[1] == "swatch":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    help.help_swatch_menu()
+                    help_opt.help_swatch_menu()
                     sys.exit()
             except IndexError:
                 ...
@@ -373,7 +372,7 @@ def main_menu():
         elif sys.argv[1] == "endpoint":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    help.help_endpoint_menu()
+                    help_opt.help_endpoint_menu()
                     sys.exit()
             except IndexError:
                 ...
@@ -384,7 +383,7 @@ def main_menu():
         elif sys.argv[1] == "get":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    help.help_get_menu()
+                    help_opt.help_get_menu()
                     sys.exit()
             except IndexError:
                 ...
@@ -395,7 +394,7 @@ def main_menu():
         elif sys.argv[1] == "login":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    help.help_login_menu()
+                    help_opt.help_login_menu()
                     sys.exit()
             except IndexError:
                 ...
@@ -406,7 +405,7 @@ def main_menu():
         elif sys.argv[1] == "logout":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    help.help_logout_menu()
+                    help_opt.help_logout_menu()
                     sys.exit()
             except IndexError:
                 ...
@@ -417,7 +416,7 @@ def main_menu():
         elif sys.argv[1] == "token":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    help.help_token_menu()
+                    help_opt.help_token_menu()
                     sys.exit()
             except IndexError:
                 ...
@@ -428,7 +427,7 @@ def main_menu():
         elif sys.argv[1] == "whoami":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    help.help_whoami_menu()
+                    help_opt.help_whoami_menu()
                     sys.exit()
             except IndexError:
                 ...
@@ -437,7 +436,7 @@ def main_menu():
             whoami_sub_menu()
 
         elif (sys.argv[1] == "--help") or (sys.argv[1] == "-h"):
-            help.help_main_menu()
+            help_opt.help_main_menu()
 
         elif (sys.argv[1] == "--version") or (sys.argv[1] == "-v"):
             print(CURRENT_VERSION)
@@ -445,7 +444,7 @@ def main_menu():
         elif sys.argv[1] == "ts":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    help.help_ts_menu()
+                    help_opt.help_ts_menu()
                     sys.exit()
             except IndexError:
                 ...

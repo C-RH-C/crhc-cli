@@ -32,7 +32,6 @@ def set_token(token):
     except KeyError:
         access_token = None
 
-
     # Testing the access and credentials
     url = "https://console.redhat.com/api/inventory/v1/hosts"
     response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
@@ -117,7 +116,6 @@ def refresh_token():
         access_token = refresh.json()['access_token']
     except KeyError:
         access_token = "Error: Failed to create C.RH.C connection: Not logged in, credentials aren't set, run the 'crhc login' command"
-
 
     home_dir = os.path.expanduser('~')
     with open(home_dir + CONF_FILE, "w") as file_obj:

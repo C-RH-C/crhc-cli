@@ -1,3 +1,6 @@
+"""
+Module responsible for report
+"""
 # from os import write
 import csv
 
@@ -15,46 +18,46 @@ def csv_report_inventory(json_obj):
     installed_product_lst = []
 
     stage_lst = ["id",
-                   "created",  # added
-                   "updated",
-                   "stale_timestamp",  # added
-                   "stale_warning_timestamp",  # added
-                   "culled_timestamp",  # added
-                   "fqdn",
-                   "display_name",
-                   "ansible_host",
-                   "cpu_model",
-                   "number_of_cpus",
-                   "number_of_sockets",
-                   "core_socket",
-                   "system_memory_bytes",
-                   "bios_vendor",
-                   "bios_version",
-                   "bios_release_date",
-                   "os_release",
-                   "os_kernel_version",
-                   "arch",
-                   "last_boot_time",
-                   "infrastructure_type",
-                   "infrastructure_vendor",
-                   "insights_client_version",
-                   "created",
-                   "insights_id",
-                   "reporter",
-                   "rhel_machine_id",
-                   "tuned_profile",
-                   "sap_system",
-                   "sap_version",
-                   "system_purpose_sla",
-                   "system_purpose_role",
-                   "system_purpose_usage",
-                   "is_simple_content_access",
-                   "installed_product",
-                   "has_satellite_package",
-                   "has_openshift_package",
-                   "hypervisor_fqdn",
-                   "hypervisor_uuid",
-                   "number_of_guests"]
+                 "created",  # added
+                 "updated",
+                 "stale_timestamp",  # added
+                 "stale_warning_timestamp",  # added
+                 "culled_timestamp",  # added
+                 "fqdn",
+                 "display_name",
+                 "ansible_host",
+                 "cpu_model",
+                 "number_of_cpus",
+                 "number_of_sockets",
+                 "core_socket",
+                 "system_memory_bytes",
+                 "bios_vendor",
+                 "bios_version",
+                 "bios_release_date",
+                 "os_release",
+                 "os_kernel_version",
+                 "arch",
+                 "last_boot_time",
+                 "infrastructure_type",
+                 "infrastructure_vendor",
+                 "insights_client_version",
+                 "created",
+                 "insights_id",
+                 "reporter",
+                 "rhel_machine_id",
+                 "tuned_profile",
+                 "sap_system",
+                 "sap_version",
+                 "system_purpose_sla",
+                 "system_purpose_role",
+                 "system_purpose_usage",
+                 "is_simple_content_access",
+                 "installed_product",
+                 "has_satellite_package",
+                 "has_openshift_package",
+                 "hypervisor_fqdn",
+                 "hypervisor_uuid",
+                 "number_of_guests"]
 
     report_list.append(stage_lst)
     stage_lst = []
@@ -216,7 +219,6 @@ def csv_report_inventory(json_obj):
         except KeyError:
             stage_lst.append("No_sap_version_key_available")
 
-
         # Checking for syspurpose_sla information that came via fact
         if len(entries['server']['facts']) == 0:
             stage_lst.append("No_facts_key_available")
@@ -362,7 +364,7 @@ def csv_report_inventory(json_obj):
             if count == 0:
                 stage_lst.append("No_hypervisor_fqdn")
                 stage_lst.append("No_hypervisor_uuid")
-        
+
         # Counting the number of guests on top of the hypervisor
         number_of_guests = 0
         for each_server in json_obj['results']:
@@ -389,7 +391,6 @@ def csv_report_inventory(json_obj):
             stage_lst.append("No guests")
         else:
             stage_lst.append(number_of_guests)
-
 
         report_list.append(stage_lst)
         stage_lst = []
@@ -426,7 +427,6 @@ def csv_report_swatch(json_obj):
     stage_lst = []
 
     for entries in json_obj['data']:
-        pass
 
         try:
             stage_lst.append(entries['display_name'])
@@ -504,64 +504,69 @@ def csv_report_swatch(json_obj):
 
 
 def csv_match_report(match_obj):
+    """
+    Function responsible for match the information from
+    Inventory and Subscription data, creating a single
+    dataset (CSV)
+    """
 
     report_list = []
     installed_product_lst = []
 
     stage_lst = ["id",
-                   "created",  # added
-                   "updated",
-                   "stale_timestamp",  # added
-                   "stale_warning_timestamp",  # added
-                   "culled_timestamp",  # added
-                   "fqdn",
-                   "display_name",
-                   "ansible_host",
-                   "cpu_model",
-                   "number_of_cpus",
-                   "number_of_sockets",
-                   "core_socket",
-                   "system_memory_bytes",
-                   "bios_vendor",
-                   "bios_version",
-                   "bios_release_date",
-                   "os_release",
-                   "os_kernel_version",
-                   "arch",
-                   "last_boot_time",
-                   "infrastructure_type",
-                   "infrastructure_vendor",
-                   "insights_client_version",
-                   "created",
-                   "insights_id",
-                   "reporter",
-                   "rhel_machine_id",
-                   "tuned_profile",
-                   "sap_system",
-                   "sap_version",
-                   "system_purpose_sla",
-                   "system_purpose_role",
-                   "system_purpose_usage",
-                   "is_simple_content_access",
-                   "installed_product",
-                   "has_satellite_package",
-                   "has_openshift_package",
-                   "hypervisor_fqdn",
-                   "hypervisor_uuid",
-                   "number_of_guests",
-                   "sw_display_name",
-                   "sw_hardware_type",
-                   "sw_inventory_id",
-                   "sw_insights_id",
-                   "sw_is_hypervisor",
-                   "sw_number_of_guests",
-                   "sw_is_unmapped_guest",
-                   "sw_last_seen",
-                   "sw_measurement_type",
-                   "sw_sockets",
-                   "sw_cores",
-                   "sw_subscription_manager_id",
-                   "sw_cloud_provider"]
+                 "created",  # added
+                 "updated",
+                 "stale_timestamp",  # added
+                 "stale_warning_timestamp",  # added
+                 "culled_timestamp",  # added
+                 "fqdn",
+                 "display_name",
+                 "ansible_host",
+                 "cpu_model",
+                 "number_of_cpus",
+                 "number_of_sockets",
+                 "core_socket",
+                 "system_memory_bytes",
+                 "bios_vendor",
+                 "bios_version",
+                 "bios_release_date",
+                 "os_release",
+                 "os_kernel_version",
+                 "arch",
+                 "last_boot_time",
+                 "infrastructure_type",
+                 "infrastructure_vendor",
+                 "insights_client_version",
+                 "created",
+                 "insights_id",
+                 "reporter",
+                 "rhel_machine_id",
+                 "tuned_profile",
+                 "sap_system",
+                 "sap_version",
+                 "system_purpose_sla",
+                 "system_purpose_role",
+                 "system_purpose_usage",
+                 "is_simple_content_access",
+                 "installed_product",
+                 "has_satellite_package",
+                 "has_openshift_package",
+                 "hypervisor_fqdn",
+                 "hypervisor_uuid",
+                 "number_of_guests",
+                 "sw_display_name",
+                 "sw_hardware_type",
+                 "sw_inventory_id",
+                 "sw_insights_id",
+                 "sw_is_hypervisor",
+                 "sw_number_of_guests",
+                 "sw_is_unmapped_guest",
+                 "sw_last_seen",
+                 "sw_measurement_type",
+                 "sw_sockets",
+                 "sw_cores",
+                 "sw_subscription_manager_id",
+                 "sw_cloud_provider"]
 
     report_list.append(stage_lst)
     stage_lst = []
@@ -724,7 +729,7 @@ def csv_match_report(match_obj):
             stage_lst.append(entries['system_profile']['sap_version'])
         except KeyError:
             stage_lst.append("No_sap_version_key_available")
-        
+
         # Checking for syspurpose_sla information that came via fact
         if len(entries['server']['facts']) == 0:
             stage_lst.append("No_facts_key_available")
@@ -870,7 +875,7 @@ def csv_match_report(match_obj):
             if count == 0:
                 stage_lst.append("No_hypervisor_fqdn")
                 stage_lst.append("No_hypervisor_uuid")
-        
+
         # Counting the number of guests on top of the hypervisor
         number_of_guests = 0
         for each_server in match_obj:
@@ -897,7 +902,6 @@ def csv_match_report(match_obj):
             stage_lst.append("No guests")
         else:
             stage_lst.append(number_of_guests)
-
 
         if sw_entries == "not in swatch":
             stage_lst.append("Not in sw")

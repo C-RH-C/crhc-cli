@@ -37,11 +37,11 @@ def test_csv_report_inventory_counting_number_of_columns():
         for line in aux:
             print(line)
             assert len(line) == 41
-            pass
+
 
 def test_csv_report_inventory_counting_number_of_rows():
     """
-    Testing the # of rows, which should be the # of elements in the 
+    Testing the # of rows, which should be the # of elements in the
     sample + 1 of header
     """
     calling_csv_report_inventory()
@@ -50,4 +50,3 @@ def test_csv_report_inventory_counting_number_of_rows():
     with open(OUTPUT_CSV, "r") as file_obj:
         aux = file_obj.readlines()
         assert len(aux) == 3
-        pass

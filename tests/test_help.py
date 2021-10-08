@@ -1,7 +1,15 @@
-from help import help
+"""
+Module responsible for test the help menu content
+"""
+
+from help import help_opt
+
 
 def test_check_main_help_menu():
-    response = help.help_main_menu()
+    """
+    Responsible for test the main help menu
+    """
+    response = help_opt.help_main_menu()
     content = "\
 CRHC Command Line Tool\n\
     \n\
@@ -24,11 +32,13 @@ Flags: \n\
     --help, -h      This option will present the help.\n\
 "
     assert response == content
-    pass
 
 
 def test_check_inventory_help_menu():
-    response = help.help_inventory_menu()
+    """
+    Responsible for test the inventory help menu
+    """
+    response = help_opt.help_inventory_menu()
     content = "\
 Usage: \n\
     crhc inventory [command]\n\
@@ -43,8 +53,12 @@ Flags: \n\
 "
     assert response == content
 
+
 def test_check_swatch_help_menu():
-    response = help.help_swatch_menu()
+    """
+    Responsible for test the subscription help menu
+    """
+    response = help_opt.help_swatch_menu()
     content = "\
 Usage: \n\
     crhc swatch [command]\n\
@@ -58,8 +72,12 @@ Flags: \n\
 "
     assert response == content
 
+
 def test_check_endpoint_help_menu():
-    response = help.help_endpoint_menu()
+    """
+    Responsible for test the endpoint help menu
+    """
+    response = help_opt.help_endpoint_menu()
     content = "\
 Usage: \n\
     crhc endpoint [command]\n\
@@ -69,8 +87,12 @@ Available Commands:\n\
 "
     assert response == content
 
+
 def test_check_get_help_menu():
-    response = help.help_get_menu()
+    """
+    Responsible for test the get help menu
+    """
+    response = help_opt.help_get_menu()
     content = "\
 Usage: \n\
     crhc get [command]\n\
@@ -80,8 +102,12 @@ Available Commands:\n\
 "
     assert response == content
 
+
 def test_check_login_help_menu():
-    response = help.help_login_menu()
+    """
+    Responsible for test the login help menu
+    """
+    response = help_opt.help_login_menu()
     content = "\
 Usage: \n\
     crhc login [flags]\n\
@@ -96,8 +122,12 @@ Info:\n\
 "
     assert response == content
 
+
 def test_check_ts_help_menu():
-    response = help.help_ts_menu()
+    """
+    Responsible for test the ts help menu
+    """
+    response = help_opt.help_ts_menu()
     content = "\
 Usage: \n\
     crhc ts [command]\n\

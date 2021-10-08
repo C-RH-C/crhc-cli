@@ -1,4 +1,12 @@
+"""
+Module responsible for all the helps on crhc-cli app
+"""
+
+
 def help_main_menu():
+    """
+    Main help menu
+    """
     content = "\
 CRHC Command Line Tool\n\
     \n\
@@ -26,7 +34,9 @@ Flags: \n\
 
 
 def help_inventory_menu():
-    # print("new inv help")
+    """
+    Main inventory menu
+    """
     content = "\
 Usage: \n\
     crhc inventory [command]\n\
@@ -42,7 +52,11 @@ Flags: \n\
     print(content)
     return content
 
+
 def help_swatch_menu():
+    """
+    Main subscription menu
+    """
     content = "\
 Usage: \n\
     crhc swatch [command]\n\
@@ -57,7 +71,11 @@ Flags: \n\
     print(content)
     return content
 
+
 def help_endpoint_menu():
+    """
+    Main endpoint menu
+    """
     content = "\
 Usage: \n\
     crhc endpoint [command]\n\
@@ -68,7 +86,11 @@ Available Commands:\n\
     print(content)
     return content
 
+
 def help_get_menu():
+    """
+    Main get menu
+    """
     content = "\
 Usage: \n\
     crhc get [command]\n\
@@ -79,7 +101,11 @@ Available Commands:\n\
     print(content)
     return content
 
+
 def help_login_menu():
+    """
+    Main login menu
+    """
     content = "\
 Usage: \n\
     crhc login [flags]\n\
@@ -95,22 +121,38 @@ Info:\n\
     print(content)
     return content
 
+
 def help_logout_menu():
+    """
+    Main logout menu
+    """
     content = ""
     print(content)
     return content
+
 
 def help_token_menu():
+    """
+    Main token menu
+    """
     content = ""
     print(content)
     return content
+
 
 def help_whoami_menu():
+    """
+    Main whoami menu
+    """
     content = ""
     print(content)
     return content
 
+
 def help_ts_menu():
+    """
+    Main ts/troubleshooting menu
+    """
     content = "\
 Usage: \n\
     crhc ts [command]\n\
@@ -122,10 +164,3 @@ Available Commands:\n\
 "
     print(content)
     return content
-
-
-
-
-
-
-
