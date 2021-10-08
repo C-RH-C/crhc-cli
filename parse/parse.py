@@ -9,6 +9,7 @@ from execution import execution
 from report import report
 from credential import token
 from troubleshoot import ts
+from help import help
 from crhc import CURRENT_VERSION
 
 access_token = token.get_token()
@@ -21,9 +22,8 @@ def inventory_sub_menu():
 
     # To present the available options
     if len(sys.argv) == 2:
-        print("  list - List the inventory entries, first 50")
-        print("  list_all - List all the inventory entries")
-        print("  --display_name - Please, type the FQDN or Partial Hostname")
+        # Passing only inventory, the help menu will be presented.
+        help.help_inventory_menu()
 
     if len(sys.argv) == 3:
 
@@ -88,7 +88,6 @@ def inventory_sub_menu():
                 fqdn = sys.argv[3]
                 response = execution.inventory_list_search_by_name(fqdn)
                 report.csv_report_inventory(response)
-                # print(json.dumps(response, indent=4))
                 sys.exit()
         except IndexError:
             ...
@@ -137,9 +136,8 @@ def swatch_sub_menu():
 
     # To present the available options
     if len(sys.argv) == 2:
-        print("  list - List the swatch entries, first 100")
-        print("  list_all - List all the swatch entries")
-        print("  socket_summary - List all the swatch entries")
+        # Passing only swatch, the help menu will be presented.
+        help.help_swatch_menu()
 
     if len(sys.argv) == 3:
 
@@ -180,7 +178,6 @@ def swatch_sub_menu():
             if (sys.argv[1] == "swatch") and (sys.argv[2] == "list") and (sys.argv[3] == "--csv"):
                 response = execution.swatch_list()
                 report.csv_report_swatch(response)
-                # print(json.dumps(response, indent=4))
 
                 sys.exit()
         except IndexError:
@@ -191,7 +188,6 @@ def swatch_sub_menu():
             if (sys.argv[1] == "swatch") and (sys.argv[2] == "list_all") and (sys.argv[3] == "--csv"):
                 response = execution.swatch_list_all()
                 report.csv_report_swatch(response)
-                # print(json.dumps(response, indent=4))
                 sys.exit()
         except IndexError:
             ...
@@ -204,11 +200,11 @@ def endpoint_sub_menu():
 
     # To present the available options
     if len(sys.argv) == 2:
-        print("  list - List all the endpoints available")
+        # Passing only endpoint, the help menu will be presented.
+        help.help_endpoint_menu()
 
     try:
         if (sys.argv[1] == "endpoint") and (sys.argv[2] == "list"):
-            # print("executing inventory list")
             response = execution.endpoint_list()
             print(json.dumps(response, indent=4))
             sys.exit()
@@ -223,12 +219,11 @@ def get_sub_menu():
 
     # To present the available options
     if len(sys.argv) == 2:
-        print("  get <endpoint API URL HERE> - It will retrieve all the available methods")
+        # Passing only the get, the help menu will be presented.
+        help.help_get_menu()
 
     try:
         if (sys.argv[1] == "get") and (sys.argv[2]):
-            # print("executing inventory list")
-            # response = execution.get_command(sys.argv[2])
             response = execution.get_command(sys.argv[2])
             if response:
                 print(json.dumps(response, indent=4))
@@ -245,8 +240,8 @@ def login_sub_menu():
 
     # To present the available options
     if len(sys.argv) == 2:
-        print("  In order to log in it is mandatory to use '--token'")
-        print("  You can obtain a token at: https://console.redhat.com/openshift/token .")
+        # Passing only login, the help menu will be presented.
+        help.help_login_menu()
 
     try:
         if (sys.argv[1] == "login") and (sys.argv[2] == "--token"):
@@ -305,15 +300,11 @@ def troubleshoot_sub_menu():
 
     # To present the available options
     if len(sys.argv) == 2:
-        print("  dump - dump the json files, Inventory and Subscription")
-        print("  match - match the Inventory and Subscription information")
-        print("  clean - cleanup the local 'cache/temporary/dump' files")
+        # Passing only ts, the help menu will be presented.
+        help.help_ts_menu()
 
     try:
         if (sys.argv[1] == "ts") and (sys.argv[2] == "dump"):
-            # print("executing inventory list")
-            # response = execution.endpoint_list()
-            # print(json.dumps(response, indent=4))
             ts.dump_inv_json()
             ts.dump_sw_json()
             sys.exit()
@@ -322,9 +313,6 @@ def troubleshoot_sub_menu():
 
     try:
         if (sys.argv[1] == "ts") and (sys.argv[2] == "match"):
-            # print("executing inventory list")
-            # response = execution.endpoint_list()
-            # print(json.dumps(response, indent=4))
             ts.match_hbi_sw()
             sys.exit()
     except IndexError:
@@ -332,9 +320,6 @@ def troubleshoot_sub_menu():
 
     try:
         if (sys.argv[1] == "ts") and (sys.argv[2] == "clean"):
-            # print("executing inventory list")
-            # response = execution.endpoint_list()
-            # print(json.dumps(response, indent=4))
             ts.clean()
             sys.exit()
     except IndexError:
@@ -366,7 +351,7 @@ def main_menu():
         if sys.argv[1] == "inventory":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    print("inventory help here")
+                    help.help_inventory_menu()
                     sys.exit()
             except IndexError:
                 ...
@@ -377,7 +362,7 @@ def main_menu():
         elif sys.argv[1] == "swatch":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    print("swatch help here")
+                    help.help_swatch_menu()
                     sys.exit()
             except IndexError:
                 ...
@@ -388,7 +373,7 @@ def main_menu():
         elif sys.argv[1] == "endpoint":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    print("endpoint help here")
+                    help.help_endpoint_menu()
                     sys.exit()
             except IndexError:
                 ...
@@ -399,7 +384,7 @@ def main_menu():
         elif sys.argv[1] == "get":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    print("get help here")
+                    help.help_get_menu()
                     sys.exit()
             except IndexError:
                 ...
@@ -410,7 +395,7 @@ def main_menu():
         elif sys.argv[1] == "login":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    print("user help here")
+                    help.help_login_menu()
                     sys.exit()
             except IndexError:
                 ...
@@ -421,7 +406,7 @@ def main_menu():
         elif sys.argv[1] == "logout":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    print("user help here")
+                    help.help_logout_menu()
                     sys.exit()
             except IndexError:
                 ...
@@ -432,7 +417,7 @@ def main_menu():
         elif sys.argv[1] == "token":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    print("user help here")
+                    help.help_token_menu()
                     sys.exit()
             except IndexError:
                 ...
@@ -443,7 +428,7 @@ def main_menu():
         elif sys.argv[1] == "whoami":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    print("user help here")
+                    help.help_whoami_menu()
                     sys.exit()
             except IndexError:
                 ...
@@ -452,8 +437,7 @@ def main_menu():
             whoami_sub_menu()
 
         elif (sys.argv[1] == "--help") or (sys.argv[1] == "-h"):
-            print("This help!")
-            # main_menu()
+            help.help_main_menu()
 
         elif (sys.argv[1] == "--version") or (sys.argv[1] == "-v"):
             print(CURRENT_VERSION)
@@ -461,7 +445,7 @@ def main_menu():
         elif sys.argv[1] == "ts":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    print("user help here")
+                    help.help_ts_menu()
                     sys.exit()
             except IndexError:
                 ...

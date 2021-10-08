@@ -22,7 +22,7 @@ def calling_csv_report_inventory():
         report.csv_report_inventory(aux)
 
 
-def test_csv_report_inventory():
+def test_csv_report_inventory_counting_number_of_columns():
     """
     Testing the csv_report_inventory feature.
     Here we are passing the input file, generating the output and
@@ -37,8 +37,17 @@ def test_csv_report_inventory():
         for line in aux:
             print(line)
             assert len(line) == 41
+            pass
+
+def test_csv_report_inventory_counting_number_of_rows():
+    """
+    Testing the # of rows, which should be the # of elements in the 
+    sample + 1 of header
+    """
+    calling_csv_report_inventory()
 
     # Counting 3 rows, header + 2 lines from the input data
     with open(OUTPUT_CSV, "r") as file_obj:
         aux = file_obj.readlines()
         assert len(aux) == 3
+        pass
