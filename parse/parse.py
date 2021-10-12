@@ -50,10 +50,10 @@ def inventory_sub_menu():
 
         # To print in JSON format
         try:
-            if (sys.argv[1] == "inventory") and (sys.argv[2] == "--display_name"):
+            if (sys.argv[1] == "inventory") and (sys.argv[2] == "display_name"):
 
                 if len(sys.argv) == 3:
-                    print("Please, pass the FQDN or Partial FQDN to --display_name, for example '--display_name virt-who-esxi'")
+                    print("Please, pass the FQDN or Partial FQDN to display_name, for example 'crhc inventory display_name virt-who-esxi'")
                     sys.exit()
                 fqdn = sys.argv[3]
                 response = execution.inventory_list_search_by_name(fqdn)
@@ -63,12 +63,12 @@ def inventory_sub_menu():
             ...
 
     # To print in JSON format
-    if len(sys.argv) == 4 and (sys.argv[2]) == "--display_name":
+    if len(sys.argv) == 4 and (sys.argv[2]) == "display_name":
         try:
-            if (sys.argv[1] == "inventory") and (sys.argv[2] == "--display_name"):
+            if (sys.argv[1] == "inventory") and (sys.argv[2] == "display_name"):
 
                 if len(sys.argv) == 3:
-                    print("Please, pass the FQDN or Partial FQDN to --display_name, for example '--display_name virt-who-esxi'")
+                    print("Please, pass the FQDN or Partial FQDN to display_name, for example 'crhc inventory display_name virt-who-esxi'")
                     sys.exit()
                 fqdn = sys.argv[3]
                 response = execution.inventory_list_search_by_name(fqdn)
@@ -78,12 +78,12 @@ def inventory_sub_menu():
             ...
 
     # To print in CSV format
-    if len(sys.argv) == 5 and (sys.argv[2]) == "--display_name" and (sys.argv[4]) == "--csv":
+    if len(sys.argv) == 5 and (sys.argv[2]) == "display_name" and (sys.argv[4]) == "--csv":
         try:
-            if (sys.argv[1] == "inventory") and (sys.argv[2] == "--display_name"):
+            if (sys.argv[1] == "inventory") and (sys.argv[2] == "display_name"):
 
                 if len(sys.argv) == 3:
-                    print("Please, pass the FQDN or Partial FQDN to --display_name, for example '--display_name virt-who-esxi'")
+                    print("Please, pass the FQDN or Partial FQDN to display_name, for example 'crhc inventory display_name virt-who-esxi'")
                     sys.exit()
                 fqdn = sys.argv[3]
                 response = execution.inventory_list_search_by_name(fqdn)
@@ -120,7 +120,7 @@ def inventory_sub_menu():
 
         # To print in CSV format
         try:
-            if (sys.argv[1] == "inventory") and (sys.argv[2] == "--display_name") and (sys.argv[4] == "--csv"):
+            if (sys.argv[1] == "inventory") and (sys.argv[2] == "display_name") and (sys.argv[4] == "--csv"):
                 # execution.inventory_list()
                 response = execution.inventory_list_search_by_name()
                 report.csv_report_inventory(response)
