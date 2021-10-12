@@ -46,10 +46,10 @@ Usage: \n\
 Available Commands:\n\
     list            List the inventory entries, first 50\n\
     list_all        List all the inventory entries\n\
+    display_name    Please, type the FQDN or Partial Hostname\n\
     \n\
 Flags: \n\
-    --display_name  Please, type the FQDN or Partial Hostname\n\
-    --help, -h      This option will present the help.\
+    --csv           This will generate the output in CSV format. By default, it will be JSON.\
 "
     assert response == content
 
@@ -67,8 +67,9 @@ Available Commands:\n\
     list            List the swatch entries, first 100\n\
     list_all        List all the swatch entries\n\
     socket_summary  Print the socket summary\n\
+    \n\
 Flags: \n\
-    --help, -h      This option will present the help.\
+    --csv           This will generate the output in CSV format. By default, it will be JSON.\
 "
     assert response == content
 
@@ -83,7 +84,7 @@ Usage: \n\
     crhc endpoint [command]\n\
     \n\
 Available Commands:\n\
-    list    List all the endpoints available\
+    list    List all the available endpoints\
 "
     assert response == content
 
