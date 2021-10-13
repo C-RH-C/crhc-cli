@@ -35,6 +35,20 @@ def dump_sw_json():
     file_obj = open(SW_FILE, "w")
     file_obj.write(json.dumps(swatch, indent=4))
 
+def compress_json_files():
+    """
+    Function to compress the JSON files
+    """
+    TAR_COMMAND = "tar cpfz /tmp/crhc_data.tgz /tmp/inventory.json /tmp/swatch.json 2>/dev/null"
+    TGZ_FILE = "/tmp/crhc_data.tgz"
+
+    if os.path.isfile(INV_FILE) and os.path.isfile(SW_FILE):
+        os.system(TAR_COMMAND)
+
+        if os.path.isfile(TGZ_FILE):
+            print("File {} created.".format(TGZ_FILE))
+    else:
+        print("The file {} or {} is missing.".format(INV_FILE, SW_FILE))
 
 def match_hbi_sw():
     """
