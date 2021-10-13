@@ -11,6 +11,7 @@ This project contains the `crhc` command line tool that simplifies the use of th
 ## Table of Content
  - [link](#Binary_File) - You can download the binary file
  - [link](#Usage) - Usage
+ - [link](#Proxy) - Proxy Configuration
  - [link](#Contribution) - Contribution
  - [link](#Source_Code) - You can clone the repository and use from the source code
 ---
@@ -23,6 +24,29 @@ If for any reason the binary didn't run properly in your machine also with pytho
 $ ./crhc 
 [9554] Error loading Python lib '/tmp/_MEIWS0hNs/libpython3.6m.so.1.0': dlopen: /lib64/libm.so.6: version `GLIBC_2.29' not found (required by /tmp/_MEIWS0hNs/libpython3.6m.so.1.0)
 ```
+## Proxy
+If you have proxy in your environment, it will be necessary to add this configuration in your terminal. In order to do that, you can proceed as below:
+
+To check the current configuration
+```
+$ echo $http_proxy
+```
+
+To setup your proxy
+```
+$ export http_proxy=http://SERVER:PORT/
+```
+or
+```
+$ export http_proxy=http://USERNAME:PASSWORD@SERVER:PORT/
+```
+
+And if you would like to keep it permanent
+```
+# echo "export http_proxy=http://proxy.local.domain:3128/" > /etc/profile.d/http_proxy.sh
+```
+
+Note. Please, change the values according to your environment. After that, you should be good to go and use the `crhc` with no problems.
 
 ---
 ## Usage
