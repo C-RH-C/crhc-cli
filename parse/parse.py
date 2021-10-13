@@ -41,7 +41,7 @@ def inventory_sub_menu():
         # To print in JSON format
         try:
             if (sys.argv[1] == "inventory") and (sys.argv[2] == "list_all"):
-                print("This process can spend some minutes according to the number of servers in your account.")
+                # print("This process can spend some minutes according to the number of servers in your account.")
                 response = execution.inventory_list_all()
                 print(json.dumps(response, indent=4))
                 sys.exit()
