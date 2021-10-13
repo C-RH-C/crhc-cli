@@ -307,6 +307,7 @@ def troubleshoot_sub_menu():
         if (sys.argv[1] == "ts") and (sys.argv[2] == "dump"):
             ts.dump_inv_json()
             ts.dump_sw_json()
+            ts.compress_json_files()
             sys.exit()
     except IndexError:
         ...
