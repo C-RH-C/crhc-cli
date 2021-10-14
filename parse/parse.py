@@ -35,7 +35,8 @@ def inventory_sub_menu():
                 # print(response)
                 print(json.dumps(response, indent=4))
                 sys.exit()
-        except IndexError:
+        except IndexError as e:
+            # print("Error: {}".format(e))
             ...
 
         # To print in JSON format
@@ -45,7 +46,8 @@ def inventory_sub_menu():
                 response = execution.inventory_list_all()
                 print(json.dumps(response, indent=4))
                 sys.exit()
-        except IndexError:
+        except IndexError as e:
+            # print("Error: {}".format(e))
             ...
 
         # To print in JSON format
@@ -59,7 +61,8 @@ def inventory_sub_menu():
                 response = execution.inventory_list_search_by_name(fqdn)
                 print(json.dumps(response, indent=4))
                 sys.exit()
-        except IndexError:
+        except IndexError as e:
+            # print("Error: {}".format(e))
             ...
 
     # To print in JSON format
@@ -74,7 +77,8 @@ def inventory_sub_menu():
                 response = execution.inventory_list_search_by_name(fqdn)
                 print(json.dumps(response, indent=4))
                 sys.exit()
-        except IndexError:
+        except IndexError as e:
+            # print("Error: {}".format(e))
             ...
 
     # To print in CSV format
@@ -89,7 +93,8 @@ def inventory_sub_menu():
                 response = execution.inventory_list_search_by_name(fqdn)
                 report.csv_report_inventory(response)
                 sys.exit()
-        except IndexError:
+        except IndexError as e:
+            # print("Error: {}".format(e))
             ...
 
     if len(sys.argv) == 4 and (sys.argv[3]) == "--help":
@@ -104,7 +109,8 @@ def inventory_sub_menu():
                 response = execution.inventory_list()
                 report.csv_report_inventory(response)
                 sys.exit()
-        except IndexError:
+        except IndexError as e:
+            # print("Error: {}".format(e))
             ...
 
         # To print in CSV format
@@ -115,7 +121,8 @@ def inventory_sub_menu():
                 response = execution.inventory_list_all()
                 report.csv_report_inventory(response)
                 sys.exit()
-        except IndexError:
+        except IndexError as e:
+            # print("Error: {}".format(e))
             ...
 
         # To print in CSV format
@@ -125,7 +132,8 @@ def inventory_sub_menu():
                 response = execution.inventory_list_search_by_name()
                 report.csv_report_inventory(response)
                 sys.exit()
-        except IndexError:
+        except IndexError as e:
+            # print("Error: {}".format(e))
             ...
 
 
@@ -148,7 +156,8 @@ def swatch_sub_menu():
                 print(json.dumps(response, indent=4))
 
                 sys.exit()
-        except IndexError:
+        except IndexError as e:
+            # print("Error: {}".format(e))
             ...
 
         # To print in JSON format
@@ -157,7 +166,8 @@ def swatch_sub_menu():
                 response = execution.swatch_list_all()
                 print(json.dumps(response, indent=4))
                 sys.exit()
-        except IndexError:
+        except IndexError as e:
+            # print("Error: {}".format(e))
             ...
 
         # To print in JSON format
@@ -165,7 +175,8 @@ def swatch_sub_menu():
             if (sys.argv[1] == "swatch") and (sys.argv[2] == "socket_summary"):
                 execution.swatch_socket_summary()
                 sys.exit()
-        except IndexError:
+        except IndexError as e:
+            # print("Error: {}".format(e))
             ...
 
     if len(sys.argv) == 4 and (sys.argv[3]) == "--help":
@@ -180,7 +191,8 @@ def swatch_sub_menu():
                 report.csv_report_swatch(response)
 
                 sys.exit()
-        except IndexError:
+        except IndexError as e:
+            # print("Error: {}".format(e))
             ...
 
         # To print in CSV format
@@ -189,7 +201,8 @@ def swatch_sub_menu():
                 response = execution.swatch_list_all()
                 report.csv_report_swatch(response)
                 sys.exit()
-        except IndexError:
+        except IndexError as e:
+            # print("Error: {}".format(e))
             ...
 
 
@@ -208,7 +221,8 @@ def endpoint_sub_menu():
             response = execution.endpoint_list()
             print(json.dumps(response, indent=4))
             sys.exit()
-    except IndexError:
+    except IndexError as e:
+        # print("Error: {}".format(e))
         ...
 
 
@@ -228,7 +242,8 @@ def get_sub_menu():
             if response:
                 print(json.dumps(response, indent=4))
             sys.exit()
-    except IndexError:
+    except IndexError as e:
+        # print("Error: {}".format(e))
         ...
 
 
@@ -248,7 +263,8 @@ def login_sub_menu():
             secret = sys.argv[3]
             token.set_token(secret)
             sys.exit()
-    except IndexError:
+    except IndexError as e:
+        # print("Error: {}".format(e))
         ...
 
 
@@ -261,7 +277,8 @@ def logout_sub_menu():
         if sys.argv[1] == "logout":
             token.delete_token()
             sys.exit()
-    except IndexError:
+    except IndexError as e:
+        # print("Error: {}".format(e))
         ...
 
 
@@ -274,7 +291,8 @@ def token_sub_menu():
         if sys.argv[1] == "token":
             print(token.get_token())
             sys.exit()
-    except IndexError:
+    except IndexError as e:
+        # print("Error: {}".format(e))
         ...
 
 
@@ -289,7 +307,8 @@ def whoami_sub_menu():
                 print(json.dumps(response, indent=4))
 
             sys.exit()
-    except IndexError:
+    except IndexError as e:
+        # print("Error: {}".format(e))
         ...
 
 
@@ -309,21 +328,24 @@ def troubleshoot_sub_menu():
             ts.dump_sw_json()
             ts.compress_json_files()
             sys.exit()
-    except IndexError:
+    except IndexError as e:
+        # print("Error1: {}".format(e))
         ...
 
     try:
         if (sys.argv[1] == "ts") and (sys.argv[2] == "match"):
             ts.match_hbi_sw()
             sys.exit()
-    except IndexError:
+    except IndexError as e:
+        # print("Error: {}".format(e))
         ...
 
     try:
         if (sys.argv[1] == "ts") and (sys.argv[2] == "clean"):
             ts.clean()
             sys.exit()
-    except IndexError:
+    except IndexError as e:
+        # print("Error: {}".format(e))
         ...
 
 
@@ -364,7 +386,8 @@ def main_menu():
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
                     help_opt.help_swatch_menu()
                     sys.exit()
-            except IndexError:
+            except IndexError as e:
+                # print("Error: {}".format(e))
                 ...
 
             # print("swatch")
@@ -375,7 +398,8 @@ def main_menu():
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
                     help_opt.help_endpoint_menu()
                     sys.exit()
-            except IndexError:
+            except IndexError as e:
+                # print("Error: {}".format(e))
                 ...
 
             # print("swatch")
@@ -386,7 +410,8 @@ def main_menu():
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
                     help_opt.help_get_menu()
                     sys.exit()
-            except IndexError:
+            except IndexError as e:
+                # print("Error: {}".format(e))
                 ...
 
             # print("swatch")
@@ -397,7 +422,8 @@ def main_menu():
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
                     help_opt.help_login_menu()
                     sys.exit()
-            except IndexError:
+            except IndexError as e:
+                # print("Error: {}".format(e))
                 ...
 
             # print("swatch")
@@ -408,21 +434,14 @@ def main_menu():
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
                     help_opt.help_logout_menu()
                     sys.exit()
-            except IndexError:
+            except IndexError as e:
+                # print("Error: {}".format(e))
                 ...
 
             # print("swatch")
             logout_sub_menu()
 
         elif sys.argv[1] == "token":
-            try:
-                if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
-                    help_opt.help_token_menu()
-                    sys.exit()
-            except IndexError:
-                ...
-
-            # print("swatch")
             token_sub_menu()
 
         elif sys.argv[1] == "whoami":
@@ -430,7 +449,8 @@ def main_menu():
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
                     help_opt.help_whoami_menu()
                     sys.exit()
-            except IndexError:
+            except IndexError as e:
+                # print("Error: {}".format(e))
                 ...
 
             # print("swatch")
@@ -447,7 +467,8 @@ def main_menu():
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
                     help_opt.help_ts_menu()
                     sys.exit()
-            except IndexError:
+            except IndexError as e:
+                # print("Error: {}".format(e))
                 ...
             troubleshoot()
 

@@ -35,6 +35,7 @@ def dump_sw_json():
     file_obj = open(SW_FILE, "w")
     file_obj.write(json.dumps(swatch, indent=4))
 
+
 def compress_json_files():
     """
     Function to compress the JSON files
@@ -49,6 +50,7 @@ def compress_json_files():
             print("File {} created.".format(TGZ_FILE))
     else:
         print("The file {} or {} is missing.".format(INV_FILE, SW_FILE))
+
 
 def match_hbi_sw():
     """

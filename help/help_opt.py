@@ -132,15 +132,6 @@ def help_logout_menu():
     return content
 
 
-def help_token_menu():
-    """
-    Main token menu
-    """
-    content = ""
-    print(content)
-    return content
-
-
 def help_whoami_menu():
     """
     Main whoami menu
