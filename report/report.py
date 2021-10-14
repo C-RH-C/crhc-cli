@@ -45,7 +45,7 @@ def check_for_installed_products(entries):
                 stage_lst.append("No_installed_products_key_available")
         except KeyError:
             count = count + 1
-    
+
     # if count != 0 and count_product == 0:
     #     stage_lst.append("No_installed_products_key_available")
 
@@ -53,7 +53,6 @@ def check_for_installed_products(entries):
     # else:
     #     stage_lst.append("reporter {}".format(entries['server']['reporter']))
     # print("oie")
-
 
     if (len(stage_lst) == 0) or (stage_lst[0] == "No_installed_products_key_available"):
         stage_lst = "No_installed_products_key_available"
@@ -64,7 +63,6 @@ def check_for_installed_products(entries):
 
         # Operation to remove the duplicate entries
         stage_lst = list(set(stage_lst))
-
 
     return stage_lst
 
@@ -189,7 +187,7 @@ def check_for_satellite_package(entries):
             stage_lst = "FALSE"
     except KeyError:
         stage_lst = "No_installed_packages_key_available"
-    
+
     return stage_lst
 
 
@@ -210,7 +208,7 @@ def check_for_openshift_package(entries):
             stage_lst = "FALSE"
     except KeyError:
         stage_lst = "No_installed_packages_key_available"
-    
+
     return stage_lst
 
 
@@ -291,7 +289,6 @@ def check_for_number_of_guests_on_top_of_the_hypervisor_inventory(entries, json_
     return stage_lst
 
 
-
 def check_for_number_of_guests_on_top_of_the_hypervisor_match(entries, match_obj):
     """
     Function responsible for check the # of guests on each hypervisor
@@ -327,14 +324,13 @@ def check_for_number_of_guests_on_top_of_the_hypervisor_match(entries, match_obj
     return stage_lst
 
 
-
 def csv_report_inventory(json_obj):
     """
     Function to generate the CSV report for inventory
     """
 
     report_list = []
-    installed_product_lst = []
+    # installed_product_lst = []
 
     stage_lst = ["id",
                  "created",
@@ -538,7 +534,6 @@ def csv_report_inventory(json_obj):
         except KeyError:
             stage_lst.append("No_sap_version_key_available")
 
-
         # Checking for system_purpose_role
         stage_lst.append(check_for_syspurpose_sla(entries))
 
@@ -688,7 +683,7 @@ def csv_match_report(match_obj):
     dataset (CSV)
     """
     report_list = []
-    installed_product_lst = []
+    # installed_product_lst = []
 
     stage_lst = ["id",
                  "created",  # added
