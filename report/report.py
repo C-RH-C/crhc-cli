@@ -3,10 +3,12 @@ Module responsible for report
 """
 # from os import write
 import csv
+import os
 
 INVENTORY_FILE = "/tmp/inventory_report.csv"
 SWATCH_FILE = "/tmp/swatch_report.csv"
 MATCH_FILE = "/tmp/match_inv_sw.csv"
+ISSUE_SUMMARY = "/tmp/issue_summary.log"
 
 
 def check_for_installed_products(entries):
@@ -1022,3 +1024,100 @@ def csv_match_report(match_obj):
         writer.writerows(report_list)
 
     print("File {} created".format(MATCH_FILE))
+
+
+def txt_issue_report(wrong_socket_inventory,
+                     wrong_socket_subscription,
+                     duplicate_fqdn,
+                     duplicate_display_name,
+                     different_fqdn_display_name,
+                     server_with_no_socket_key,
+                     installed_product_with_no_package_sat,
+                     installed_product_with_no_package_cap,
+                     installed_product_with_no_package_ocp):
+    """
+    Responsible to reveive the analysis and generate the issue_summary file.
+    """
+
+    with open(ISSUE_SUMMARY, "w") as file_obj:
+
+        file_obj.write("## Wrong Sockets in Inventory\n")
+        file_obj.write("---\n")
+        file_obj.write("id,fqdn,sockets\n")
+        for elements in wrong_socket_inventory:
+            id = elements[0]['server']['id']
+            fqdn = elements[0]['server']['fqdn']
+            sockets = elements[0]['system_profile']['number_of_sockets']
+            pass
+            file_obj.write("{},{},{}\n".format(id, fqdn, sockets))
+        file_obj.write("---\n")
+
+        file_obj.write("\n")
+
+        file_obj.write("## Wrong Sockets in Subscriptions\n")
+        file_obj.write("---\n")
+        file_obj.write("id,fqdn,sockets\n")
+        for elements in wrong_socket_subscription:
+            id = elements[1]['inventory_id']
+            fqdn = elements[1]['display_name']
+            sockets = elements[1]['sockets']
+            pass
+            file_obj.write("{},{},{}\n".format(id, fqdn, sockets))
+        file_obj.write("---\n")
+
+        file_obj.write("\n")
+
+        file_obj.write("## Duplicate FQDN\n")
+        file_obj.write("---\n")
+        file_obj.write("id,fqdn,display_name,created,updated\n")
+        for elements in duplicate_fqdn:
+            file_obj.write("{},{},{},{},{}\n".format(elements[0], elements[1], elements[2], elements[3], elements[4]))
+        file_obj.write("---\n")
+
+        file_obj.write("\n")
+
+        file_obj.write("## Duplicate Display Name\n")
+        file_obj.write("---\n")
+        file_obj.write("id,fqdn,display_name,created,updated\n")
+        for elements in duplicate_display_name:
+            file_obj.write("{},{},{},{},{}\n".format(elements[0], elements[1], elements[2], elements[3], elements[4]))
+        file_obj.write("---\n")
+
+        file_obj.write("\n")
+
+        file_obj.write("## Different FQDN and Display Name\n")
+        file_obj.write("---\n")
+        file_obj.write("id,fqdn,display_name,created,updated\n")
+        for elements in different_fqdn_display_name:
+            file_obj.write("{},{},{},{},{}\n".format(elements[0], elements[1], elements[2], elements[3], elements[4]))
+        file_obj.write("---\n")
+
+
+        file_obj.write("\n")
+
+        file_obj.write("## Server with no socket_key\n")
+        file_obj.write("---\n")
+        file_obj.write("id,fqdn,display_name,created,updated\n")
+        for elements in server_with_no_socket_key:
+            file_obj.write("{},{},{},{},{}\n".format(elements[0], elements[1], elements[2], elements[3], elements[4]))
+        file_obj.write("---\n")
+
+        file_obj.write("\n")
+
+        file_obj.write("## Installed Product with no Installed Package (Satellite, Capsule and OpenShift)\n")
+        file_obj.write("---\n")
+        file_obj.write("id,fqdn,display_name,installed_product,is_package_installed\n")
+        for elements in installed_product_with_no_package_sat:
+            file_obj.write("{},{},{},\"{}\",{}\n".format(elements[0], elements[1], elements[2], elements[3], elements[4]))
+        for elements in installed_product_with_no_package_cap:
+            file_obj.write("{},{},{},\"{}\",{}\n".format(elements[0], elements[1], elements[2], elements[3], elements[4]))
+        for elements in installed_product_with_no_package_ocp:
+            file_obj.write("{},{},{},\"{}\",{}\n".format(elements[0], elements[1], elements[2], elements[3], elements[4]))
+
+        file_obj.write("---\n")
+
+
+    if os.path.isfile(ISSUE_SUMMARY):
+        print("File {} created".format(ISSUE_SUMMARY))
+    else:
+        print("File {} was not created".format(ISSUE_SUMMARY))
