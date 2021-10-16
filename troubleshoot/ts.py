@@ -5,7 +5,6 @@ Module responsible for troublheshooting
 import csv
 import json
 import os
-from typing import Type
 from execution import execution
 from report import report
 
