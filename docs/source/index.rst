@@ -1,34 +1,22 @@
-$project
-========
+Welcome to Lumache's documentation!
+===================================
 
-$project will help you to export the Inventory and Subscription
-information easily, also, it will provide some troubleshooting.
+**Lumache** (/lu'make/) is a Python library for cooks and food lovers
+that creates recipes mixing random ingredients.
+It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
+and offers a *simple* and *intuitive* API.
 
-Look how easy it is to use:
-    
-    Download the binary from GitHub
-    Create your off-line token
-    Execute the first authentication `crhc login --token eyJhbGciOiJIUzI1NiIsIn...`
+Check out the :doc:`usage` section for further information, including
+how to :ref:`installation` the project.
 
-    Now, you are ready to go!
+.. note::
 
-Features
+   This project is under active development.
+
+Contents
 --------
 
-- Export the Inventory data in JSON or CSV format
-- Export the Subscription data in JSON or CSV format
-- Create a Single dataset with Inventory and Subscription data in CSV format
-- Provide some insights based on some known issues and/or attention points
+.. toctree::
 
-Installation
-------------
-
-Install $project by running:
-
-    install project
-
-Contribute
-----------
-
-- Issue Tracker: github.com/$project/$project/issues
-- Source Code: github.com/$project/$project
+   usage
+   api
