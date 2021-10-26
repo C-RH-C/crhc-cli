@@ -9,6 +9,12 @@ Welcome to this amazing project. Here you will find a solution for your
    :caption: Contents:
 
    about
+   binary_version
+   usage
+   examples
+   proxy
+   update
+   contribution
    modules
 
 Indices and tables
