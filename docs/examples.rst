@@ -1,7 +1,7 @@
 Some Examples
 =============
 
-Subscriptions Socket Summary
+**Subscriptions Socket Summary**
 
 .. code-block:: sh
 
@@ -12,6 +12,8 @@ Subscriptions Socket Summary
     Hypervisors .........: 154
     ----------------------
     Total # of Sockets ..: 4444
+
+**API Queries**
 
 Querying the API, we can first check the available API endpoints using the command below
 
@@ -71,13 +73,13 @@ And after that, we can see all the available methods. From now, we can call them
                 "rhel_machine_id": null,
                 ...
 
-Using the token with the curl command
+**Using the token with the curl command**
 
 .. code-block:: sh
 
     $ curl -s -H "Authorization: Bearer $(./crhc token)" https://api.openshift.com/api/accounts_mgmt/v1/current_account | json_reformat
 
-Exporting Inventory data to CSV
+**Exporting Inventory data to CSV**
 
 .. code-block:: sh
 
@@ -129,7 +131,7 @@ This should be enough to export the data and create the file ``/tmp/inventory_re
 * number_of_guests
 
 
-Exporting Subscription Watch data to CSV
+**Exporting Subscription Watch data to CSV**
 
 .. code-block:: sh
 
@@ -154,7 +156,7 @@ This should be enough to export the data and create the file ``/tmp/swatch_repor
 * cloud_provider
 
 
-Analysing the Customer Data
+**Analysing the Customer Data**
 
 Please, copy the files sent by the customer according to below. Let's assume the customer sent two files ``inventory.json`` and ``swatch.json``, once you received them, let's execute the commands below
 
@@ -177,7 +179,8 @@ After that, you can execute the command ``crhc ts match`` and the output will be
 Note. Once the files ``/tmp/inventory.json`` and ``/tmp/swatch.json`` are in place, they will be used for this analysis and as result, the file /tmp/match_inv_sw.csv will be created. This is the file that will be used for troubleshooting process.
 
 
-ATTENTION
+**ATTENTION**
+
 This is an awesome report because will combine both information from Inventory and Subscriptions in a single dataset. The final result will be the file ``/tmp/match_inv_sw.csv`` with the respective fields.
 
 * id
