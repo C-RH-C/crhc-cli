@@ -10,7 +10,7 @@ charset-normalizer==2.0.4
 click==8.0.3
 coverage==6.0.2
 cryptography==3.4.8
-dataclasses==0.8
+dataclasses
 docutils==0.17.1
 flake8==3.9.2
 idna==3.2
