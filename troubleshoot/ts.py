@@ -34,11 +34,35 @@ def dump_sw_json():
     file_obj.write(json.dumps(swatch, indent=4))
 
 
+def dump_patch_json():
+    """
+    Function to dump only the Patch information
+    """
+
+    print("dumping the patch information to '{}'".format(conf.PATCH_JSON_FILE))
+    patch = execution.patch_systems()
+
+    file_obj = open(conf.PATCH_JSON_FILE, "w")
+    file_obj.write(json.dumps(patch, indent=4))
+
+
+def dump_vulnerability_json():
+    """
+    Function to dump only the Vulnerability information
+    """
+
+    print("dumping the vulnerability information to '{}'".format(conf.VULNERABILITY_JSON_FILE))
+    vulnerability = execution.vulnerability_systems()
+
+    file_obj = open(conf.VULNERABILITY_JSON_FILE, "w")
+    file_obj.write(json.dumps(vulnerability, indent=4))
+
+
 def compress_json_files():
     """
     Function to compress the JSON files
     """
-    TAR_COMMAND = "tar cpfz /tmp/crhc_data.tgz /tmp/inventory.json /tmp/swatch.json 2>/dev/null"
+    TAR_COMMAND = "tar cpfz /tmp/crhc_data.tgz /tmp/inventory.json /tmp/swatch.json /tmp/patch.json /tmp/vulnerability.json 2>/dev/null"
     TGZ_FILE = "/tmp/crhc_data.tgz"
 
     if os.path.isfile(conf.INV_FILE) and os.path.isfile(conf.SW_FILE):
