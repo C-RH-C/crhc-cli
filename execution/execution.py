@@ -286,8 +286,15 @@ def get_command(api_url):
         check_authentication(response)
 
         available_paths = response.json()['paths'].keys()
-        for path in available_paths:
-            print("{}/v1{}".format(api_url, path))
+
+        # Testing "/api/patch" endoint, once this is the single one
+        # causing problems with the paths (complete path and short path)
+        if api_url == "/api/patch":
+            for path in available_paths:
+                print("{}".format(path))
+        else:
+            for path in available_paths:
+                print("{}/v1{}".format(api_url, path))
 
     else:
         # retrieving the full url
