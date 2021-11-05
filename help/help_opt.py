@@ -174,3 +174,21 @@ Flags:\n\
 "
     print(content)
     return content
+
+
+def help_vulnerability_menu():
+    """
+    Main vulnerability menu
+    """
+    content = "\
+Usage: \n\
+    crhc vulnerability [command]\n\
+    \n\
+Available Commands:\n\
+    systems   It will provide some vulnerability information\n\
+    \n\
+Flags:\n\
+    --csv     This will generate the output in CSV format. By default, it will be JSON.\
+"
+    print(content)
+    return content

@@ -10,6 +10,7 @@ SWATCH_FILE = "/tmp/swatch_report.csv"
 MATCH_FILE = "/tmp/match_inv_sw.csv"
 ISSUE_SUMMARY = "/tmp/issue_summary.log"
 PATCH_SYSTEMS_FILE = "/tmp/patch_systems.csv"
+VULNERABILITY_SYSTEMS_FILE = "/tmp/vulnerability_systems.csv"
 
 def check_for_installed_products(entries):
     """
@@ -1283,3 +1284,114 @@ def csv_report_patch(json_obj):
         writer.writerows(report_list)
 
     print("File {} created".format(PATCH_SYSTEMS_FILE))
+
+
+
+def csv_report_vulnerability(json_obj):
+    """
+    Function to generate the CSV report for vulnerability
+    """
+
+    report_list = []
+
+    stage_lst = ["type",
+                 "culled_timestamp",
+                 "cve_count",
+                 "display_name",
+                 "insights_id",
+                 "inventory_id",
+                 "last_evaluation",
+                 "last_upload",
+                 "opt_out",
+                 "os",
+                 "rules_evaluation",
+                 "stale_timestamp",
+                 "stale_warning_timestamp",
+                 "updated"]
+
+    report_list.append(stage_lst)
+    stage_lst = []
+
+    for entries in json_obj['data']:
+
+        try:
+            stage_lst.append(entries['type'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['culled_timestamp'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['cve_count'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['display_name'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['insights_id'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['inventory_id'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['last_evaluation'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['last_upload'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['opt_out'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['os'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['rules_evaluation'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['stale_timestamp'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['stale_warning_timestamp'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['updated'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+
+
+        report_list.append(stage_lst)
+        stage_lst = []
+
+    with open(VULNERABILITY_SYSTEMS_FILE, "w") as file_obj:
+        writer = csv.writer(file_obj)
+        writer.writerows(report_list)
+
+    print("File {} created".format(VULNERABILITY_SYSTEMS_FILE))
+
