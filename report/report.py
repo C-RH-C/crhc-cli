@@ -4,13 +4,8 @@ Module responsible for report
 # from os import write
 import csv
 import os
+from conf import conf
 
-INVENTORY_FILE = "/tmp/inventory_report.csv"
-SWATCH_FILE = "/tmp/swatch_report.csv"
-MATCH_FILE = "/tmp/match_inv_sw.csv"
-ISSUE_SUMMARY = "/tmp/issue_summary.log"
-PATCH_SYSTEMS_FILE = "/tmp/patch_systems.csv"
-VULNERABILITY_SYSTEMS_FILE = "/tmp/vulnerability_systems.csv"
 
 def check_for_installed_products(entries):
     """
@@ -571,11 +566,11 @@ def csv_report_inventory(json_obj):
         report_list.append(stage_lst)
         stage_lst = []
 
-    with open(INVENTORY_FILE, "w") as file_obj:
+    with open(conf.INVENTORY_FILE, "w") as file_obj:
         writer = csv.writer(file_obj)
         writer.writerows(report_list)
 
-    print("File {} created".format(INVENTORY_FILE))
+    print("File {} created".format(conf.INVENTORY_FILE))
 
 
 def csv_report_swatch(json_obj):
@@ -672,11 +667,11 @@ def csv_report_swatch(json_obj):
         report_list.append(stage_lst)
         stage_lst = []
 
-    with open(SWATCH_FILE, "w") as file_obj:
+    with open(conf.SWATCH_FILE, "w") as file_obj:
         writer = csv.writer(file_obj)
         writer.writerows(report_list)
 
-    print("File {} created".format(SWATCH_FILE))
+    print("File {} created".format(conf.SWATCH_FILE))
 
 
 def csv_match_report(match_obj):
@@ -1020,11 +1015,11 @@ def csv_match_report(match_obj):
         report_list.append(stage_lst)
         stage_lst = []
 
-    with open(MATCH_FILE, "w") as file_obj:
+    with open(conf.MATCH_FILE, "w") as file_obj:
         writer = csv.writer(file_obj)
         writer.writerows(report_list)
 
-    print("File {} created".format(MATCH_FILE))
+    print("File {} created".format(conf.MATCH_FILE))
 
 
 def txt_issue_report(wrong_socket_inventory,
@@ -1040,7 +1035,7 @@ def txt_issue_report(wrong_socket_inventory,
     Responsible to reveive the analysis and generate the issue_summary file.
     """
 
-    with open(ISSUE_SUMMARY, "w") as file_obj:
+    with open(conf.ISSUE_SUMMARY, "w") as file_obj:
 
         file_obj.write("## Wrong Sockets in Inventory\n")
         file_obj.write("---\n")
@@ -1118,10 +1113,10 @@ def txt_issue_report(wrong_socket_inventory,
         file_obj.write("---\n")
 
 
-    if os.path.isfile(ISSUE_SUMMARY):
-        print("File {} created".format(ISSUE_SUMMARY))
+    if os.path.isfile(conf.ISSUE_SUMMARY):
+        print("File {} created".format(conf.ISSUE_SUMMARY))
     else:
-        print("File {} was not created".format(ISSUE_SUMMARY))
+        print("File {} was not created".format(conf.ISSUE_SUMMARY))
 
 
 def csv_report_patch(json_obj):
@@ -1279,11 +1274,11 @@ def csv_report_patch(json_obj):
         report_list.append(stage_lst)
         stage_lst = []
 
-    with open(PATCH_SYSTEMS_FILE, "w") as file_obj:
+    with open(conf.PATCH_SYSTEMS_FILE, "w") as file_obj:
         writer = csv.writer(file_obj)
         writer.writerows(report_list)
 
-    print("File {} created".format(PATCH_SYSTEMS_FILE))
+    print("File {} created".format(conf.PATCH_SYSTEMS_FILE))
 
 
 
@@ -1389,9 +1384,9 @@ def csv_report_vulnerability(json_obj):
         report_list.append(stage_lst)
         stage_lst = []
 
-    with open(VULNERABILITY_SYSTEMS_FILE, "w") as file_obj:
+    with open(conf.VULNERABILITY_SYSTEMS_FILE, "w") as file_obj:
         writer = csv.writer(file_obj)
         writer.writerows(report_list)
 
-    print("File {} created".format(VULNERABILITY_SYSTEMS_FILE))
+    print("File {} created".format(conf.VULNERABILITY_SYSTEMS_FILE))
 
