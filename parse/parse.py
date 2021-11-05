@@ -2,7 +2,7 @@
 Module responsible for the main menu
 """
 
-# import csv
+from conf import conf
 import sys
 import json
 from execution import execution
@@ -10,7 +10,6 @@ from report import report
 from credential import token
 from troubleshoot import ts
 from help import help_opt
-from crhc import CURRENT_VERSION
 
 access_token = token.get_token()
 
@@ -567,7 +566,7 @@ def main_menu():
             help_opt.help_main_menu()
 
         elif (sys.argv[1] == "--version") or (sys.argv[1] == "-v"):
-            print(CURRENT_VERSION)
+            print(conf.CURRENT_VERSION)
 
         elif sys.argv[1] == "ts":
             try:

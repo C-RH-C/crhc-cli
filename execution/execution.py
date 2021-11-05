@@ -8,7 +8,7 @@ import os
 import time
 import requests
 from credential import token
-from crhc import CURRENT_VERSION
+from conf import conf
 
 # FIELDS_TO_RETRIEVE = "?fields[system_profile]=number_of_cpus,number_of_sockets,cores_per_socket,system_memory_bytes,bios_release_date,bios_vendor,bios_version,operating_system,os_kernel_version,os_release,infrastructure_type,infrastructure_vendor,insights_client_version"
 # FIELDS_TO_RETRIEVE = "?fields[system_profile]=number_of_sockets"
@@ -339,9 +339,9 @@ def update_check():
             file_ref = open(home_dir + "/.crhc.version")
             available_version = file_ref.read()
 
-            if int(available_version.replace(".", "")) > int(CURRENT_VERSION.replace(".", "")):
+            if int(available_version.replace(".", "")) > int(conf.CURRENT_VERSION.replace(".", "")):
                 answer = "Please, download the latests version from https://github.com/C-RH-C/crhc-cli/releases/latest\n\
-Current Version: {}\nNew Version: {}".format(CURRENT_VERSION, available_version)
+Current Version: {}\nNew Version: {}".format(conf.CURRENT_VERSION, available_version)
             else:
                 answer = ""
         else:
@@ -357,9 +357,9 @@ Current Version: {}\nNew Version: {}".format(CURRENT_VERSION, available_version)
         file_obj = open(home_dir + "/.crhc.version", "w")
         file_obj.write(available_version)
 
-        if int(available_version.replace(".", "")) > int(CURRENT_VERSION.replace(".", "")):
+        if int(available_version.replace(".", "")) > int(conf.CURRENT_VERSION.replace(".", "")):
             answer = "Please, download the latests version from https://github.com/C-RH-C/crhc-cli/releases/latest\n\
-Current Version: {}\nNew Version: {}".format(CURRENT_VERSION, available_version)
+Current Version: {}\nNew Version: {}".format(conf.CURRENT_VERSION, available_version)
         else:
             answer = ""
 
