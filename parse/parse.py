@@ -249,8 +249,8 @@ def patch_sub_menu():
             # print("Error: {}".format(e))
             ...
 
-    if len(sys.argv) == 4 and (sys.argv[3]) == "--help":
-        print("  --csv - List the patch entries in CSV format")
+    if len(sys.argv) == 4 and ((sys.argv[3]) == "--help" or (sys.argv[3]) == "-h"):
+        help_opt.help_patch_menu()
 
     if len(sys.argv) == 4:
 
@@ -259,6 +259,46 @@ def patch_sub_menu():
             if (sys.argv[1] == "patch") and (sys.argv[2] == "systems") and (sys.argv[3] == "--csv"):
                 response = execution.patch_systems()
                 report.csv_report_patch(response)
+
+                sys.exit()
+        except IndexError as e:
+            # print("Error: {}".format(e))
+            ...
+
+
+def vulnerability_sub_menu():
+    """
+    The vulnerability sub menu
+    """
+
+    # To present the available options
+    if len(sys.argv) == 2:
+        # Passing only swatch, the help menu will be presented.
+        help_opt.help_vulnerability_menu()
+
+
+    if len(sys.argv) == 3:
+
+        # To print in JSON format
+        try:
+            if (sys.argv[1] == "vulnerability") and (sys.argv[2] == "systems"):
+                response = execution.vulnerability_systems()
+                print(json.dumps(response, indent=4))
+                sys.exit()
+        except IndexError as e:
+            # print("Error: {}".format(e))
+            ...
+
+    if len(sys.argv) == 4 and ((sys.argv[3]) == "--help" or (sys.argv[3]) == "-h"):
+        help_opt.help_vulnerability_menu()
+
+    if len(sys.argv) == 4:
+
+        # To print in CSV format
+        try:
+            if (sys.argv[1] == "vulnerability") and (sys.argv[2] == "systems") and (sys.argv[3] == "--csv"):
+                response = execution.vulnerability_systems()
+                report.csv_report_vulnerability(response)
 
                 sys.exit()
         except IndexError as e:
@@ -459,6 +499,19 @@ def main_menu():
             patch_sub_menu()
 
 
+        elif sys.argv[1] == "vulnerability":
+            try:
+                if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
+                    help_opt.help_vulnerability_menu()
+                    sys.exit()
+            except IndexError as e:
+                # print("Error: {}".format(e))
+                ...
+
+            # print("swatch")
+            vulnerability_sub_menu()
+
+
         elif sys.argv[1] == "get":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
@@ -538,6 +591,7 @@ def main_menu():
         print("  inventory      Retrieve Inventory information")
         print("  swatch         Retrieve Subscriptions information")
         print("  patch          Retrieve Patch Information")
+        print("  vulnerability  Retrieve Vulnerability Information")
         print("  endpoint       List all the available endpoints")
         print("  get            Send a GET request")
         print("  ts             Troubleshooting tasks")

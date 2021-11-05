@@ -157,3 +157,22 @@ Flags:\n\
     --csv     This will generate the output in CSV format. By default, it will be JSON.\
 "
     assert response == content
+
+
+def test_check_vulnerability_help_menu():
+    """
+    Responsible for test the patch help menu
+    """
+    response = help_opt.help_vulnerability_menu()
+    content = "\
+Usage: \n\
+    crhc vulnerability [command]\n\
+    \n\
+Available Commands:\n\
+    systems   It will provide some vulnerability information\n\
+    \n\
+Flags:\n\
+    --csv     This will generate the output in CSV format. By default, it will be JSON.\
+"
+    assert response == content
+

@@ -377,7 +377,8 @@ def patch_systems():
     # response = requests.get(url, auth=(USER, PASSWORD))
     response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     check_authentication(response)
-    num_of_pages = round(response.json()['meta']['total_items'] / 20 + 1)
+    num_of_pages = int(response.json()['meta']['total_items'] / 20 + 1)
+    # num_of_pages = round(response.json()['meta']['total_items'] / 20 + 1)
 
     dic_full_list = {'data': ''}
     full_list = []
@@ -385,6 +386,38 @@ def patch_systems():
     count = 0
     for page in range(0, num_of_pages):
         url = "https://console.redhat.com/api/patch/v1/systems?limit=20&offset=" + str(count) + "&sort=-last_upload"
+        count = count + 20
+
+        # response = requests.get(url, auth=(USER, PASSWORD))
+        response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+
+        for entry in response.json()['data']:
+            full_list.append(entry)
+
+    dic_full_list['data'] = full_list
+    return dic_full_list
+
+
+
+def vulnerability_systems():
+    """
+    This def will collect all the entries from vulnerability systems
+    """
+    access_token = token.get_token()
+
+    url = "https://console.redhat.com/api/vulnerability/v1/systems"
+    # response = requests.get(url, auth=(USER, PASSWORD))
+    response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+    check_authentication(response)
+    num_of_pages = int(response.json()['meta']['total_items'] / 20 + 1)
+    # num_of_pages = round(response.json()['meta']['total_items'] / 20 + 1)
+
+    dic_full_list = {'data': ''}
+    full_list = []
+
+    count = 0
+    for page in range(0, num_of_pages):
+        url = "https://console.redhat.com/api/vulnerability/v1/systems?limit=20&offset=" + str(count) + "&sort=-last_upload"
         count = count + 20
 
         # response = requests.get(url, auth=(USER, PASSWORD))
