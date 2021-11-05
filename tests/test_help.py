@@ -139,3 +139,21 @@ Available Commands:\n\
     clean   cleanup the local 'cache/temporary/dump' files\
 "
     assert response == content
+
+
+def test_check_patch_help_menu():
+    """
+    Responsible for test the patch help menu
+    """
+    response = help_opt.help_patch_menu()
+    content = "\
+Usage: \n\
+    crhc patch [command]\n\
+    \n\
+Available Commands:\n\
+    systems   It will provide some patch information\n\
+    \n\
+Flags:\n\
+    --csv     This will generate the output in CSV format. By default, it will be JSON.\
+"
+    assert response == content

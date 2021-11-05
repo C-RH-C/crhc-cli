@@ -156,3 +156,21 @@ Available Commands:\n\
 "
     print(content)
     return content
+
+
+def help_patch_menu():
+    """
+    Main patch menu
+    """
+    content = "\
+Usage: \n\
+    crhc patch [command]\n\
+    \n\
+Available Commands:\n\
+    systems   It will provide some patch information\n\
+    \n\
+Flags:\n\
+    --csv     This will generate the output in CSV format. By default, it will be JSON.\
+"
+    print(content)
+    return content

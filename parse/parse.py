@@ -226,6 +226,47 @@ def endpoint_sub_menu():
         ...
 
 
+def patch_sub_menu():
+    """
+    The patch sub menu
+    """
+
+    # To present the available options
+    if len(sys.argv) == 2:
+        # Passing only swatch, the help menu will be presented.
+        help_opt.help_patch_menu()
+
+
+    if len(sys.argv) == 3:
+
+        # To print in JSON format
+        try:
+            if (sys.argv[1] == "patch") and (sys.argv[2] == "systems"):
+                response = execution.patch_systems()
+                print(json.dumps(response, indent=4))
+                sys.exit()
+        except IndexError as e:
+            # print("Error: {}".format(e))
+            ...
+
+    if len(sys.argv) == 4 and (sys.argv[3]) == "--help":
+        print("  --csv - List the patch entries in CSV format")
+
+    if len(sys.argv) == 4:
+
+        # To print in CSV format
+        try:
+            if (sys.argv[1] == "patch") and (sys.argv[2] == "systems") and (sys.argv[3] == "--csv"):
+                response = execution.patch_systems()
+                report.csv_report_patch(response)
+
+                sys.exit()
+        except IndexError as e:
+            # print("Error: {}".format(e))
+            ...
+
+
+
 def get_sub_menu():
     """
     The get sub menu
@@ -405,6 +446,19 @@ def main_menu():
             # print("swatch")
             endpoint_sub_menu()
 
+        elif sys.argv[1] == "patch":
+            try:
+                if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
+                    help_opt.help_patch_menu()
+                    sys.exit()
+            except IndexError as e:
+                # print("Error: {}".format(e))
+                ...
+
+            # print("swatch")
+            patch_sub_menu()
+
+
         elif sys.argv[1] == "get":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
@@ -481,8 +535,9 @@ def main_menu():
         print("  crhc [command]")
         print("")
         print("Available Commands:")
-        print("  inventory      Get information about Inventory")
-        print("  swatch         Get information about Subscriptions")
+        print("  inventory      Retrieve Inventory information")
+        print("  swatch         Retrieve Subscriptions information")
+        print("  patch          Retrieve Patch Information")
         print("  endpoint       List all the available endpoints")
         print("  get            Send a GET request")
         print("  ts             Troubleshooting tasks")
