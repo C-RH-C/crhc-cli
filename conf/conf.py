@@ -17,8 +17,8 @@ PATCH_SYSTEMS_FILE = "/tmp/patch_systems.csv"
 VULNERABILITY_SYSTEMS_FILE = "/tmp/vulnerability_systems.csv"
 
 # TS Info
-INV_FILE = "/tmp/inventory.json"
-SW_FILE = "/tmp/swatch.json"
+INV_JSON_FILE = "/tmp/inventory.json"
+SW_JSON_FILE = "/tmp/swatch.json"
 MATCH_FILE = "/tmp/match_inv_sw.csv"
 PATCH_JSON_FILE = "/tmp/patch.json"
 VULNERABILITY_JSON_FILE = "/tmp/vulnerability.json"
