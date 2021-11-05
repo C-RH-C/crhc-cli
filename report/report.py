@@ -9,7 +9,7 @@ INVENTORY_FILE = "/tmp/inventory_report.csv"
 SWATCH_FILE = "/tmp/swatch_report.csv"
 MATCH_FILE = "/tmp/match_inv_sw.csv"
 ISSUE_SUMMARY = "/tmp/issue_summary.log"
-
+PATCH_SYSTEMS_FILE = "/tmp/patch_systems.csv"
 
 def check_for_installed_products(entries):
     """
@@ -1121,3 +1121,165 @@ def txt_issue_report(wrong_socket_inventory,
         print("File {} created".format(ISSUE_SUMMARY))
     else:
         print("File {} was not created".format(ISSUE_SUMMARY))
+
+
+def csv_report_patch(json_obj):
+    """
+    Function to generate the CSV report for patch
+    """
+
+    report_list = []
+
+    stage_lst = ["id",
+                 "type",
+                "created",
+                 "culled_timestamp",
+                 "display_name",
+                 "insights_id",
+                 "last_evaluation",
+                 "last_upload",
+                 "os",
+                 "os_major",
+                 "os_minor",
+                 "os_name",
+                 "other_count",
+                 "packages_installed",
+                 "packages_updatable",
+                 "rhba_count",
+                 "rhea_count",
+                 "rhsa_count",
+                 "rhsm",
+                 "stale",
+                 "stale_timestamp",
+                 "stale_warning_timestamp",
+                 "third_party"]
+
+    report_list.append(stage_lst)
+    stage_lst = []
+
+    for entries in json_obj['data']:
+
+        try:
+            stage_lst.append(entries['id'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['type'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['created'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['culled_timestamp'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['display_name'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['insights_id'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['last_evaluation'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['last_upload'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['os'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['os_major'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['os_minor'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['os_name'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['other_count'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['packages_installed'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['packages_updatable'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['rhba_count'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['rhea_count'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['rhsa_count'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['rhsm'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['stale'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['stale_timestamp'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['stale_warning_timestamp'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['attributes']['third_party'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+
+        report_list.append(stage_lst)
+        stage_lst = []
+
+    with open(PATCH_SYSTEMS_FILE, "w") as file_obj:
+        writer = csv.writer(file_obj)
+        writer.writerows(report_list)
+
+    print("File {} created".format(PATCH_SYSTEMS_FILE))
