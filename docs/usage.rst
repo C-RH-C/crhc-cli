@@ -6,14 +6,20 @@ The main idea of this script is to collect the information from console.redhat.c
 * ``crhc inventory list`` - To list the first 50 entries of your RHEL Inventory
 * ``crhc inventory list_all`` - To list all the entries of your RHEL Inventory
 * ``crhc inventory --display_name`` - To search in RHEL Inventory by display_name
-* ``crhc inventory list --csv`` - To generate the output in csv file. A new file /tmp/inventory_report.csv will be created.
-* ``crhc inventory list_all --csv`` - To generate the output in csv file. A new file /tmp/inventory_report.csv will be created.
-* ``crhc inventory --display_name <short name or fqdn> --csv`` - To generate the output in csv file. A new file /tmp/inventory_report.csv will be created.
+* ``crhc inventory list --csv`` - To generate the output in csv file. A new file ``/tmp/inventory_report.csv`` will be created.
+* ``crhc inventory list_all --csv`` - To generate the output in csv file. A new file ``/tmp/inventory_report.csv`` will be created.
+* ``crhc inventory --display_name <short name or fqdn> --csv`` - To generate the output in csv file. A new file ``/tmp/inventory_report.csv`` will be created.
 * ``crhc swatch list`` - To list the first 100 entries of your Subscription Watch Inventory
 * ``crhc swatch list_all`` - To list all the entries of your Subscription Watch Inventory
-* ``crhc swatch list --csv`` - To generate the output in csv file. A new file /tmp/swatch_report.csv will be created.
-* ``crhc swatch list_all --csv`` - To generate the output in csv file. A new file /tmp/swatch_report.csv will be created.
+* ``crhc swatch list --csv`` - To generate the output in csv file. A new file ``/tmp/swatch_report.csv`` will be created.
+* ``crhc swatch list_all --csv`` - To generate the output in csv file. A new file ``/tmp/swatch_report.csv`` will be created.
 * ``crhc swatch socket_summary`` - To list a summary of sockets based on your Subscription Watch Inventory
+* ``crhc advisor systems`` - To list the Advisor systems information, for example, ``critical, important, moderate ...``
+* ``crhc advisor systems --csv`` - To generate the output in csv file. A new file ``/tmp/advisor_systems.csv`` will be created.
+* ``crhc patch systems`` - To list the Patch systems information, for example, ``Security Advisory``, ``Bug Advisory`` and/or ``Enhancement Advisory``
+* ``crhc patch systems --csv`` - To generate the output in csv file. A new file ``/tmp/patch_systems.csv`` will be created.
+* ``crhc vulnerability systems`` - To list the Vulnerabilities systems information, for example, ``CVE's``
+* ``crhc vulnerability systems -- csv`` - To generate the output in csv file. A new file ``/tmp/vulnerability_systems.csv`` will be created.
 * ``crhc endpoint list`` - To list all the available API endpoints on console.redhat.com
 * ``crhc get <API ENDPOINT>`` - Here you should be able to query the API endpoint directly
 * ``crhc login --token <user api token here>`` - The way to inform the token that you can obtain from https://console.redhat.com/openshift/token

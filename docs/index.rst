@@ -2,7 +2,7 @@ Welcome to crhc-cli's documentation!
 ====================================
 
 Welcome to this amazing project. Here you will find a solution for your
-``console.redhat.com`` Inventory and Subscription reporting.
+``console.redhat.com`` reporting.
 
 .. toctree::
    :maxdepth: 2
@@ -10,6 +10,7 @@ Welcome to this amazing project. Here you will find a solution for your
 
    about
    binary_version
+   features
    usage
    examples
    proxy
