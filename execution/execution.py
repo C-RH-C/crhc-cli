@@ -15,12 +15,22 @@ from conf import conf
 FIELDS_TO_RETRIEVE = ""
 
 
-def check_authentication(response):
+def check_authentication(response=None):
     """
     Check if the current credential is valid and authenticating, if not, will
     ask for the customer to rerun the command './crhc user set'
     """
-    if response.status_code != 200:
+    if response is None:
+        access_token = token.get_token()
+        url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=1"
+        response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+        if response.status_code != 200:
+            print("Error: Failed to create C.RH.C connection: Not logged in, credentials aren't set, run the 'crhc login' command")
+            sys.exit()
+        else:
+            return True
+
+    elif response.status_code != 200:
         # print("You are not authenticated yet.")
         # print("Please, use './crhc user set', set the username and password and try again.")
         print("Error: Failed to create C.RH.C connection: Not logged in, credentials aren't set, run the 'crhc login' command")

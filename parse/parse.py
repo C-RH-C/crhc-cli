@@ -115,8 +115,9 @@ def inventory_sub_menu():
         # To print in CSV format
         try:
             if (sys.argv[1] == "inventory") and (sys.argv[2] == "list_all") and (sys.argv[3] == "--csv"):
-                # execution.inventory_list()
-                print("This process can spend some minutes according to the number of servers in your account.")
+                # Checking if the connection still alive before printing sometihng
+                if (execution.check_authentication()):
+                    print("This process can spend some minutes according to the number of servers in your account.")
                 response = execution.inventory_list_all()
                 report.csv_report_inventory(response)
                 sys.exit()
