@@ -428,3 +428,36 @@ def vulnerability_systems():
 
     dic_full_list['data'] = full_list
     return dic_full_list
+
+
+def advisor_systems():
+    """
+    This def will collect all the entries from advisor/insights systems
+    """
+    access_token = token.get_token()
+
+    ITEMS_PER_PAGE = 10
+
+    url = "https://console.redhat.com/api/insights/v1/system"
+    # response = requests.get(url, auth=(USER, PASSWORD))
+    response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+    check_authentication(response)
+    num_of_pages = int(response.json()['meta']['count'] / ITEMS_PER_PAGE + 1)
+    # num_of_pages = round(response.json()['meta']['total_items'] / 20 + 1)
+
+    dic_full_list = {'data': '', 'total': response.json()['meta']['count']}
+    full_list = []
+
+    count = 0
+    for page in range(0, num_of_pages):
+        url = "https://console.redhat.com/api/insights/v1/system?limit=ITEMS_PER_PAGE&offset=" + str(count)
+        count = count + ITEMS_PER_PAGE
+
+        # response = requests.get(url, auth=(USER, PASSWORD))
+        response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+
+        for entry in response.json()['data']:
+            full_list.append(entry)
+
+    dic_full_list['data'] = full_list
+    return dic_full_list

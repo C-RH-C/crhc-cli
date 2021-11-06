@@ -176,3 +176,21 @@ Flags:\n\
 "
     assert response == content
 
+
+def test_check_advisor_help_menu():
+    """
+    Responsible for test the advisor help menu
+    """
+    response = help_opt.help_advisor_menu()
+    content = "\
+Usage: \n\
+    crhc advisor [command]\n\
+    \n\
+Available Commands:\n\
+    systems   It will provide some insights information\n\
+    \n\
+Flags:\n\
+    --csv     This will generate the output in CSV format. By default, it will be JSON.\
+"
+    assert response == content
+
