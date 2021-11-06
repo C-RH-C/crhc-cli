@@ -380,7 +380,7 @@ def patch_systems():
     num_of_pages = int(response.json()['meta']['total_items'] / 20 + 1)
     # num_of_pages = round(response.json()['meta']['total_items'] / 20 + 1)
 
-    dic_full_list = {'data': ''}
+    dic_full_list = {'data': '', 'total': response.json()['meta']['total_items']}
     full_list = []
 
     count = 0
@@ -412,7 +412,7 @@ def vulnerability_systems():
     num_of_pages = int(response.json()['meta']['total_items'] / 20 + 1)
     # num_of_pages = round(response.json()['meta']['total_items'] / 20 + 1)
 
-    dic_full_list = {'data': ''}
+    dic_full_list = {'data': '', 'total': response.json()['meta']['total_items']}
     full_list = []
 
     count = 0

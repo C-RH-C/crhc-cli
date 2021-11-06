@@ -14,11 +14,11 @@ def dump_inv_json():
     """
     Function to dump only Inventory information
     """
-    print("dumping the inventory information to '{}', this can take some time to finish".format(conf.INV_FILE))
+    print("dumping the inventory information to '{}', this can take some time to finish".format(conf.INV_JSON_FILE))
     inventory = execution.inventory_list_all()
     # inventory = execution.inventory_list()
 
-    file_obj = open(conf.INV_FILE, "w")
+    file_obj = open(conf.INV_JSON_FILE, "w")
     file_obj.write(json.dumps(inventory, indent=4))
 
 
@@ -27,27 +27,51 @@ def dump_sw_json():
     Function to dump only Swatch information
     """
 
-    print("dumping the subscription information to '{}'".format(conf.SW_FILE))
+    print("dumping the subscription information to '{}'".format(conf.SW_JSON_FILE))
     swatch = execution.swatch_list_all()
 
-    file_obj = open(conf.SW_FILE, "w")
+    file_obj = open(conf.SW_JSON_FILE, "w")
     file_obj.write(json.dumps(swatch, indent=4))
+
+
+def dump_patch_json():
+    """
+    Function to dump only the Patch information
+    """
+
+    print("dumping the patch information to '{}'".format(conf.PATCH_JSON_FILE))
+    patch = execution.patch_systems()
+
+    file_obj = open(conf.PATCH_JSON_FILE, "w")
+    file_obj.write(json.dumps(patch, indent=4))
+
+
+def dump_vulnerability_json():
+    """
+    Function to dump only the Vulnerability information
+    """
+
+    print("dumping the vulnerability information to '{}'".format(conf.VULNERABILITY_JSON_FILE))
+    vulnerability = execution.vulnerability_systems()
+
+    file_obj = open(conf.VULNERABILITY_JSON_FILE, "w")
+    file_obj.write(json.dumps(vulnerability, indent=4))
 
 
 def compress_json_files():
     """
     Function to compress the JSON files
     """
-    TAR_COMMAND = "tar cpfz /tmp/crhc_data.tgz /tmp/inventory.json /tmp/swatch.json 2>/dev/null"
+    TAR_COMMAND = "tar cpfz /tmp/crhc_data.tgz /tmp/inventory.json /tmp/swatch.json /tmp/patch.json /tmp/vulnerability.json 2>/dev/null"
     TGZ_FILE = "/tmp/crhc_data.tgz"
 
-    if os.path.isfile(conf.INV_FILE) and os.path.isfile(conf.SW_FILE):
+    if os.path.isfile(conf.INV_JSON_FILE) and os.path.isfile(conf.SW_JSON_FILE):
         os.system(TAR_COMMAND)
 
         if os.path.isfile(TGZ_FILE):
             print("File {} created.".format(TGZ_FILE))
     else:
-        print("The file {} or {} is missing.".format(conf.INV_FILE, conf.SW_FILE))
+        print("The file {} or {} is missing.".format(conf.INV_JSON_FILE, conf.SW_JSON_FILE))
 
 
 def match_hbi_sw():
@@ -60,21 +84,21 @@ def match_hbi_sw():
     stage_lst = []
 
     try:
-        file_obj = open(conf.INV_FILE, "r")
+        file_obj = open(conf.INV_JSON_FILE, "r")
         inventory = json.load(file_obj)
-        print("File {} already in place, using it.".format(conf.INV_FILE))
+        print("File {} already in place, using it.".format(conf.INV_JSON_FILE))
     except FileNotFoundError:
         dump_inv_json()
-        file_obj = open(conf.INV_FILE, "r")
+        file_obj = open(conf.INV_JSON_FILE, "r")
         inventory = json.load(file_obj)
 
     try:
-        file_obj = open(conf.SW_FILE, "r")
+        file_obj = open(conf.SW_JSON_FILE, "r")
         swatch = json.load(file_obj)
-        print("File {} already in place, using it.".format(conf.SW_FILE))
+        print("File {} already in place, using it.".format(conf.SW_JSON_FILE))
     except FileNotFoundError:
         dump_sw_json()
-        file_obj = open(conf.SW_FILE, "r")
+        file_obj = open(conf.SW_JSON_FILE, "r")
         swatch = json.load(file_obj)
 
     for inv_element in inventory['results']:
@@ -103,17 +127,26 @@ def clean():
     Function to cleanup all the local cache/temporary files
     """
 
-    if os.path.exists(conf.INV_FILE):
-        print("removing the file {}".format(conf.INV_FILE))
-        os.remove(conf.INV_FILE)
+    if os.path.exists(conf.INV_JSON_FILE):
+        print("removing the file {}".format(conf.INV_JSON_FILE))
+        os.remove(conf.INV_JSON_FILE)
 
-    if os.path.exists(conf.SW_FILE):
-        print("removing the file {}".format(conf.SW_FILE))
-        os.remove(conf.SW_FILE)
+    if os.path.exists(conf.SW_JSON_FILE):
+        print("removing the file {}".format(conf.SW_JSON_FILE))
+        os.remove(conf.SW_JSON_FILE)
 
     if os.path.exists(conf.MATCH_FILE):
         print("removing the file {}".format(conf.MATCH_FILE))
         os.remove(conf.MATCH_FILE)
+
+    if os.path.exists(conf.PATCH_JSON_FILE):
+        print("removing the file {}".format(conf.PATCH_JSON_FILE))
+        os.remove(conf.PATCH_JSON_FILE)
+
+    if os.path.exists(conf.VULNERABILITY_JSON_FILE):
+        print("removing the file {}".format(conf.VULNERABILITY_JSON_FILE))
+        os.remove(conf.VULNERABILITY_JSON_FILE)
+
 
 
 def organize_list_by_column(list_obj, col):
