@@ -305,6 +305,45 @@ def vulnerability_sub_menu():
             ...
 
 
+def advisor_sub_menu():
+    """
+    The advisor/insights sub menu
+    """
+
+    # To present the available options
+    if len(sys.argv) == 2:
+        # Passing only swatch, the help menu will be presented.
+        help_opt.help_advisor_menu()
+
+
+    if len(sys.argv) == 3:
+
+        # To print in JSON format
+        try:
+            if (sys.argv[1] == "advisor") and (sys.argv[2] == "systems"):
+                response = execution.advisor_systems()
+                print(json.dumps(response, indent=4))
+                sys.exit()
+        except IndexError as e:
+            # print("Error: {}".format(e))
+            ...
+
+    if len(sys.argv) == 4 and ((sys.argv[3]) == "--help" or (sys.argv[3]) == "-h"):
+        help_opt.help_advisor_menu()
+
+    if len(sys.argv) == 4:
+
+        # To print in CSV format
+        try:
+            if (sys.argv[1] == "advisor") and (sys.argv[2] == "systems") and (sys.argv[3] == "--csv"):
+                response = execution.advisor_systems()
+                report.csv_report_advisor(response)
+
+                sys.exit()
+        except IndexError as e:
+            # print("Error: {}".format(e))
+            ...
+
 
 def get_sub_menu():
     """
@@ -408,6 +447,7 @@ def troubleshoot_sub_menu():
             ts.dump_sw_json()
             ts.dump_patch_json()
             ts.dump_vulnerability_json()
+            ts.dump_advisor_json()
             ts.compress_json_files()
             sys.exit()
     except IndexError as e:
@@ -512,6 +552,18 @@ def main_menu():
             # print("swatch")
             vulnerability_sub_menu()
 
+        elif sys.argv[1] == "advisor":
+            try:
+                if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
+                    help_opt.help_advisor_menu()
+                    sys.exit()
+            except IndexError as e:
+                # print("Error: {}".format(e))
+                ...
+
+            # print("swatch")
+            advisor_sub_menu()
+
 
         elif sys.argv[1] == "get":
             try:
@@ -591,6 +643,7 @@ def main_menu():
         print("Available Commands:")
         print("  inventory      Retrieve Inventory information")
         print("  swatch         Retrieve Subscriptions information")
+        print("  advisor        Retrieve Insights Information")
         print("  patch          Retrieve Patch Information")
         print("  vulnerability  Retrieve Vulnerability Information")
         print("  endpoint       List all the available endpoints")

@@ -192,3 +192,21 @@ Flags:\n\
 "
     print(content)
     return content
+
+
+def help_advisor_menu():
+    """
+    Main advisor menu
+    """
+    content = "\
+Usage: \n\
+    crhc advisor [command]\n\
+    \n\
+Available Commands:\n\
+    systems   It will provide some insights information\n\
+    \n\
+Flags:\n\
+    --csv     This will generate the output in CSV format. By default, it will be JSON.\
+"
+    print(content)
+    return content

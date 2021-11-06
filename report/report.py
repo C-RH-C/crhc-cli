@@ -1390,3 +1390,103 @@ def csv_report_vulnerability(json_obj):
 
     print("File {} created".format(conf.VULNERABILITY_SYSTEMS_FILE))
 
+
+def csv_report_advisor(json_obj):
+    """
+    Function to generate the CSV report for advisor/insights
+    """
+
+    report_list = []
+
+    stage_lst = ["system_uuid",
+                 "display_name",
+                 "last_seen",
+                 "stale_at",
+                 "recommendations", # hits
+                 "critical",        # critical_hits
+                 "important",       # important_hits
+                 "moderate",        # moderate_hits
+                 "low",             # low_hits
+                 "incident"        # incident_hits
+                #  "all_pathway_hits",
+                #  "pathway_filter_hits"
+                 ]
+
+    report_list.append(stage_lst)
+    stage_lst = []
+
+    for entries in json_obj['data']:
+
+        try:
+            stage_lst.append(entries['system_uuid'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['display_name'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['last_seen'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['stale_at'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['hits'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['critical_hits'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['important_hits'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['moderate_hits'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['low_hits'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+        try:
+            stage_lst.append(entries['incident_hits'])
+        except KeyError:
+            stage_lst.append("Not available")
+
+
+        # doesn't seem to be necessary.
+        
+        # try:
+        #     stage_lst.append(entries['all_pathway_hits'])
+        # except KeyError:
+        #     stage_lst.append("Not available")
+
+        # try:
+        #     stage_lst.append(entries['pathway_filter_hits'])
+        # except KeyError:
+        #     stage_lst.append("Not available")
+
+
+
+        report_list.append(stage_lst)
+        stage_lst = []
+
+    with open(conf.ADVISOR_FILE, "w") as file_obj:
+        writer = csv.writer(file_obj)
+        writer.writerows(report_list)
+
+    print("File {} created".format(conf.ADVISOR_FILE))
