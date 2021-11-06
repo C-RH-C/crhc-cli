@@ -58,18 +58,34 @@ def dump_vulnerability_json():
     file_obj.write(json.dumps(vulnerability, indent=4))
 
 
+def dump_advisor_json():
+    """
+    Function to dump only the Advisor/Insights information
+    """
+
+    print("dumping the advisor information to '{}'".format(conf.ADVISOR_JSON_FILE))
+    advisor = execution.advisor_systems()
+
+    file_obj = open(conf.ADVISOR_JSON_FILE, "w")
+    file_obj.write(json.dumps(advisor, indent=4))
+
+
 def compress_json_files():
     """
     Function to compress the JSON files
     """
-    TAR_COMMAND = "tar cpfz /tmp/crhc_data.tgz /tmp/inventory.json /tmp/swatch.json /tmp/patch.json /tmp/vulnerability.json 2>/dev/null"
-    TGZ_FILE = "/tmp/crhc_data.tgz"
+    TAR_COMMAND = "tar cpfz " + conf.TGZ_FILE +" "  + conf.INV_JSON_FILE + " " \
+                                                    + conf.SW_JSON_FILE + " " \
+                                                    + conf.PATCH_JSON_FILE + " " \
+                                                    + conf.VULNERABILITY_JSON_FILE + " " \
+                                                    + conf.ADVISOR_JSON_FILE + " 2>/dev/null"
+
 
     if os.path.isfile(conf.INV_JSON_FILE) and os.path.isfile(conf.SW_JSON_FILE):
         os.system(TAR_COMMAND)
 
-        if os.path.isfile(TGZ_FILE):
-            print("File {} created.".format(TGZ_FILE))
+        if os.path.isfile(conf.TGZ_FILE):
+            print("File {} created.".format(conf.TGZ_FILE))
     else:
         print("The file {} or {} is missing.".format(conf.INV_JSON_FILE, conf.SW_JSON_FILE))
 
@@ -147,6 +163,9 @@ def clean():
         print("removing the file {}".format(conf.VULNERABILITY_JSON_FILE))
         os.remove(conf.VULNERABILITY_JSON_FILE)
 
+    if os.path.exists(conf.ADVISOR_JSON_FILE):
+        print("removing the file {}".format(conf.ADVISOR_JSON_FILE))
+        os.remove(conf.ADVISOR_JSON_FILE)
 
 
 def organize_list_by_column(list_obj, col):

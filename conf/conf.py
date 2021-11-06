@@ -24,3 +24,5 @@ MATCH_FILE = "/tmp/match_inv_sw.csv"
 PATCH_JSON_FILE = "/tmp/patch.json"
 VULNERABILITY_JSON_FILE = "/tmp/vulnerability.json"
 ADVISOR_JSON_FILE = "/tmp/advisor.json"
+
+TGZ_FILE = "/tmp/crhc_data.tgz"
