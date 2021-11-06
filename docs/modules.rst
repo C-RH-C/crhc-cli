@@ -6,6 +6,7 @@ crhc-cli
 
    credential
    crhc
+   conf
    execution
    help
    parse
