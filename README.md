@@ -10,6 +10,7 @@ This project contains the `crhc` command line tool that simplifies the use of th
 
 ## Table of Content
  - [link](#Binary_File) - You can download the binary file
+ - [link](#Features) - Features
  - [link](#Usage) - Usage
  - [link](#Proxy) - Proxy Configuration
  - [link](#Contribution) - Contribution
@@ -24,6 +25,21 @@ If for any reason the binary didn't run properly in your machine also with pytho
 $ ./crhc 
 [9554] Error loading Python lib '/tmp/_MEIWS0hNs/libpython3.6m.so.1.0': dlopen: /lib64/libm.so.6: version `GLIBC_2.29' not found (required by /tmp/_MEIWS0hNs/libpython3.6m.so.1.0)
 ```
+---
+## Features
+At this moment, you can see the features below available via `crhc-cli`
+- Export of Inventory data, in JSON and CSV format.
+- Export of Subscription data, in JSON and CSV format.
+- Creation of a Single Dataset including `Inventory` and `Subscription` data in CSV format.
+- Export of Advisor data, in JSON and CSV format.
+- Export of Vulnerability data, in JSON and CSV format.
+- Export of Patch data, in JSON and CSV format.
+- Subscription Socket summary (spliting hypervisors from VM's).
+- Complete list of API endpoints.
+- Easy way to consume the API endpoints listed above.
+- Access Token generation to be used with 3rd party software, for example `curl`. `$(./crhc token)` 
+- Export the whole information easily `./crhc ts dump` to help the `Red Hat Support team` during the troubleshooting process.
+---
 ## Proxy
 If you have proxy in your environment, it will be necessary to add this configuration in your terminal. In order to do that, you can proceed as below:
 
@@ -58,12 +74,21 @@ The main idea of this script is to collect the information from `console.redhat.
 - `crhc inventory --display_name` - To search in RHEL Inventory by `display_name`
 - `crhc inventory list --csv` - To generate the output in csv file. A new file `/tmp/inventory_report.csv` will be created.
 - `crhc inventory list_all --csv` - To generate the output in csv file. A new file `/tmp/inventory_report.csv` will be created.
-- `crhc inventory --display_name <short name or fqdn> --csv` - To generate the output in csv file. A new file `/tmp/inventory_report.csv` will be created.
+- `crhc inventory display_name <short name or fqdn> --csv` - To generate the output in csv file. A new file `/tmp/inventory_report.csv` will be created.
 - `crhc swatch list` - To list the first 100 entries of your Subscription Watch Inventory
 - `crhc swatch list_all` - To list all the entries of your Subscription Watch Inventory
 - `crhc swatch list --csv` - To generate the output in csv file. A new file `/tmp/swatch_report.csv` will be created.
 - `crhc swatch list_all --csv` - To generate the output in csv file. A new file `/tmp/swatch_report.csv` will be created.
 - `crhc swatch socket_summary` - To list a summary of sockets based on your Subscription Watch Inventory
+
+- `crhc advisor systems` - To list the Advisor systems information, for example, `critical, important, moderate ...`
+- `crhc advisor systems --csv` - To generate the output in csv file. A new file `/tmp/advisor_systems.csv` will be created.
+- `crhc patch systems` - To list the Patch systems information, for example, `Security Advisory`, `Bug Advisory` and/or `Enhancement Advisory`
+- `crhc patch systems --csv` - To generate the output in csv file. A new file `/tmp/patch_systems.csv` will be created.
+- `crhc vulnerability systems` - To list the Vulnerabilities systems information, for example, `CVE's`
+- `crhc vulnerability systems -- csv` - To generate the output in csv file. A new file `/tmp/vulnerability_systems.csv` will be created.
+
+
 - `crhc endpoint list` - To list all the available API endpoints on `console.redhat.com`
 - `crhc get <API ENDPOINT>` - Here you should be able to query the API endpoint directly
 - `crhc login --token <user api token here>` - The way to inform the token that you can obtain from [https://console.redhat.com/openshift/token](https://console.redhat.com/openshift/token)
@@ -365,8 +390,11 @@ Usage:
   crhc [command]
 
 Available Commands:
-  inventory      Get information about Inventory
-  swatch         Get information about Subscriptions
+  inventory      Retrieve Inventory information
+  swatch         Retrieve Subscriptions information
+  advisor        Retrieve Insights Information
+  patch          Retrieve Patch Information
+  vulnerability  Retrieve Vulnerability Information
   endpoint       List all the available endpoints
   get            Send a GET request
   ts             Troubleshooting tasks
