@@ -14,9 +14,10 @@ def dump_inv_json():
     """
     Function to dump only Inventory information
     """
-    print("dumping the inventory information to '{}', this can take some time to finish".format(conf.INV_JSON_FILE))
+    # Checking if the connection still alive before printing sometihng
+    if (execution.check_authentication()):
+        print("dumping the inventory information to '{}', this can take some time to finish".format(conf.INV_JSON_FILE))
     inventory = execution.inventory_list_all()
-    # inventory = execution.inventory_list()
 
     file_obj = open(conf.INV_JSON_FILE, "w")
     file_obj.write(json.dumps(inventory, indent=4))
