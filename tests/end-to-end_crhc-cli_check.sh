@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# 
+#  Developer .: Waldirio M Pinheiro <waldirio@gmail.com>/<waldirio@redhat.com>
+#  Date ......: 11/07/2021
+#  Purpose ...: End to End test to check the crhc-cli app
+# 
+
+
 CRHC="/tmp/crhc-cli/crhc.py"
 
 #
