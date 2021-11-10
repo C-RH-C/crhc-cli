@@ -1,5 +1,7 @@
 """
-Test to check the Inventory Report
+.. code-block:: text
+
+    Test to check the Inventory Report
 """
 import json
 import csv

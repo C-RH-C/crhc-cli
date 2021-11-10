@@ -1,5 +1,7 @@
 """
-Module responsible for troublheshooting
+.. code-block:: text
+
+    Module responsible for troublheshooting
 """
 
 import csv

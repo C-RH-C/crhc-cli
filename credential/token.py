@@ -1,5 +1,7 @@
 """
-Module responsible for the token feature
+.. code-block:: text
+
+    Module responsible for the token feature
 """
 
 import os

@@ -9,13 +9,14 @@ Welcome to this amazing project. Here you will find a solution for your
    :caption: Contents:
 
    about
-   binary_version
    features
+   quickstart
    usage
    examples
    proxy
    update
    contribution
+   changelog
    modules
 
 Indices and tables

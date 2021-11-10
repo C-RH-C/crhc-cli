@@ -3,7 +3,7 @@ Some Examples
 
 **Subscriptions Socket Summary**
 
-.. code-block:: sh
+.. code-block::
 
     $ ./crhc swatch socket_summary
     Public Cloud ........: 14
@@ -17,7 +17,7 @@ Some Examples
 
 Querying the API, we can first check the available API endpoints using the command below
 
-.. code-block:: sh
+.. code-block::
 
     $ ./crhc endpoint list
     {
@@ -42,7 +42,7 @@ Querying the API, we can first check the available API endpoints using the comma
 
 In a sequence, we can check the API endpoint using the ``get`` option
 
-.. code-block:: sh
+.. code-block::
 
     $ ./crhc.py get /api/inventory
     /api/inventory/v1/hosts
@@ -59,7 +59,7 @@ In a sequence, we can check the API endpoint using the ``get`` option
 
 And after that, we can see all the available methods. From now, we can call them directly, for example
 
-.. code-block:: sh
+.. code-block::
 
     $ ./crhc.py get /api/inventory/v1/hosts
     {
@@ -75,13 +75,13 @@ And after that, we can see all the available methods. From now, we can call them
 
 **Using the token with the curl command**
 
-.. code-block:: sh
+.. code-block::
 
     $ curl -s -H "Authorization: Bearer $(./crhc token)" https://api.openshift.com/api/accounts_mgmt/v1/current_account | json_reformat
 
 **Exporting Inventory data to CSV**
 
-.. code-block:: sh
+.. code-block::
 
     $ ./crhc inventory list_all --csv
 
@@ -133,7 +133,7 @@ This should be enough to export the data and create the file ``/tmp/inventory_re
 
 **Exporting Subscription Watch data to CSV**
 
-.. code-block:: sh
+.. code-block::
 
     $ ./crhc swatch list_all --csv
 
@@ -160,7 +160,7 @@ This should be enough to export the data and create the file ``/tmp/swatch_repor
 
 Please, copy the files sent by the customer according to below. Let's assume the customer sent two files ``inventory.json`` and ``swatch.json``, once you received them, let's execute the commands below
 
-.. code-block:: sh
+.. code-block::
 
     $ cp full_inventory.json /tmp/inventory.json
     $ cp full_swatch.json /tmp/swatch.json
@@ -168,7 +168,7 @@ Please, copy the files sent by the customer according to below. Let's assume the
 
 After that, you can execute the command ``crhc ts match`` and the output will be as below
 
-.. code-block:: sh
+.. code-block::
 
     $ ./crhc ts match
     File /tmp/inventory.json already in place, using it.

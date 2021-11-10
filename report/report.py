@@ -1,5 +1,7 @@
 """
-Module responsible for report
+.. code-block:: text
+
+    Module responsible for report
 """
 # from os import write
 import csv

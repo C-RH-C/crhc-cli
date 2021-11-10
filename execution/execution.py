@@ -1,5 +1,7 @@
 """
-Module responsible for execute all the API calls.
+.. code-block:: text
+
+    Module responsible for execute all the API calls.
 """
 
 import json

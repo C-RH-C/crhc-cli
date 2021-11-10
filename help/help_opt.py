@@ -1,5 +1,7 @@
 """
-Module responsible for all the helps on crhc-cli app
+.. code-block:: text
+
+    Module responsible for all the helps on crhc-cli app
 """
 
 

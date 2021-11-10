@@ -1,6 +1,8 @@
 """
-Module responsible for keep all the configuration paths and also
-the app version
+.. code-block:: text
+
+    Module responsible for keep all the configuration paths and also
+    the app version
 """
 
 # Current Version
