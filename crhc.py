@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 """
-App responsible for collect some information from
-console.redhat.com (Inventory and Subscription Watch)
+.. code-block:: text
+
+    App responsible for collect some information from
+    console.redhat.com (Inventory, Subscription and much more)
 """
 
 from parse import parse

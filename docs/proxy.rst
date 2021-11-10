@@ -5,25 +5,25 @@ If you have proxy in your environment, it will be necessary to add this configur
 
 To check the current configuration
 
-.. code-block:: sh
+.. code-block::
 
     $ echo $http_proxy
 
 To setup your proxy
 
-.. code-block:: sh
+.. code-block::
 
     $ export http_proxy=http://SERVER:PORT/
 
 or
 
-.. code-block:: sh
+.. code-block::
 
     $ export http_proxy=http://USERNAME:PASSWORD@SERVER:PORT/
 
 And if you would like to keep it permanent
 
-.. code-block:: sh
+.. code-block::
 
     # echo "export http_proxy=http://proxy.local.domain:3128/" > /etc/profile.d/http_proxy.sh
 

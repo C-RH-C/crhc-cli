@@ -3,7 +3,7 @@ New Version
 
 Once a new version get available, the crhc will let you know.
 
-.. code-block:: sh
+.. code-block:: text
 
     ...
     Use "crhc [command] --help" for more information about a command.

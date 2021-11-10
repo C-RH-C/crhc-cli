@@ -1,5 +1,7 @@
 """
-Module responsible for set the app credential
+.. code-block:: text
+
+    Module responsible for set the app credential
 """
 
 import getpass

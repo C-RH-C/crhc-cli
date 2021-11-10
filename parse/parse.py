@@ -1,5 +1,7 @@
 """
-Module responsible for the main menu
+.. code-block:: text
+
+    Module responsible for the main menu
 """
 
 from conf import conf

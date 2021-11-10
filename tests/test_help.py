@@ -1,5 +1,7 @@
 """
-Module responsible for test the help menu content
+.. code-block:: text
+
+    Module responsible for test the help menu content
 """
 
 from help import help_opt
