@@ -19,14 +19,14 @@ Documentation is on [Read the Docs](https://crhc-cli.readthedocs.io). Code repos
 ---
 Getting Started
 ---------------
-See the [Quick Start](https://crhc-cli.readthedocs.io/#quickstart.html) section on Read The Docs.
+See the [Quick Start](https://crhc-cli.readthedocs.io/en/latest/quickstart.html) section on Read The Docs.
 
 ---
 Change History
 --------------
-The complete changelog on the [changelog](https://crhc-cli.readthedocs.io/#usage.html) page.
+The complete changelog on the [changelog](https://crhc-cli.readthedocs.io/en/latest/changelog.html) page.
 
 ---
 Contributing
 ------------
-Click [here](https://crhc-cli.readthedocs.io/#contribution.html) and check how to contribute for this amazing project.
+Click [here](https://crhc-cli.readthedocs.io/en/latest/contribution.html) and check how to contribute for this amazing project.
