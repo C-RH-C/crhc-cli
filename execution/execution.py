@@ -23,10 +23,7 @@ def connection_request(url):
     updating the token whenever necessary.
     """
 
-
-    # access_token = token.get_token()
     access_token = token.get_token()
-    # url = "https://console.redhat.com/api/inventory/v1/hosts"
     response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
 
     return response
@@ -60,12 +57,9 @@ def inventory_list():
     """
     This def will collect the first 50 HBI entries
     """
-    # access_token = token.get_token()
 
     url = "https://console.redhat.com/api/inventory/v1/hosts"
     response = connection_request(url)
-    # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
-    # response = requests.get(url, auth=(USER, PASSWORD))
     check_authentication(response)
 
     list_of_servers = []
@@ -77,18 +71,16 @@ def inventory_list():
 
     for server in response.json()['results']:
 
-        # access_token = token.get_token()
-
         try:
             stage_dic['server'] = server
         except json.decoder.JSONDecodeError:
             stage_dic['server'] = {}
 
         server_id = server['id']
-        url = "https://console.redhat.com/api/inventory/v1/hosts/" + server_id + "/system_profile" + FIELDS_TO_RETRIEVE
 
+        url = "https://console.redhat.com/api/inventory/v1/hosts/" + server_id + "/system_profile" + FIELDS_TO_RETRIEVE
         response_system_profile = connection_request(url)
-        # response_system_profile = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+
         try:
             stage_dic['system_profile'] = response_system_profile.json()['results'][0]['system_profile']
         except json.decoder.JSONDecodeError:
@@ -106,12 +98,9 @@ def inventory_list_all():
     """
     This def will collect all the HBI entries
     """
-    # access_token = token.get_token()
 
     url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=1"
-    # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     response = connection_request(url)
-    # response = requests.get(url, auth=(USER, PASSWORD))
     check_authentication(response)
 
     # Here we are checking the total number of objects and setting the correct
@@ -132,10 +121,7 @@ def inventory_list_all():
 
     for page in range(1, num_of_pages):
         url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=50&page=" + str(page)
-        # response = requests.get(url, auth=(USER, PASSWORD))
-        # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
         response = connection_request(url)
-        # print(json.dumps(response.json(), indent=4))
 
         for server in response.json()['results']:
 
@@ -168,13 +154,9 @@ def inventory_list_search_by_name(fqdn):
     """
     This def will search the HBI entries by keyword
     """
-    # access_token = token.get_token()
 
     url = "https://console.redhat.com/api/inventory/v1/hosts?hostname_or_id=" + fqdn
-
-    # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     response = connection_request(url)
-    # response = requests.get(url, auth=(USER, PASSWORD))
     check_authentication(response)
 
     list_of_servers = []
@@ -186,15 +168,13 @@ def inventory_list_search_by_name(fqdn):
 
     for server in response.json()['results']:
 
-        # access_token = token.get_token()
-
         stage_dic['server'] = server
 
         server_id = server['id']
-        url = "https://console.redhat.com/api/inventory/v1/hosts/" + server_id + "/system_profile" + FIELDS_TO_RETRIEVE
 
-        # response_system_profile = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+        url = "https://console.redhat.com/api/inventory/v1/hosts/" + server_id + "/system_profile" + FIELDS_TO_RETRIEVE
         response_system_profile = connection_request(url)
+
         try:
             stage_dic['system_profile'] = response_system_profile.json()['results'][0]['system_profile']
         except json.decoder.JSONDecodeError:
@@ -212,13 +192,11 @@ def swatch_list():
     """
     This def will collect the first 100 entries from Subscription Watch
     """
-    # access_token = token.get_token()
 
     url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=0&sort=display_name"
-    # response = requests.get(url, auth=(USER, PASSWORD))
-    # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     response = connection_request(url)
     check_authentication(response)
+
     return response.json()
 
 
@@ -226,13 +204,11 @@ def swatch_list_all():
     """
     This def will collect all the entries from Subscription Watch
     """
-    # access_token = token.get_token()
 
     url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=0&sort=display_name"
-    # response = requests.get(url, auth=(USER, PASSWORD))
-    # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     response = connection_request(url)
     check_authentication(response)
+
     num_of_pages = round(response.json()['meta']['count'] / 100 + 1)
 
     dic_full_list = {'data': ''}
@@ -241,11 +217,8 @@ def swatch_list_all():
     count = 0
     for page in range(0, num_of_pages):
         url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=" + str(count) + "&sort=display_name"
-        count = count + 100
-
-        # response = requests.get(url, auth=(USER, PASSWORD))
-        # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
         response = connection_request(url)
+        count = count + 100
 
         for entry in response.json()['data']:
             full_list.append(entry)
@@ -259,7 +232,6 @@ def swatch_socket_summary():
     This def will present all the usage information in socket and
     summary format from Subscription Watch
     """
-    # access_token = token.get_token()
 
     item_list = swatch_list_all()
 
@@ -297,22 +269,18 @@ def endpoint_list():
     """
     This def will collect the API endpoints and will list them
     """
-    access_token = token.get_token()
 
     url = "https://console.redhat.com/api"
-    # response = requests.get(url, auth=(USER, PASSWORD))
-    # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     response = connection_request(url)
     check_authentication(response)
+
     return response.json()
-    # print(json.dumps(response.json(), indent=4))
 
 
 def get_command(api_url):
     """
     This def will call the API endpoint directly
     """
-    # access_token = token.get_token()
 
     # Testing if the customer is passing the full endpoint path or just the
     # initial endpoint url. When passing the short one, the script will test
@@ -321,8 +289,6 @@ def get_command(api_url):
 
         # retrieving the openapi json file
         url = "https://console.redhat.com/" + api_url + "/v1/openapi.json"
-        # response = requests.get(url, auth=(USER, PASSWORD))
-        # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
         response = connection_request(url)
         check_authentication(response)
 
@@ -340,10 +306,9 @@ def get_command(api_url):
     else:
         # retrieving the full url
         url = "https://console.redhat.com/" + api_url
-        # response = requests.get(url, auth=(USER, PASSWORD))
-        # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
         response = connection_request(url)
         check_authentication(response)
+
         return response.json()
 
 
@@ -351,15 +316,12 @@ def whoami():
     """
     Used to retrieve the current user information via API
     """
-    # access_token = token.get_token()
 
     url = "https://api.openshift.com/api/accounts_mgmt/v1/current_account"
-    # response = requests.get(url, auth=(USER, PASSWORD))
-    # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     response = connection_request(url)
     check_authentication(response)
+
     return response.json()
-    # print(json.dumps(response.json(), indent=4))
 
 
 def update_check():
@@ -391,10 +353,7 @@ Current Version: {}\nNew Version: {}".format(conf.CURRENT_VERSION, available_ver
             os.remove(home_dir + "/.crhc.version")
 
     else:
-        # access_token = token.get_token()
-
         url = "https://github.com/C-RH-C/crhc-cli/releases/latest"
-        # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
         response = connection_request(url)
         available_version = response.url.split("/")[7]
 
@@ -415,27 +374,20 @@ def patch_systems():
     """
     This def will collect all the entries from patch systems
     """
-    # access_token = token.get_token()
 
     url = "https://console.redhat.com/api/patch/v1/systems"
-    # response = requests.get(url, auth=(USER, PASSWORD))
-    # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     response = connection_request(url)
     check_authentication(response)
+
     num_of_pages = int(response.json()['meta']['total_items'] / 20 + 1)
-    # num_of_pages = round(response.json()['meta']['total_items'] / 20 + 1)
 
     dic_full_list = {'data': '', 'total': response.json()['meta']['total_items']}
     full_list = []
 
     count = 0
     for page in range(0, num_of_pages):
-        # access_token = token.get_token()
         url = "https://console.redhat.com/api/patch/v1/systems?limit=20&offset=" + str(count) + "&sort=-last_upload"
         count = count + 20
-
-        # response = requests.get(url, auth=(USER, PASSWORD))
-        # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
         response = connection_request(url)
 
         for entry in response.json()['data']:
@@ -450,27 +402,20 @@ def vulnerability_systems():
     """
     This def will collect all the entries from vulnerability systems
     """
-    # access_token = token.get_token()
 
     url = "https://console.redhat.com/api/vulnerability/v1/systems"
-    # response = requests.get(url, auth=(USER, PASSWORD))
-    # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     response = connection_request(url)
     check_authentication(response)
+
     num_of_pages = int(response.json()['meta']['total_items'] / 20 + 1)
-    # num_of_pages = round(response.json()['meta']['total_items'] / 20 + 1)
 
     dic_full_list = {'data': '', 'total': response.json()['meta']['total_items']}
     full_list = []
 
     count = 0
     for page in range(0, num_of_pages):
-        # access_token = token.get_token()
         url = "https://console.redhat.com/api/vulnerability/v1/systems?limit=20&offset=" + str(count) + "&sort=-last_upload"
         count = count + 20
-
-        # response = requests.get(url, auth=(USER, PASSWORD))
-        # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
         response = connection_request(url)
 
         for entry in response.json()['data']:
@@ -484,29 +429,22 @@ def advisor_systems():
     """
     This def will collect all the entries from advisor/insights systems
     """
-    # access_token = token.get_token()
 
     ITEMS_PER_PAGE = 10
 
     url = "https://console.redhat.com/api/insights/v1/system"
-    # response = requests.get(url, auth=(USER, PASSWORD))
-    # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
     response = connection_request(url)
     check_authentication(response)
+
     num_of_pages = int(response.json()['meta']['count'] / ITEMS_PER_PAGE + 1)
-    # num_of_pages = round(response.json()['meta']['total_items'] / 20 + 1)
 
     dic_full_list = {'data': '', 'total': response.json()['meta']['count']}
     full_list = []
 
     count = 0
     for page in range(0, num_of_pages):
-        # access_token = token.get_token()
         url = "https://console.redhat.com/api/insights/v1/system?limit=ITEMS_PER_PAGE&offset=" + str(count)
         count = count + ITEMS_PER_PAGE
-
-        # response = requests.get(url, auth=(USER, PASSWORD))
-        # response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
         response = connection_request(url)
 
         for entry in response.json()['data']:
