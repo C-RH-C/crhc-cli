@@ -21,6 +21,7 @@ def connection_request(url):
 
 
     access_token = token.get_token()
+    access_token = token.get_token()
     # url = "https://console.redhat.com/api/inventory/v1/hosts"
     response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
 
