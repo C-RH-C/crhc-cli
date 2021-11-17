@@ -18,9 +18,13 @@ FIELDS_TO_RETRIEVE = ""
 
 
 def connection_request(url):
+    """
+    Definition responsible to receive the url, call it and send back the response,
+    updating the token whenever necessary.
+    """
 
 
-    access_token = token.get_token()
+    # access_token = token.get_token()
     access_token = token.get_token()
     # url = "https://console.redhat.com/api/inventory/v1/hosts"
     response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
