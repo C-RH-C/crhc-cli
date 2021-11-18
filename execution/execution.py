@@ -334,8 +334,9 @@ def update_check():
         file_age = (time.time() - (os.stat(home_dir + "/.crhc.version").st_mtime))
         # print(int(file_age))
 
-        # 43200 sec == 12h
-        if int(file_age) < 43200:
+        # If the file is older than `conf.TIME_TO_CHECK_THE_NEW_VERSION`, then it
+        # will be updated.
+        if int(file_age) < conf.TIME_TO_CHECK_THE_NEW_VERSION:
             file_ref = open(home_dir + "/.crhc.version")
             available_version = file_ref.read()
 
