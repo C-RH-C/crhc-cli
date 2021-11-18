@@ -29,8 +29,6 @@ def connection_request(url):
     return response
 
 
-
-
 def check_authentication(response=None):
     """
     Check if the current credential is valid and authenticating, if not, will
@@ -125,8 +123,6 @@ def inventory_list_all():
 
         for server in response.json()['results']:
 
-            # access_token = token.get_token()
-
             try:
                 stage_dic['server'] = server
             except json.decoder.JSONDecodeError:
@@ -134,9 +130,8 @@ def inventory_list_all():
 
             server_id = server['id']
             url = "https://console.redhat.com/api/inventory/v1/hosts/" + server_id + "/system_profile" + FIELDS_TO_RETRIEVE
-
-            # response_system_profile = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
             response_system_profile = connection_request(url)
+
             try:
                 stage_dic['system_profile'] = response_system_profile.json()['results'][0]['system_profile']
             except json.decoder.JSONDecodeError:
