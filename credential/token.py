@@ -80,12 +80,12 @@ def get_token():
         current_time = datetime.datetime.now()
         current_time_epoch = int(current_time.strftime('%s'))
 
-        # print("will expire at: {}".format(exp_date_from_token))
-        # print("Current time: {} - {}".format(current_time, current_time_epoch))
-
         # Conditional to check if the token is expired. In case of affirmative, the same
         # will be refreshed.
-        if (current_time_epoch + 100) >= exp_date_from_token:
+
+        # Setting the incremental to 500 in oder to avoid issues when
+        # executing the `ts dump`. It's working with no issues.
+        if (current_time_epoch + 500) >= exp_date_from_token:
             refresh_token()
 
     except jwt.exceptions.DecodeError:
