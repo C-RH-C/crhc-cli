@@ -28,3 +28,10 @@ VULNERABILITY_JSON_FILE = "/tmp/vulnerability.json"
 ADVISOR_JSON_FILE = "/tmp/advisor.json"
 
 TGZ_FILE = "/tmp/crhc_data.tgz"
+
+
+# App conf file
+
+# 43200 sec == 12h
+# 21600 sec == 6h
+TIME_TO_CHECK_THE_NEW_VERSION = 21600
