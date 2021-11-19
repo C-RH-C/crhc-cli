@@ -206,7 +206,7 @@ def swatch_list_all():
 
     num_of_pages = round(response.json()['meta']['count'] / 100 + 1)
 
-    dic_full_list = {'data': ''}
+    dic_full_list = {'data': '', 'meta': {'count': response.json()['meta']['count']}}
     full_list = []
 
     count = 0
