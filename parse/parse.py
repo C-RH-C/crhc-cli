@@ -181,6 +181,27 @@ def swatch_sub_menu():
             # print("Error: {}".format(e))
             ...
 
+        # To print in JSON format
+        try:
+            if (sys.argv[1] == "swatch") and (sys.argv[2] == "list_subs"):
+                response = execution.swatch_list_subs()
+                print(json.dumps(response, indent=4))
+                sys.exit()
+        except IndexError as e:
+            # print("Error: {}".format(e))
+            ...
+
+        try:
+            if (sys.argv[1] == "swatch") and (sys.argv[2] == "threshold"):
+                response = execution.swatch_threshold_summary()
+                report.csv_report_swatch_threshold(response)
+                # print(json.dumps(response, indent=4))
+                sys.exit()
+        except IndexError as e:
+            # print("Error: {}".format(e))
+            ...
+
+
     if len(sys.argv) == 4 and (sys.argv[3]) == "--help":
         print("  --csv - List the swatch entries in CSV format")
 

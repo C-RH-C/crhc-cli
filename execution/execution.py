@@ -4,6 +4,7 @@
     Module responsible for execute all the API calls.
 """
 
+import yaml
 import json
 import sys
 import os
@@ -258,6 +259,82 @@ def swatch_socket_summary():
     print("Hypervisors .........: {}".format(hypervisor_count))
     print("----------------------")
     print("Total # of Sockets ..: {}".format(total_socket_count))
+
+
+def load_allowlist_sku_list():
+    """
+    Responsible for load the yaml content / allowlist file
+    """
+
+    with open("data/capacity-allowlist.yml", "r") as file_ref:
+        allow_list = yaml.safe_load(file_ref)
+        allowed_sku_list = allow_list['objects'][0]['data']['product-allowlist.txt'].split('\n')
+
+    return allowed_sku_list
+
+
+def swatch_threshold_summary():
+    """
+    Responsible for collect the subscription information and let the customer
+    know what we are counting and what we are not counting on Subscriptions
+    Page.
+    """
+
+    allow_list = load_allowlist_sku_list()
+    customer_subs = swatch_list_subs()
+    # print("here")
+
+    dic_full_list = {'body': ''}
+    full_list = []
+    stage_list = []
+
+
+    for elements in customer_subs['body']:
+        # print(elements)
+        if elements['sku'] in allow_list and elements['status'] == "Active":
+            stage_list.append(elements['sku'])
+            stage_list.append(elements['subscriptionName'])
+            stage_list.append(elements['quantity'])
+            stage_list.append("Counting")
+        else:
+            stage_list.append(elements['sku'])
+            stage_list.append(elements['subscriptionName'])
+            stage_list.append(elements['quantity'])
+            stage_list.append("Not Counting")
+
+        full_list.append(stage_list)
+        stage_list = []
+
+
+    dic_full_list['body'] = full_list
+    return dic_full_list
+
+
+
+
+def swatch_list_subs():
+    """
+    Responsible for list all the customer subscriptions
+    """
+
+    dic_full_list = {'body': ''}
+    full_list = []
+
+    count = 0
+    still_running = 1
+    while (still_running == 1):
+        url = "https://api.access.redhat.com/management/v1/subscriptions?offset=" + str(count)
+        response = connection_request(url)
+        count = count + 50
+        if response.json()['pagination']['count'] == 0:
+            still_running = 0
+
+        for entry in response.json()['body']:
+            full_list.append(entry)
+
+    dic_full_list['body'] = full_list
+    return dic_full_list
+
 
 
 def endpoint_list():

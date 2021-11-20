@@ -67,6 +67,8 @@ Available Commands:\n\
     list            List the swatch entries, first 100\n\
     list_all        List all the swatch entries\n\
     socket_summary  Print the socket summary\n\
+    list_subs       List all the subscriptions in the customer account\n\
+    threshold       Print the threshold summary\n\
     \n\
 Flags: \n\
     --csv           This will generate the output in CSV format. By default, it will be JSON.\

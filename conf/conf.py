@@ -29,6 +29,9 @@ ADVISOR_JSON_FILE = "/tmp/advisor.json"
 
 TGZ_FILE = "/tmp/crhc_data.tgz"
 
+# Threshold File
+THRESHOLD_FILE = "/tmp/threshold_information.csv"
+
 
 # App conf file
 

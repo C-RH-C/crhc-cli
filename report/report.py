@@ -1492,3 +1492,38 @@ def csv_report_advisor(json_obj):
         writer.writerows(report_list)
 
     print("File {} created".format(conf.ADVISOR_FILE))
+
+
+
+
+def csv_report_swatch_threshold(json_obj):
+
+    """
+    Function to generate the CSV report for threshold
+    """
+
+    report_list = []
+
+    stage_lst = ["sku",
+                 "subscription_name",
+                 "quantity",
+                 "swatch_status"
+                 ]
+
+    report_list.append(stage_lst)
+    stage_lst = []
+
+    for entries in json_obj['body']:
+        stage_lst.append(entries[0])
+        stage_lst.append(entries[1])
+        stage_lst.append(entries[2])
+        stage_lst.append(entries[3])
+
+        report_list.append(stage_lst)
+        stage_lst = []
+
+    with open(conf.THRESHOLD_FILE, "w") as file_obj:
+        writer = csv.writer(file_obj)
+        writer.writerows(report_list)
+
+    print("File {} created".format(conf.THRESHOLD_FILE))
