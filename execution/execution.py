@@ -406,10 +406,15 @@ def swatch_list_subs():
 
     count = 0
     still_running = 1
+    ITEM_PER_PAGE = 3
     while (still_running == 1):
-        url = "https://api.access.redhat.com/management/v1/subscriptions?offset=" + str(count)
+        url = "https://api.access.redhat.com/management/v1/subscriptions?offset=" + str(count) + "&limit=" + str(ITEM_PER_PAGE)
+        # url = "https://api.access.redhat.com/management/v1/subscriptions?offset=" + str(count)
         response = connection_request(url)
-        count = count + 50
+        count = count + ITEM_PER_PAGE
+        # count = count + 50
+        # print(response.text)
+        # print("")
         if response.json()['pagination']['count'] == 0:
             still_running = 0
 
