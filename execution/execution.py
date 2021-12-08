@@ -263,13 +263,29 @@ def swatch_socket_summary():
     print("Total # of Sockets ..: {}".format(total_socket_count))
 
 
+def resource_path(relative_path):
+    """
+    Responsible to retrieve the correct file path when adding to the binary
+    via pyinstaller
+    """
+    try:
+    # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
 def load_allowlist_sku_list():
     """
     Responsible for load the yaml content / allowlist file
     """
 
-    with open("data/capacity-allowlist.csv", "r") as file_ref:
-        # allow_list = yaml.safe_load(file_ref)
+    file_path = resource_path("data/capacity-allowlist.csv")
+    # print("PATH HERE: {}".format(file_path))
+
+    with open(file_path, "r") as file_ref:
         allow_list = csv.reader(file_ref)
         
         allowed_sku_list = []
