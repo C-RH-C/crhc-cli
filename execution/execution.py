@@ -4,12 +4,14 @@
     Module responsible for execute all the API calls.
 """
 
+import csv
 import yaml
 import json
 import sys
 import os
 import time
 import requests
+from troubleshoot import ts
 from credential import token
 from conf import conf
 
@@ -266,9 +268,15 @@ def load_allowlist_sku_list():
     Responsible for load the yaml content / allowlist file
     """
 
-    with open("data/capacity-allowlist.yml", "r") as file_ref:
-        allow_list = yaml.safe_load(file_ref)
-        allowed_sku_list = allow_list['objects'][0]['data']['product-allowlist.txt'].split('\n')
+    with open("data/capacity-allowlist.csv", "r") as file_ref:
+        # allow_list = yaml.safe_load(file_ref)
+        allow_list = csv.reader(file_ref)
+        
+        allowed_sku_list = []
+
+        for sku_element in allow_list:
+            allowed_sku_list.append(sku_element)
+        # allowed_sku_list = allow_list['objects'][0]['data']['product-allowlist.txt'].split('\n')
 
     return allowed_sku_list
 
@@ -287,24 +295,84 @@ def swatch_threshold_summary():
     dic_full_list = {'body': ''}
     full_list = []
     stage_list = []
+    num_of_sockets = 0
+    num_of_cores = 0
 
 
     for elements in customer_subs['body']:
         # print(elements)
-        if elements['sku'] in allow_list and elements['status'] == "Active":
-            stage_list.append(elements['sku'])
-            stage_list.append(elements['subscriptionName'])
-            stage_list.append(elements['quantity'])
-            stage_list.append("Counting")
+        # if "RH0000" in elements['sku']:
+        #     print("here RH0000 something")
+        # if elements['sku'] == "RH00002":
+        #     print("here RH00002")
+
+        count = 0
+        for sku_info in allow_list:
+            allowlist_sku = sku_info[0]
+            allowlist_entitlement_quantity = sku_info[1]
+            allowlist_socket_limit = sku_info[2]
+            allowlist_cores = sku_info[3]
+
+            if allowlist_socket_limit == "unlimited":
+                allowlist_socket_limit = 500
+
+
+            if elements['sku'] == allowlist_sku and elements['status'] == "Active":
+
+                if allowlist_cores == "":
+                    if (int(allowlist_entitlement_quantity)) == 1:
+                    # if allowlist_entitlement_quantity == "1":
+                        if (allowlist_socket_limit == "") or (allowlist_socket_limit == "unlimited"):
+                            num_of_sockets = int(elements['quantity'])
+                        else:
+                            num_of_sockets = int(allowlist_socket_limit) * int(elements['quantity'])
+                    else:
+                        if (allowlist_socket_limit == "") or (allowlist_socket_limit == "unlimited"):
+                            num_of_sockets = int(allowlist_entitlement_quantity) * int(elements['quantity'])
+                        else:
+                            num_of_sockets = int(allowlist_entitlement_quantity) * int(allowlist_socket_limit) * int(elements['quantity'])
+
+                if allowlist_cores != "":
+                    num_of_cores = int(allowlist_cores) * int(allowlist_entitlement_quantity) * int(elements['quantity'])
+
+                stage_list.append(elements['sku'])
+                stage_list.append(elements['subscriptionName'])
+                stage_list.append(elements['quantity'])
+                stage_list.append(elements['status'])
+                stage_list.append("Counting")
+                stage_list.append(allowlist_entitlement_quantity)
+                stage_list.append(allowlist_socket_limit)
+                stage_list.append(allowlist_cores)
+                stage_list.append(num_of_sockets)
+                stage_list.append(num_of_cores)
+
+                num_of_cores = 0
+                num_of_sockets = 0
+
+                count = count + 1
+
+                break
+            
+        if count == 1:
+            full_list.append(stage_list)
+            stage_list = []
         else:
             stage_list.append(elements['sku'])
             stage_list.append(elements['subscriptionName'])
             stage_list.append(elements['quantity'])
+            stage_list.append(elements['status'])
             stage_list.append("Not Counting")
+            stage_list.append("-")
+            stage_list.append("-")
+            stage_list.append("-")
+            stage_list.append("-")
+            stage_list.append("-")
+            full_list.append(stage_list)
+            stage_list = []
 
-        full_list.append(stage_list)
-        stage_list = []
 
+    # Sorting by 'Counting' / 'Not Counting' or 4th column
+    full_list = ts.organize_list_by_column(full_list, 4)
 
     dic_full_list['body'] = full_list
     return dic_full_list

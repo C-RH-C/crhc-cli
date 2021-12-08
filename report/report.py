@@ -1506,8 +1506,14 @@ def csv_report_swatch_threshold(json_obj):
 
     stage_lst = ["sku",
                  "subscription_name",
-                 "quantity",
-                 "swatch_status"
+                 "subscription_quantity",
+                 "status",
+                 "swatch_allow_list",
+                 "entitlement_quantity",
+                 "socket_limit",
+                 "cores",
+                 "num_of_sockets",
+                 "num_of_cores"
                  ]
 
     report_list.append(stage_lst)
@@ -1518,6 +1524,13 @@ def csv_report_swatch_threshold(json_obj):
         stage_lst.append(entries[1])
         stage_lst.append(entries[2])
         stage_lst.append(entries[3])
+        stage_lst.append(entries[4])
+        stage_lst.append(entries[5])
+        stage_lst.append(entries[6])
+        stage_lst.append(entries[7])
+        stage_lst.append(entries[8])
+        stage_lst.append(entries[9])
+
 
         report_list.append(stage_lst)
         stage_lst = []
