@@ -198,8 +198,8 @@ def swatch_sub_menu():
                 # print(json.dumps(response, indent=4))
                 sys.exit()
         except IndexError as e:
-            # print("Error: {}".format(e))
-            ...
+            print("Error: {}".format(e))
+            # ...
 
 
     if len(sys.argv) == 4 and (sys.argv[3]) == "--help":

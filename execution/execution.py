@@ -328,6 +328,7 @@ def swatch_threshold_summary():
             allowlist_entitlement_quantity = sku_info[1]
             allowlist_socket_limit = sku_info[2]
             allowlist_cores = sku_info[3]
+            allowlist_service_type = sku_info[4]
 
             if allowlist_socket_limit == "unlimited":
                 allowlist_socket_limit = 500
@@ -361,6 +362,7 @@ def swatch_threshold_summary():
                 stage_list.append(allowlist_cores)
                 stage_list.append(num_of_sockets)
                 stage_list.append(num_of_cores)
+                stage_list.append(allowlist_service_type)
 
                 num_of_cores = 0
                 num_of_sockets = 0
@@ -378,6 +380,7 @@ def swatch_threshold_summary():
             stage_list.append(elements['quantity'])
             stage_list.append(elements['status'])
             stage_list.append("Not Counting")
+            stage_list.append("-")
             stage_list.append("-")
             stage_list.append("-")
             stage_list.append("-")

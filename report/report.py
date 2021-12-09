@@ -1513,7 +1513,8 @@ def csv_report_swatch_threshold(json_obj):
                  "socket_limit",
                  "cores",
                  "num_of_sockets",
-                 "num_of_cores"
+                 "num_of_cores",
+                 "service_type"
                  ]
 
     report_list.append(stage_lst)
@@ -1530,10 +1531,13 @@ def csv_report_swatch_threshold(json_obj):
         stage_lst.append(entries[7])
         stage_lst.append(entries[8])
         stage_lst.append(entries[9])
+        stage_lst.append(entries[10])
 
 
         report_list.append(stage_lst)
         stage_lst = []
+
+    # print("here")
 
     with open(conf.THRESHOLD_FILE, "w") as file_obj:
         writer = csv.writer(file_obj)
