@@ -330,22 +330,25 @@ def swatch_threshold_summary():
             allowlist_cores = sku_info[3]
             allowlist_service_type = sku_info[4]
 
-            if allowlist_socket_limit == "unlimited":
-                allowlist_socket_limit = 500
+            # if allowlist_socket_limit == "unlimited":
+            #     allowlist_socket_limit = 500
 
 
+            # if elements['sku'] == allowlist_sku and elements['status'] == "Active" and allowlist_service_type != "Layered":
             if elements['sku'] == allowlist_sku and elements['status'] == "Active":
 
                 if allowlist_cores == "":
-                    if (int(allowlist_entitlement_quantity)) == 1:
-                    # if allowlist_entitlement_quantity == "1":
+                    # if (int(allowlist_entitlement_quantity)) == 1:
+                    if allowlist_entitlement_quantity == "1":
                         if (allowlist_socket_limit == "") or (allowlist_socket_limit == "unlimited"):
-                            num_of_sockets = int(elements['quantity'])
+                            # num_of_sockets = int(elements['quantity'])
+                            num_of_sockets = 0
                         else:
                             num_of_sockets = int(allowlist_socket_limit) * int(elements['quantity'])
                     else:
                         if (allowlist_socket_limit == "") or (allowlist_socket_limit == "unlimited"):
-                            num_of_sockets = int(allowlist_entitlement_quantity) * int(elements['quantity'])
+                            # num_of_sockets = int(allowlist_entitlement_quantity) * int(elements['quantity'])
+                            num_of_sockets = 0
                         else:
                             num_of_sockets = int(allowlist_entitlement_quantity) * int(allowlist_socket_limit) * int(elements['quantity'])
 
