@@ -11,11 +11,19 @@ import time
 import requests
 from credential import token
 from conf import conf
+import dateutil.parser as dateparser
+from troubleshoot import ts
+import pytz
+from datetime import datetime
+
 
 # FIELDS_TO_RETRIEVE = "?fields[system_profile]=number_of_cpus,number_of_sockets,cores_per_socket,system_memory_bytes,bios_release_date,bios_vendor,bios_version,operating_system,os_kernel_version,os_release,infrastructure_type,infrastructure_vendor,insights_client_version"
 # FIELDS_TO_RETRIEVE = "?fields[system_profile]=number_of_sockets"
 FIELDS_TO_RETRIEVE = ""
 
+def defaultconverter(o):
+  if isinstance(o, datetime):
+      return o.__str__()
 
 def connection_request(url):
     """
@@ -61,7 +69,7 @@ def inventory_list():
     check_authentication(response)
 
     list_of_servers = []
-    inventory_full_detail = {'results': '', 'total': response.json()['total']}
+    inventory_full_detail = {'results': '', 'total': response.json()['total'], 'report_date': defaultconverter(datetime.now()) }
     inventory_full_detail['results'] = list_of_servers
 
     stage_list = []
@@ -111,7 +119,7 @@ def inventory_list_all():
         num_of_pages = check_response[0] + 2
 
     list_of_servers = []
-    inventory_full_detail = {'results': '', 'total': response.json()['total']}
+    inventory_full_detail = {'results': '', 'total': response.json()['total'], 'report_date': defaultconverter(utc.localize(datetime.now()))}
     inventory_full_detail['results'] = list_of_servers
 
     stage_list = []
@@ -448,3 +456,38 @@ def advisor_systems():
 
     dic_full_list['data'] = full_list
     return dic_full_list
+
+def list_stales_host():
+    INV_FILE="/tmp/inventory.json"
+
+    try:    
+        with open(INV_FILE, 'r') as data_f:
+            data = json.load(data_f)
+            stage = []
+            final_list = []
+            stage.append("Fqdn")
+            stage.append("Report Date")
+            stage.append("Stale Warning Timestamp")
+            stage.append("Time in Stale")
+            final_list.append(stage)
+            stage=[]
+
+        for i in data['results']:
+            data_test = dateparser.parse(data['report_date']) - dateparser.parse(i['server']['stale_warning_timestamp'])
+            if dateparser.parse(data['report_date']) > dateparser.parse(i['server']['stale_warning_timestamp']):
+                stage.append(i['server']['fqdn'])
+                stage.append(data['report_date'])
+                stage.append(i['server']['stale_warning_timestamp'])
+                stage.append(str(dateparser.parse(data['report_date']) - dateparser.parse(i['server']['stale_warning_timestamp'])).split('.', 1)[0])
+                final_list.append(stage)
+                stage=[]
+        
+        for list_hosts_stales in final_list:
+            print (list_hosts_stales)
+
+        data_f.close()
+
+        return final_list
+    
+    except FileNotFoundError:
+        ts.dump_inv_json()

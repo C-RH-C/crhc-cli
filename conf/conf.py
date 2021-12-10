@@ -18,6 +18,8 @@ ISSUE_SUMMARY = "/tmp/issue_summary.log"
 PATCH_SYSTEMS_FILE = "/tmp/patch_systems.csv"
 VULNERABILITY_SYSTEMS_FILE = "/tmp/vulnerability_systems.csv"
 ADVISOR_FILE = "/tmp/advisor_systems.csv"
+STALE_HOSTS_LIST = "/tmp/stale_hosts.csv"
+
 
 # TS Info
 INV_JSON_FILE = "/tmp/inventory.json"

@@ -61,3 +61,5 @@ typing-extensions==3.10.0.0
 urllib3==1.26.6
 wrapt==1.12.1
 zipp==3.5.0
+python-dateutil==2.7
+pytz==2021.3

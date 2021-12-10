@@ -46,6 +46,7 @@ Usage: \n\
 Available Commands:\n\
     list            List the inventory entries, first 50\n\
     list_all        List all the inventory entries\n\
+    list_stales     To list the hosts in stale state.\n\
     display_name    Please, type the FQDN or Partial Hostname\n\
     \n\
 Flags: \n\

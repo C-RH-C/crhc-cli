@@ -12,6 +12,8 @@ from report import report
 from credential import token
 from troubleshoot import ts
 from help import help_opt
+from datetime import datetime
+
 
 access_token = token.get_token()
 
@@ -61,6 +63,14 @@ def inventory_sub_menu():
                 fqdn = sys.argv[3]
                 response = execution.inventory_list_search_by_name(fqdn)
                 print(json.dumps(response, indent=4))
+                sys.exit()
+        except IndexError as e:
+            # print("Error: {}".format(e))
+            ...
+
+        try:
+            if (sys.argv[1] == "inventory") and (sys.argv[2] == "list_stales"):
+                execution.list_stales_host()
                 sys.exit()
         except IndexError as e:
             # print("Error: {}".format(e))
@@ -133,6 +143,16 @@ def inventory_sub_menu():
                 # execution.inventory_list()
                 response = execution.inventory_list_search_by_name()
                 report.csv_report_inventory(response)
+                sys.exit()
+        except IndexError as e:
+            # print("Error: {}".format(e))
+            ...
+
+         # To print in CSV format
+        try:
+            if (sys.argv[1] == "inventory") and (sys.argv[2] == "list_stales") and (sys.argv[3] == "--csv"):
+                # execution.inventory_list()
+                report.csv_report_stales_host()
                 sys.exit()
         except IndexError as e:
             # print("Error: {}".format(e))
