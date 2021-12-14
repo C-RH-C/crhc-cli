@@ -105,6 +105,8 @@ def inventory_list_all():
     This def will collect all the HBI entries
     """
 
+    utc = pytz.UTC
+
     url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=1"
     response = connection_request(url)
     check_authentication(response)
