@@ -7,6 +7,9 @@
 import csv
 import os
 from conf import conf
+import json
+import dateutil.parser as dateparser
+from execution import execution
 
 
 def check_for_installed_products(entries):
@@ -1492,3 +1495,14 @@ def csv_report_advisor(json_obj):
         writer.writerows(report_list)
 
     print("File {} created".format(conf.ADVISOR_FILE))
+
+def csv_report_stales_host():
+    with open(conf.STALE_HOSTS_LIST, "w") as file_obj:
+        writer = csv.writer(file_obj)
+        writer.writerows(execution.list_stales_host())
+    file_obj.close()
+    
+    if os.path.isfile(conf.STALE_HOSTS_LIST):
+        print("File {} created".format(conf.STALE_HOSTS_LIST))
+    else:
+        print("File {} was not created".format(conf.STALE_HOSTS_LIST))
