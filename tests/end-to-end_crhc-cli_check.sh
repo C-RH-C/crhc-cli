@@ -46,19 +46,14 @@ virtualenv()
   fi
 
   echo "## $(date +%m-%d-%Y_%H:%M:%S) - Cloning the crhc-cli repository"											| tee -a $LOG
-  url="https://github.com/C-RH-C/crhc-cli.git"
+  url=$2
   cd /tmp
-  if [ "$1" <> " " ]; then
-    echo "## $(date +%m-%d-%Y_%H:%M:%S) - Cloning the crhc-cli repository from branch '$1'"		| tee -a $LOG
-    git clone -b $1 $url
-    if [ $? -ne 0 ]; then
-      echo "something is wrong, probably the branch '$1' doesn't exist"
-      echo "exiting ..."
-      exit
-    fi
-  else
-    echo "## $(date +%m-%d-%Y_%H:%M:%S) - Cloning the crhc-cli repository from origin"				| tee -a $LOG
-    git clone $url																																						| tee -a $LOG
+  echo "## $(date +%m-%d-%Y_%H:%M:%S) - Cloning the crhc-cli repository '$2' from branch '$1'"		| tee -a $LOG
+  git clone -b $1 $url
+  if [ $? -ne 0 ]; then
+    echo "something is wrong, probably the branch '$1' doesn't exist"
+    echo "exiting ..."
+    exit
   fi
   cd crhc-cli
 
@@ -291,7 +286,23 @@ fi
 
 check_packages
 
-if [ "$1" == "-h" ] || [ "$1" == "--help" ] || [ "$1" == "" ] ; then
+# Process command-line arguments
+while getopts b:p:r:h: flag
+do
+  case "${flag}" in
+    b) branch=${OPTARG};;
+    p) pipeline=${OPTARG};;
+    r) repository=${OPTARG};;
+    h) help=1;;
+    *) help=1;;
+  esac
+done
+
+if [ $OPTIND -eq 1 ]; then
+  help=1
+fi
+
+if [ ${help+x} ]; then
   echo "##########################"
   echo "# crhc-cli End to End Test"
   echo "#-------------------------"
@@ -316,26 +327,22 @@ if [ "$1" == "-h" ] || [ "$1" == "--help" ] || [ "$1" == "" ] ; then
   echo "#"
   echo "#   9999 - all together"
   echo "##########################"
+  exit
 fi
 
-
-
-
-# Passing the branch and also the pipeline
-if [ "$1" == "-b" ] && [ "$3" == "-p" ]; then
-  echo "## $(date +%m-%d-%Y_%H:%M:%S) - Passing the branch: $2 and the pipeline: $4"								| tee -a $LOG
-  branch=$2
-  pipeline=$4
+if [ -z ${branch+x} ]; then
+  branch=master
 fi
 
-if [ "$1" == "-p" ]; then
-  echo "## $(date +%m-%d-%Y_%H:%M:%S) - Using the origin branch and the pipeline: $2"								| tee -a $LOG
-  pipeline=$2
+if [ -z ${repository+x} ]; then
+  repository=https://github.com/C-RH-C/crhc-cli.git
 fi
+
+echo "## $(date +%m-%d-%Y_%H:%M:%S) - Using branch $branch, repository $repository and pipeline $pipeline" | tee -a $LOG
 
 # It only will run once the tester pass the pipeline
 if [ $pipeline ]; then
-  virtualenv $branch
+  virtualenv $branch $repository
 fi
 
 case $pipeline in
