@@ -5,29 +5,37 @@
     the app version
 """
 
+import tempfile
+from pathlib import Path
+
+
 # Current Version
-CURRENT_VERSION = "1.8.8"
+CURRENT_VERSION = "1.9.9"
 
 #  Some file references
 
+p = Path(tempfile.gettempdir())
+
 #  Report Info
-INVENTORY_FILE = "/tmp/inventory_report.csv"
-SWATCH_FILE = "/tmp/swatch_report.csv"
-MATCH_FILE = "/tmp/match_inv_sw.csv"
-ISSUE_SUMMARY = "/tmp/issue_summary.log"
-PATCH_SYSTEMS_FILE = "/tmp/patch_systems.csv"
-VULNERABILITY_SYSTEMS_FILE = "/tmp/vulnerability_systems.csv"
-ADVISOR_FILE = "/tmp/advisor_systems.csv"
+INVENTORY_FILE = (p / "inventory_report.csv").resolve()
+SWATCH_FILE = (p / "swatch_report.csv").resolve()
+MATCH_FILE = (p / "match_inv_sw.csv").resolve()
+
+ISSUE_SUMMARY = (p / "issue_summary.log").resolve()
+PATCH_SYSTEMS_FILE = (p / "patch_systems.csv").resolve()
+VULNERABILITY_SYSTEMS_FILE = (p / "vulnerability_systems.csv").resolve()
+ADVISOR_FILE = (p / "advisor_systems.csv").resolve()
 
 # TS Info
-INV_JSON_FILE = "/tmp/inventory.json"
-SW_JSON_FILE = "/tmp/swatch.json"
-MATCH_FILE = "/tmp/match_inv_sw.csv"
-PATCH_JSON_FILE = "/tmp/patch.json"
-VULNERABILITY_JSON_FILE = "/tmp/vulnerability.json"
-ADVISOR_JSON_FILE = "/tmp/advisor.json"
+INV_JSON_FILE = (p / "inventory.json").resolve()
+SW_JSON_FILE = (p / "swatch.json").resolve()
+MATCH_FILE = (p / "match_inv_sw.csv").resolve()
+PATCH_JSON_FILE = (p / "patch.json").resolve()
+VULNERABILITY_JSON_FILE = (p / "vulnerability.json").resolve()
+ADVISOR_JSON_FILE = (p / "advisor.json").resolve()
 
-TGZ_FILE = "/tmp/crhc_data.tgz"
+# TGZ_FILE = (p / "crhc_data.tgz").resolve()
+ZIP_FILE = (p / "crhc_data.zip").resolve()
 
 
 # App conf file
