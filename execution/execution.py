@@ -406,9 +406,6 @@ def vulnerability_systems():
     response = connection_request(url)
     check_authentication(response)
 
-    # num_of_pages = int(response.json()['meta']['total_items'] / 20 + 1)
-
-
     # Here we are checking the total number of objects and setting the correct
     # number of pages based on that.
     check_response = divmod(response.json()['meta']['total_items'], 20)

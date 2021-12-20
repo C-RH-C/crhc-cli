@@ -76,25 +76,11 @@ def dump_advisor_json():
 
 def compress_json_files():
     """
-    Function to compress the JSON files
+    Function to compress the JSON files in a zip format.
+    At this moment working in Linux and MS Windows.
     """
-    # TAR_COMMAND = "tar cpfz " + conf.TGZ_FILE +" "  + conf.INV_JSON_FILE + " " \
-    #                                                 + conf.SW_JSON_FILE + " " \
-    #                                                 + conf.PATCH_JSON_FILE + " " \
-    #                                                 + conf.VULNERABILITY_JSON_FILE + " " \
-    #                                                 + conf.ADVISOR_JSON_FILE + " 2>/dev/null"
-
-
-
-    # TAR_COMMAND = "tar cpfz " + conf.ZIP_FILE +" "  + conf.INV_JSON_FILE + " " \
-    #                                                 + conf.SW_JSON_FILE + " " \
-    #                                                 + conf.PATCH_JSON_FILE + " " \
-    #                                                 + conf.VULNERABILITY_JSON_FILE + " " \
-    #                                                 + conf.ADVISOR_JSON_FILE + " 2>/dev/null"
-
 
     if os.path.isfile(conf.INV_JSON_FILE) and os.path.isfile(conf.SW_JSON_FILE):
-        # os.system(TAR_COMMAND)
         with ZipFile(conf.ZIP_FILE, 'w') as zipObj:
             zipObj.write(conf.INV_JSON_FILE)
             zipObj.write(conf.SW_JSON_FILE)

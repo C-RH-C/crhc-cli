@@ -79,6 +79,8 @@ def get_token():
         # Using jwt to collect some information from the local token file
         exp_date_from_token = jwt.decode(access_token, options={"verify_signature": False})['exp']
         current_time = datetime.datetime.now()
+
+        # Modified to support MS Windows & Linux.
         # current_time_epoch = int(current_time.strftime('%s'))
         current_time_epoch = int(timetime())
 
