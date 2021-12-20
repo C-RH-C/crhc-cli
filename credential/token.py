@@ -10,6 +10,7 @@ import sys
 import datetime
 import jwt
 import requests
+from time import time as timetime
 
 # Conf file used to store the access_key and some additional information
 CONF_FILE = "/.crhc.conf"
@@ -78,7 +79,8 @@ def get_token():
         # Using jwt to collect some information from the local token file
         exp_date_from_token = jwt.decode(access_token, options={"verify_signature": False})['exp']
         current_time = datetime.datetime.now()
-        current_time_epoch = int(current_time.strftime('%s'))
+        # current_time_epoch = int(current_time.strftime('%s'))
+        current_time_epoch = int(timetime())
 
         # Conditional to check if the token is expired. In case of affirmative, the same
         # will be refreshed.

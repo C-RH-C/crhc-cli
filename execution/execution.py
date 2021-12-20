@@ -117,6 +117,9 @@ def inventory_list_all():
     stage_list = []
     stage_dic = {'server': stage_list}
 
+    # For debugin purposes
+    # num_of_pages = 2
+
     for page in range(1, num_of_pages):
         url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=50&page=" + str(page)
         response = connection_request(url)
@@ -403,7 +406,19 @@ def vulnerability_systems():
     response = connection_request(url)
     check_authentication(response)
 
-    num_of_pages = int(response.json()['meta']['total_items'] / 20 + 1)
+    # num_of_pages = int(response.json()['meta']['total_items'] / 20 + 1)
+
+
+    # Here we are checking the total number of objects and setting the correct
+    # number of pages based on that.
+    check_response = divmod(response.json()['meta']['total_items'], 20)
+
+    if check_response[1] == 0:
+        num_of_pages = check_response[0]
+    else:
+        num_of_pages = check_response[0] + 1
+
+
 
     dic_full_list = {'data': '', 'total': response.json()['meta']['total_items']}
     full_list = []
