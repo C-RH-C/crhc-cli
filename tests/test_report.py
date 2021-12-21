@@ -5,11 +5,15 @@
 """
 import json
 import csv
+import tempfile
+from pathlib import Path
 from report import report
 
 
 INPUT_JSON = "tests/data/inventory.json"
-OUTPUT_CSV = "/tmp/inventory_report.csv"
+
+p = Path(tempfile.gettempdir())
+OUTPUT_CSV = (p / "inventory_report.csv").resolve()
 
 
 def calling_csv_report_inventory():
