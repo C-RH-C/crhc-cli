@@ -4,7 +4,7 @@
     Module responsible for execute all the API calls.
 """
 
-import json
+import json 
 import sys
 import os
 import time
@@ -475,7 +475,7 @@ def list_stales_host():
             stage=[]
 
         for i in data['results']:
-            data_test = dateparser.parse(data['report_date']) - dateparser.parse(i['server']['stale_warning_timestamp'])
+           # data_test = dateparser.parse(data['report_date']) - dateparser.parse(i['server']['stale_warning_timestamp'])
             if dateparser.parse(data['report_date']) > dateparser.parse(i['server']['stale_warning_timestamp']):
                 stage.append(i['server']['fqdn'])
                 stage.append(data['report_date'])
@@ -484,8 +484,9 @@ def list_stales_host():
                 final_list.append(stage)
                 stage=[]
         
-        for list_hosts_stales in final_list:
-            print (list_hosts_stales)
+        if final_list:
+            for list_hosts_stales in final_list:
+                print( ", ".join(repr(e) for e in list_hosts_stales))
 
         data_f.close()
 
