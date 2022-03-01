@@ -56,7 +56,8 @@ def inventory_list():
     This def will collect the first 50 HBI entries
     """
 
-    url = "https://console.redhat.com/api/inventory/v1/hosts"
+    url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=10"
+    # url = "https://console.redhat.com/api/inventory/v1/hosts"
     response = connection_request(url)
     check_authentication(response)
 
@@ -103,7 +104,9 @@ def inventory_list_all():
 
     # Here we are checking the total number of objects and setting the correct
     # number of pages based on that.
-    check_response = divmod(response.json()['total'], 50)
+    # check_response = divmod(response.json()['total'], 50)
+    # ITEMS_PER_PAGE = 10
+    check_response = divmod(response.json()['total'], conf.ITEMS_PER_PAGE)
 
     if check_response[1] == 0:
         num_of_pages = check_response[0] + 1
@@ -121,7 +124,7 @@ def inventory_list_all():
     # num_of_pages = 2
 
     for page in range(1, num_of_pages):
-        url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=50&page=" + str(page)
+        url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=" + str(conf.ITEMS_PER_PAGE) + "&page=" + str(page)
         response = connection_request(url)
 
         for server in response.json()['results']:
@@ -191,7 +194,10 @@ def swatch_list():
     This def will collect the first 100 entries from Subscription Watch
     """
 
-    url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=0&sort=display_name"
+    # ITEMS_PER_PAGE = 10
+
+    url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=" + str(conf.ITEMS_PER_PAGE) + "&offset=0&sort=display_name"
+    # url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=0&sort=display_name"
     response = connection_request(url)
     check_authentication(response)
 
@@ -203,20 +209,26 @@ def swatch_list_all():
     This def will collect all the entries from Subscription Watch
     """
 
-    url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=0&sort=display_name"
+    # ITEMS_PER_PAGE = 10
+
+    url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=" + str(conf.ITEMS_PER_PAGE) + "&offset=0&sort=display_name"
+    # url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=0&sort=display_name"
     response = connection_request(url)
     check_authentication(response)
 
-    num_of_pages = round(response.json()['meta']['count'] / 100 + 1)
+    num_of_pages = round(response.json()['meta']['count'] / conf.ITEMS_PER_PAGE + 1)
+    # num_of_pages = round(response.json()['meta']['count'] / 100 + 1)
 
     dic_full_list = {'data': '', 'meta': {'count': response.json()['meta']['count']}}
     full_list = []
 
     count = 0
     for page in range(0, num_of_pages):
-        url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=" + str(count) + "&sort=display_name"
+        url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=" + str(conf.ITEMS_PER_PAGE) + "&offset=" + str(count) + "&sort=display_name"
+        # url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=" + str(count) + "&sort=display_name"
         response = connection_request(url)
-        count = count + 100
+        count = count + conf.ITEMS_PER_PAGE
+        # count = count + 100
 
         for entry in response.json()['data']:
             full_list.append(entry)
@@ -378,15 +390,20 @@ def patch_systems():
     response = connection_request(url)
     check_authentication(response)
 
-    num_of_pages = int(response.json()['meta']['total_items'] / 20 + 1)
+    # ITEMS_PER_PAGE = 10
+
+    num_of_pages = int(response.json()['meta']['total_items'] / conf.ITEMS_PER_PAGE + 1)
+    # num_of_pages = int(response.json()['meta']['total_items'] / 20 + 1)
 
     dic_full_list = {'data': '', 'total': response.json()['meta']['total_items']}
     full_list = []
 
     count = 0
     for page in range(0, num_of_pages):
-        url = "https://console.redhat.com/api/patch/v1/systems?limit=20&offset=" + str(count) + "&sort=-last_upload"
-        count = count + 20
+        url = "https://console.redhat.com/api/patch/v1/systems?limit=" + str(conf.ITEMS_PER_PAGE) + "&offset=" + str(count) + "&sort=-last_upload"
+        # url = "https://console.redhat.com/api/patch/v1/systems?limit=20&offset=" + str(count) + "&sort=-last_upload"
+        count = count + conf.ITEMS_PER_PAGE
+        # count = count + 20
         response = connection_request(url)
 
         for entry in response.json()['data']:
@@ -406,9 +423,12 @@ def vulnerability_systems():
     response = connection_request(url)
     check_authentication(response)
 
+    # ITEMS_PER_PAGE = 10
+
     # Here we are checking the total number of objects and setting the correct
     # number of pages based on that.
-    check_response = divmod(response.json()['meta']['total_items'], 20)
+    check_response = divmod(response.json()['meta']['total_items'], conf.ITEMS_PER_PAGE)
+    # check_response = divmod(response.json()['meta']['total_items'], 20)
 
     if check_response[1] == 0:
         num_of_pages = check_response[0]
@@ -422,8 +442,10 @@ def vulnerability_systems():
 
     count = 0
     for page in range(0, num_of_pages):
-        url = "https://console.redhat.com/api/vulnerability/v1/systems?limit=20&offset=" + str(count) + "&sort=-last_upload"
-        count = count + 20
+        url = "https://console.redhat.com/api/vulnerability/v1/systems?limit=" + str(conf.ITEMS_PER_PAGE) + "&offset=" + str(count) + "&sort=-last_upload"
+        # url = "https://console.redhat.com/api/vulnerability/v1/systems?limit=20&offset=" + str(count) + "&sort=-last_upload"
+        count = count + conf.ITEMS_PER_PAGE
+        # count = count + 20
         response = connection_request(url)
 
         for entry in response.json()['data']:
@@ -438,21 +460,21 @@ def advisor_systems():
     This def will collect all the entries from advisor/insights systems
     """
 
-    ITEMS_PER_PAGE = 10
+    # ITEMS_PER_PAGE = 10
 
     url = "https://console.redhat.com/api/insights/v1/system"
     response = connection_request(url)
     check_authentication(response)
 
-    num_of_pages = int(response.json()['meta']['count'] / ITEMS_PER_PAGE + 1)
+    num_of_pages = int(response.json()['meta']['count'] / conf.ITEMS_PER_PAGE + 1)
 
     dic_full_list = {'data': '', 'total': response.json()['meta']['count']}
     full_list = []
 
     count = 0
     for page in range(0, num_of_pages):
-        url = "https://console.redhat.com/api/insights/v1/system?limit=ITEMS_PER_PAGE&offset=" + str(count)
-        count = count + ITEMS_PER_PAGE
+        url = "https://console.redhat.com/api/insights/v1/system?limit=" + str(conf.ITEMS_PER_PAGE) + "&offset=" + str(count)
+        count = count + conf.ITEMS_PER_PAGE
         response = connection_request(url)
 
         for entry in response.json()['data']:

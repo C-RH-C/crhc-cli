@@ -89,7 +89,7 @@ def get_token():
 
         # Setting the incremental to 500 in oder to avoid issues when
         # executing the `ts dump`. It's working with no issues.
-        if (current_time_epoch + 500) >= exp_date_from_token:
+        if (current_time_epoch + 800) >= exp_date_from_token:
             refresh_token()
 
     except jwt.exceptions.DecodeError:
