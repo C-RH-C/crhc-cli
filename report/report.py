@@ -19,6 +19,7 @@ def check_for_installed_products(entries):
     count_product = 0
     stage_lst = []
     installed_product_lst = []
+    stage_str = ""
 
     if (entries['server']['reporter'] == "puptoo") or (entries['server']['reporter'] == "yupana") or entries['server']['reporter'] == "rhsm-conduit":
         try:
@@ -64,7 +65,10 @@ def check_for_installed_products(entries):
         # Operation to remove the duplicate entries
         stage_lst = list(set(stage_lst))
 
-    return stage_lst
+    # Now, removing the "[" and " ' " characters from it.
+    stage_str = str(stage_lst).replace("[","").replace("]","").replace("'","")
+
+    return stage_str
 
 
 def check_for_syspurpose_sla(entries):
