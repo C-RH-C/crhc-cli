@@ -226,7 +226,6 @@ def swatch_list_all():
     full_list = []
     dup_kvm_servers = []
     server_with_no_dupes = []
-    dup_kvm_servers_1 = []
 
     count = 0
     for page in range(0, num_of_pages):
