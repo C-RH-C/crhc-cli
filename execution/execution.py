@@ -4,7 +4,10 @@
     Module responsible for execute all the API calls.
 """
 
+# from distutils import core
 import json
+# from queue import Empty
+# import socketserver
 import sys
 import os
 import time
@@ -221,6 +224,8 @@ def swatch_list_all():
 
     dic_full_list = {'data': '', 'meta': {'count': response.json()['meta']['count']}}
     full_list = []
+    dup_kvm_servers = []
+    server_with_no_dupes = []
 
     count = 0
     for page in range(0, num_of_pages):
@@ -233,7 +238,69 @@ def swatch_list_all():
         for entry in response.json()['data']:
             full_list.append(entry)
 
-    dic_full_list['data'] = full_list
+
+    # The piece below is just to check/remove the duplicate entries caused by kvm/libvirt
+    # hypervisors. At this moment, swatch is creating 2 entries with the same facts, except
+    # for the measurement_type.
+    count = 0
+    for entry in full_list:
+
+        for element in full_list:
+            if (entry.get('inventory_id') == element.get('inventory_id')) and \
+               (entry.get('insights_id') == element.get('insights_id')) and \
+               (entry.get('subscription_manager_id') == element.get('subscription_manager_id')) and \
+               (entry.get('display_name') == element.get('display_name')) and \
+               (entry.get('sockets') == element.get('sockets')) and \
+               (entry.get('cores') == element.get('cores')) and \
+               (entry.get('hardware_type') == element.get('hardware_type')) and \
+               (entry.get('measurement_type') != element.get('measurement_type')) and \
+               (entry.get('last_seen') == element.get('last_seen')) and \
+               (entry.get('is_unmapped_guest') == element.get('is_unmapped_guest')) and \
+               (entry.get('is_hypervisor') == element.get('is_hypervisor')):
+                # print("EQUAL for: {}".format(entry['display_name']))
+                count = count + 1
+
+        if count == 1:
+            dup_kvm_servers.append(entry)
+            count = 0
+        else:
+            # print("# of count: {}".format(count))
+            count = 0
+
+    # Updating the measurement_type to virtual, only for the servers
+    # which everything else was the same value, except for the measurement_type :)
+    for server in dup_kvm_servers:
+        server['measurement_type'] = "VIRTUAL"
+
+
+    # Removing the duplicate entries and keeping only a single entry in the
+    # server_with_no_dupes list
+    for each_server in dup_kvm_servers:
+        if len(server_with_no_dupes) == 0:
+            server_with_no_dupes.append(each_server)
+        else:
+            count = 0
+            for server in server_with_no_dupes:
+                if each_server == server:
+                    count = 1
+
+            if count == 0:
+                server_with_no_dupes.append(each_server)
+
+
+    # At this moment checking for the complete list and anything that has duplicate uuid
+    # will not be added to the final list called server_with_no_dupes
+    for each_server_fl in full_list:
+        count = 0
+        for each_server_no_dupe in server_with_no_dupes:
+            if each_server_fl['inventory_id'] == each_server_no_dupe['inventory_id']:
+                count = 1
+        if count == 0:
+            server_with_no_dupes.append(each_server_fl)
+
+
+    dic_full_list['data'] = server_with_no_dupes
+
     return dic_full_list
 
 
