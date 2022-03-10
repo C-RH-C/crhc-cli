@@ -4,10 +4,10 @@
     Module responsible for execute all the API calls.
 """
 
-from distutils import core
+# from distutils import core
 import json
-from queue import Empty
-import socketserver
+# from queue import Empty
+# import socketserver
 import sys
 import os
 import time
