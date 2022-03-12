@@ -351,7 +351,60 @@ def endpoint_list():
     response = connection_request(url)
     check_authentication(response)
 
-    return response.json()
+    dic_stage = {'services': []}
+
+    # Removing in the app since the information is still around in Red Hat backend
+    # https://bugzilla.redhat.com/show_bug.cgi?id=2020877
+    # https://issues.redhat.com/browse/RHCLOUD-18236
+    TO_REMOVE = (
+                "/api/aiops-clustering",
+                "/api/aiops-idle-cost-savings",
+                "/api/aiops-instance-type-validation",
+                "/api/aiops-outlier-detection",
+                "/api/aiops-volume-type-validation",
+                "/api/automation-hub",
+                "/api/cloudigrade",
+                "/api/custom-policies",
+                "/api/drift",
+                "/api/echo",
+                "/api/featureflags",
+                "/api/gathering",
+                "/api/historical-system-profiles",
+                "/api/hooks",
+                "/api/idp-configs-api",
+                "/api/image-builder",
+                "/api/leapp-data",
+                "/api/malware-detection",
+                "/api/marketplace-gateway",
+                "/api/module-update-router",
+                "/api/pes",
+                "/api/platform-feedback",
+                "/api/quickstarts",
+                "/api/receptor-controller",
+                "/api/rhsm",
+                "/api/subscriptions",
+                "/api/system-baseline",
+                "/api/topological-inventory",
+                "/api/upload",
+                "/api/webhooks",
+                "/api/xavier"
+    )
+
+    # The method below should be working as expected .... however, it's not.
+    # for api_to_remove in TO_REMOVE:
+    #     dic_stage.json()['services'].remove(api_to_remove)
+    #     dic_stage.json()['services'].remove('/api/aiops-clustering')
+
+    for api_endpoint in response.json()['services']:
+        count = 0
+        for api_to_delete in TO_REMOVE:
+            if api_endpoint == api_to_delete:
+                count = 1
+
+        if count == 0:
+            dic_stage['services'].append(api_endpoint)
+
+    return dic_stage
 
 
 def get_command(api_url):
