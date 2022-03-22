@@ -40,7 +40,7 @@ check_packages()
 
 virtualenv()
 {
-  if [ $2 == "" ]; then
+  if [ "$2" == "" ]; then
     url="https://github.com/C-RH-C/crhc-cli.git"
   else
     url=$2
