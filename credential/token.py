@@ -7,10 +7,11 @@
 import os
 import json
 import sys
-import datetime
+# import datetime
+from time import time as timetime
 import jwt
 import requests
-from time import time as timetime
+
 
 # Conf file used to store the access_key and some additional information
 CONF_FILE = "/.crhc.conf"
