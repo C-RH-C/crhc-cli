@@ -40,13 +40,19 @@ check_packages()
 
 virtualenv()
 {
+  if [ $2 == "" ]; then
+    url="https://github.com/C-RH-C/crhc-cli.git"
+  else
+    url=$2
+  fi
+
   if [ -d /tmp/crhc-cli ]; then
     echo "## $(date +%m-%d-%Y_%H:%M:%S) - Removing current /tmp/crhc-cli dir ..."							| tee -a $LOG
     rm -rf /tmp/crhc-cli																																			| tee -a $LOG
   fi
 
-  echo "## $(date +%m-%d-%Y_%H:%M:%S) - Cloning the crhc-cli repository"											| tee -a $LOG
-  url="https://github.com/C-RH-C/crhc-cli.git"
+  echo "## $(date +%m-%d-%Y_%H:%M:%S) - Cloning the crhc-cli repository: $url"								| tee -a $LOG
+  #url="https://github.com/C-RH-C/crhc-cli.git"
   cd /tmp
   if [ "$1" <> " " ]; then
     echo "## $(date +%m-%d-%Y_%H:%M:%S) - Cloning the crhc-cli repository from branch '$1'"		| tee -a $LOG
@@ -279,6 +285,10 @@ pytest_def()
 
 
 
+## Main
+#
+# It starts from here
+#
 
 
 echo "## $(date +%m-%d-%Y_%H:%M:%S) - STARTING"																| tee -a $LOG
@@ -301,6 +311,8 @@ if [ "$1" == "-h" ] || [ "$1" == "--help" ] || [ "$1" == "" ] ; then
   echo "#"
   echo "#   -p <pipeline_#|required>"
   echo "#"
+  echo "#   -g <git repo|optional>"
+  echo "#"
   echo "#"
   echo "# Pipeline Options:"
   echo "#   0 - inventory"
@@ -316,16 +328,25 @@ if [ "$1" == "-h" ] || [ "$1" == "--help" ] || [ "$1" == "" ] ; then
   echo "#"
   echo "#   9999 - all together"
   echo "##########################"
+  echo ""
+  echo "e.g."
+  echo ""
+  echo "  $ $0 -b fix_report -p 9 -g git@github.com:waldirio/crhc-cli.git"
+  echo "  or"
+  echo "  $ $0 -b fix_report -p 9 -g https://github.com/waldirio/crhc-cli.git"
+  echo "  or"
+  echo "  $ $0 -p 9"
 fi
 
 
 
 
 # Passing the branch and also the pipeline
-if [ "$1" == "-b" ] && [ "$3" == "-p" ]; then
-  echo "## $(date +%m-%d-%Y_%H:%M:%S) - Passing the branch: $2 and the pipeline: $4"								| tee -a $LOG
+if [ "$1" == "-b" ] && [ "$3" == "-p" ] && [ "$5" == "-g" ]; then
+  echo "## $(date +%m-%d-%Y_%H:%M:%S) - Passing the branch: $2,the pipeline: $4 and the repo: $6"		| tee -a $LOG
   branch=$2
   pipeline=$4
+  gitrepo=$6
 fi
 
 if [ "$1" == "-p" ]; then
@@ -335,7 +356,7 @@ fi
 
 # It only will run once the tester pass the pipeline
 if [ $pipeline ]; then
-  virtualenv $branch
+  virtualenv $branch $gitrepo
 fi
 
 case $pipeline in
