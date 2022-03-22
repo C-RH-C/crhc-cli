@@ -6,6 +6,7 @@
 
 # from distutils import core
 import json
+
 # from queue import Empty
 # import socketserver
 import sys
@@ -15,19 +16,20 @@ import requests
 from credential import token
 from conf import conf
 
-# FIELDS_TO_RETRIEVE = "?fields[system_profile]=number_of_cpus,number_of_sockets,cores_per_socket,system_memory_bytes,bios_release_date,bios_vendor,bios_version,operating_system,os_kernel_version,os_release,infrastructure_type,infrastructure_vendor,insights_client_version"
 # FIELDS_TO_RETRIEVE = "?fields[system_profile]=number_of_sockets"
 FIELDS_TO_RETRIEVE = ""
 
 
 def connection_request(url):
     """
-    Definition responsible to receive the url, call it and send back the response,
-    updating the token whenever necessary.
+    Definition responsible to receive the url, call it and send back the
+    response, updating the token whenever necessary.
     """
 
     access_token = token.get_token()
-    response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+    response = requests.get(
+        url, headers={"Authorization": "Bearer {}".format(access_token)}
+    )
 
     return response
 
@@ -40,17 +42,23 @@ def check_authentication(response=None):
     if response is None:
         access_token = token.get_token()
         url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=1"
-        response = requests.get(url, headers={"Authorization": "Bearer {}".format(access_token)})
+        response = requests.get(
+            url, headers={"Authorization": "Bearer {}".format(access_token)}
+        )
         if response.status_code != 200:
-            print("Error: Failed to create C.RH.C connection: Not logged in, credentials aren't set, run the 'crhc login' command")
+            print(
+                "Error: Failed to create C.RH.C connection: Not logged in, \
+credentials aren't set, run the 'crhc login' command"
+            )
             sys.exit()
         else:
             return True
 
     elif response.status_code != 200:
-        # print("You are not authenticated yet.")
-        # print("Please, use './crhc user set', set the username and password and try again.")
-        print("Error: Failed to create C.RH.C connection: Not logged in, credentials aren't set, run the 'crhc login' command")
+        print(
+            "Error: Failed to create C.RH.C connection: Not logged in, \
+credentials aren't set, run the 'crhc login' command"
+        )
         sys.exit()
 
 
@@ -65,30 +73,37 @@ def inventory_list():
     check_authentication(response)
 
     list_of_servers = []
-    inventory_full_detail = {'results': '', 'total': response.json()['total']}
-    inventory_full_detail['results'] = list_of_servers
+    inventory_full_detail = {"results": "", "total": response.json()["total"]}
+    inventory_full_detail["results"] = list_of_servers
 
     stage_list = []
-    stage_dic = {'server': stage_list}
+    stage_dic = {"server": stage_list}
 
-    for server in response.json()['results']:
+    for server in response.json()["results"]:
 
         try:
-            stage_dic['server'] = server
+            stage_dic["server"] = server
         except json.decoder.JSONDecodeError:
-            stage_dic['server'] = {}
+            stage_dic["server"] = {}
 
-        server_id = server['id']
+        server_id = server["id"]
 
-        url = "https://console.redhat.com/api/inventory/v1/hosts/" + server_id + "/system_profile" + FIELDS_TO_RETRIEVE
+        url = (
+            "https://console.redhat.com/api/inventory/v1/hosts/"
+            + server_id
+            + "/system_profile"
+            + FIELDS_TO_RETRIEVE
+        )
         response_system_profile = connection_request(url)
 
         try:
-            stage_dic['system_profile'] = response_system_profile.json()['results'][0]['system_profile']
+            stage_dic["system_profile"] = response_system_profile.json()[
+                "results"
+            ][0]["system_profile"]
         except json.decoder.JSONDecodeError:
-            stage_dic['system_profile'] = {}
+            stage_dic["system_profile"] = {}
         except KeyError:
-            stage_dic['system_profile'] = {}
+            stage_dic["system_profile"] = {}
 
         list_of_servers.append(stage_dic)
         stage_dic = {}
@@ -109,7 +124,7 @@ def inventory_list_all():
     # number of pages based on that.
     # check_response = divmod(response.json()['total'], 50)
     # ITEMS_PER_PAGE = 10
-    check_response = divmod(response.json()['total'], conf.ITEMS_PER_PAGE)
+    check_response = divmod(response.json()["total"], conf.ITEMS_PER_PAGE)
 
     if check_response[1] == 0:
         num_of_pages = check_response[0] + 1
@@ -117,36 +132,48 @@ def inventory_list_all():
         num_of_pages = check_response[0] + 2
 
     list_of_servers = []
-    inventory_full_detail = {'results': '', 'total': response.json()['total']}
-    inventory_full_detail['results'] = list_of_servers
+    inventory_full_detail = {"results": "", "total": response.json()["total"]}
+    inventory_full_detail["results"] = list_of_servers
 
     stage_list = []
-    stage_dic = {'server': stage_list}
+    stage_dic = {"server": stage_list}
 
     # For debugin purposes
     # num_of_pages = 2
 
     for page in range(1, num_of_pages):
-        url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=" + str(conf.ITEMS_PER_PAGE) + "&page=" + str(page)
+        url = (
+            "https://console.redhat.com/api/inventory/v1/hosts?per_page="
+            + str(conf.ITEMS_PER_PAGE)
+            + "&page="
+            + str(page)
+        )
         response = connection_request(url)
 
-        for server in response.json()['results']:
+        for server in response.json()["results"]:
 
             try:
-                stage_dic['server'] = server
+                stage_dic["server"] = server
             except json.decoder.JSONDecodeError:
-                stage_dic['server'] = {}
+                stage_dic["server"] = {}
 
-            server_id = server['id']
-            url = "https://console.redhat.com/api/inventory/v1/hosts/" + server_id + "/system_profile" + FIELDS_TO_RETRIEVE
+            server_id = server["id"]
+            url = (
+                "https://console.redhat.com/api/inventory/v1/hosts/"
+                + server_id
+                + "/system_profile"
+                + FIELDS_TO_RETRIEVE
+            )
             response_system_profile = connection_request(url)
 
             try:
-                stage_dic['system_profile'] = response_system_profile.json()['results'][0]['system_profile']
+                stage_dic["system_profile"] = response_system_profile.json()[
+                    "results"
+                ][0]["system_profile"]
             except json.decoder.JSONDecodeError:
-                stage_dic['system_profile'] = {}
+                stage_dic["system_profile"] = {}
             except KeyError:
-                stage_dic['system_profile'] = {}
+                stage_dic["system_profile"] = {}
 
             list_of_servers.append(stage_dic)
             stage_dic = {}
@@ -159,32 +186,42 @@ def inventory_list_search_by_name(fqdn):
     This def will search the HBI entries by keyword
     """
 
-    url = "https://console.redhat.com/api/inventory/v1/hosts?hostname_or_id=" + fqdn
+    url = (
+        "https://console.redhat.com/api/inventory/v1/hosts?hostname_or_id="
+        + fqdn
+    )
     response = connection_request(url)
     check_authentication(response)
 
     list_of_servers = []
-    inventory_full_detail = {'results': '', 'total': response.json()['total']}
-    inventory_full_detail['results'] = list_of_servers
+    inventory_full_detail = {"results": "", "total": response.json()["total"]}
+    inventory_full_detail["results"] = list_of_servers
 
     stage_list = []
-    stage_dic = {'server': stage_list}
+    stage_dic = {"server": stage_list}
 
-    for server in response.json()['results']:
+    for server in response.json()["results"]:
 
-        stage_dic['server'] = server
+        stage_dic["server"] = server
 
-        server_id = server['id']
+        server_id = server["id"]
 
-        url = "https://console.redhat.com/api/inventory/v1/hosts/" + server_id + "/system_profile" + FIELDS_TO_RETRIEVE
+        url = (
+            "https://console.redhat.com/api/inventory/v1/hosts/"
+            + server_id
+            + "/system_profile"
+            + FIELDS_TO_RETRIEVE
+        )
         response_system_profile = connection_request(url)
 
         try:
-            stage_dic['system_profile'] = response_system_profile.json()['results'][0]['system_profile']
+            stage_dic["system_profile"] = response_system_profile.json()[
+                "results"
+            ][0]["system_profile"]
         except json.decoder.JSONDecodeError:
-            stage_dic['system_profile'] = {}
+            stage_dic["system_profile"] = {}
         except KeyError:
-            stage_dic['system_profile'] = {}
+            stage_dic["system_profile"] = {}
 
         list_of_servers.append(stage_dic)
         stage_dic = {}
@@ -199,8 +236,11 @@ def swatch_list():
 
     # ITEMS_PER_PAGE = 10
 
-    url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=" + str(conf.ITEMS_PER_PAGE) + "&offset=0&sort=display_name"
-    # url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=0&sort=display_name"
+    url = (
+        "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit="
+        + str(conf.ITEMS_PER_PAGE)
+        + "&offset=0&sort=display_name"
+    )
     response = connection_request(url)
     check_authentication(response)
 
@@ -214,49 +254,76 @@ def swatch_list_all():
 
     # ITEMS_PER_PAGE = 10
 
-    url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=" + str(conf.ITEMS_PER_PAGE) + "&offset=0&sort=display_name"
-    # url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=0&sort=display_name"
+    url = (
+        "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit="
+        + str(conf.ITEMS_PER_PAGE)
+        + "&offset=0&sort=display_name"
+    )
     response = connection_request(url)
     check_authentication(response)
 
-    num_of_pages = round(response.json()['meta']['count'] / conf.ITEMS_PER_PAGE + 1)
+    num_of_pages = round(
+        response.json()["meta"]["count"] / conf.ITEMS_PER_PAGE + 1
+    )
     # num_of_pages = round(response.json()['meta']['count'] / 100 + 1)
 
-    dic_full_list = {'data': '', 'meta': {'count': response.json()['meta']['count']}}
+    dic_full_list = {
+        "data": "",
+        "meta": {"count": response.json()["meta"]["count"]},
+    }
     full_list = []
     dup_kvm_servers = []
     server_with_no_dupes = []
 
     count = 0
     for page in range(0, num_of_pages):
-        url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=" + str(conf.ITEMS_PER_PAGE) + "&offset=" + str(count) + "&sort=display_name"
-        # url = "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit=100&offset=" + str(count) + "&sort=display_name"
+        url = (
+            "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL?limit="
+            + str(conf.ITEMS_PER_PAGE)
+            + "&offset="
+            + str(count)
+            + "&sort=display_name"
+        )
         response = connection_request(url)
         count = count + conf.ITEMS_PER_PAGE
         # count = count + 100
 
-        for entry in response.json()['data']:
+        for entry in response.json()["data"]:
             full_list.append(entry)
 
-
-    # The piece below is just to check/remove the duplicate entries caused by kvm/libvirt
-    # hypervisors. At this moment, swatch is creating 2 entries with the same facts, except
-    # for the measurement_type.
+    # The piece below is just to check/remove the duplicate entries
+    # caused by kvm/libvirt hypervisors. At this moment, swatch is
+    # creating 2 entries with the same facts, except for the measurement_type.
     count = 0
     for entry in full_list:
 
         for element in full_list:
-            if (entry.get('inventory_id') == element.get('inventory_id')) and \
-               (entry.get('insights_id') == element.get('insights_id')) and \
-               (entry.get('subscription_manager_id') == element.get('subscription_manager_id')) and \
-               (entry.get('display_name') == element.get('display_name')) and \
-               (entry.get('sockets') == element.get('sockets')) and \
-               (entry.get('cores') == element.get('cores')) and \
-               (entry.get('hardware_type') == element.get('hardware_type')) and \
-               (entry.get('measurement_type') != element.get('measurement_type')) and \
-               (entry.get('last_seen') == element.get('last_seen')) and \
-               (entry.get('is_unmapped_guest') == element.get('is_unmapped_guest')) and \
-               (entry.get('is_hypervisor') == element.get('is_hypervisor')):
+            if (
+                (entry.get("inventory_id") == element.get("inventory_id"))
+                and (entry.get("insights_id") == element.get("insights_id"))
+                and (
+                    entry.get("subscription_manager_id")
+                    == element.get("subscription_manager_id")
+                )
+                and (entry.get("display_name") == element.get("display_name"))
+                and (entry.get("sockets") == element.get("sockets"))
+                and (entry.get("cores") == element.get("cores"))
+                and (
+                    entry.get("hardware_type") == element.get("hardware_type")
+                )
+                and (
+                    entry.get("measurement_type")
+                    != element.get("measurement_type")
+                )
+                and (entry.get("last_seen") == element.get("last_seen"))
+                and (
+                    entry.get("is_unmapped_guest")
+                    == element.get("is_unmapped_guest")
+                )
+                and (
+                    entry.get("is_hypervisor") == element.get("is_hypervisor")
+                )
+            ):
                 # print("EQUAL for: {}".format(entry['display_name']))
                 count = count + 1
 
@@ -268,10 +335,10 @@ def swatch_list_all():
             count = 0
 
     # Updating the measurement_type to virtual, only for the servers
-    # which everything else was the same value, except for the measurement_type :)
+    # which everything else was the same value, except for the
+    # measurement_type :)
     for server in dup_kvm_servers:
-        server['measurement_type'] = "VIRTUAL"
-
+        server["measurement_type"] = "VIRTUAL"
 
     # Removing the duplicate entries and keeping only a single entry in the
     # server_with_no_dupes list
@@ -287,19 +354,21 @@ def swatch_list_all():
             if count == 0:
                 server_with_no_dupes.append(each_server)
 
-
-    # At this moment checking for the complete list and anything that has duplicate uuid
-    # will not be added to the final list called server_with_no_dupes
+    # At this moment checking for the complete list and anything that
+    # has duplicate uuid will not be added to the final list called
+    # server_with_no_dupes
     for each_server_fl in full_list:
         count = 0
         for each_server_no_dupe in server_with_no_dupes:
-            if each_server_fl['inventory_id'] == each_server_no_dupe['inventory_id']:
+            if (
+                each_server_fl["inventory_id"]
+                == each_server_no_dupe["inventory_id"]
+            ):
                 count = 1
         if count == 0:
             server_with_no_dupes.append(each_server_fl)
 
-
-    dic_full_list['data'] = server_with_no_dupes
+    dic_full_list["data"] = server_with_no_dupes
 
     return dic_full_list
 
@@ -318,21 +387,33 @@ def swatch_socket_summary():
     cloud_count = 0
     total_socket_count = 0
 
-    for server in item_list['data']:
+    for server in item_list["data"]:
         # Baremetal server
-        if server['hardware_type'] == 'PHYSICAL' and server['is_hypervisor'] is False:
-            baremetal_count = baremetal_count + server['sockets']
+        if (
+            server["hardware_type"] == "PHYSICAL"
+            and server["is_hypervisor"] is False
+        ):
+            baremetal_count = baremetal_count + server["sockets"]
         # Hypervisor server
-        if server['hardware_type'] == 'PHYSICAL' and server['is_hypervisor'] is True:
-            hypervisor_count = hypervisor_count + server['sockets']
+        if (
+            server["hardware_type"] == "PHYSICAL"
+            and server["is_hypervisor"] is True
+        ):
+            hypervisor_count = hypervisor_count + server["sockets"]
         # VM with no host guest mapping
-        if server['hardware_type'] == 'VIRTUALIZED' and server['is_hypervisor'] is False and server['is_unmapped_guest'] is True:
-            vm_with_no_host_guest_mapping = vm_with_no_host_guest_mapping + server['sockets']
+        if (
+            server["hardware_type"] == "VIRTUALIZED"
+            and server["is_hypervisor"] is False
+            and server["is_unmapped_guest"] is True
+        ):
+            vm_with_no_host_guest_mapping = (
+                vm_with_no_host_guest_mapping + server["sockets"]
+            )
         # Cloud server
-        if server['hardware_type'] == 'CLOUD':
-            cloud_count = cloud_count + server['sockets']
+        if server["hardware_type"] == "CLOUD":
+            cloud_count = cloud_count + server["sockets"]
 
-        total_socket_count = total_socket_count + server['sockets']
+        total_socket_count = total_socket_count + server["sockets"]
 
     print("Public Cloud ........: {}".format(cloud_count))
     print("Virtualized RHEL ....: {}".format(vm_with_no_host_guest_mapping))
@@ -351,43 +432,44 @@ def endpoint_list():
     response = connection_request(url)
     check_authentication(response)
 
-    dic_stage = {'services': []}
+    dic_stage = {"services": []}
 
-    # Removing in the app since the information is still around in Red Hat backend
+    # Removing in the app since the information is still
+    # around in Red Hat backend
     # https://bugzilla.redhat.com/show_bug.cgi?id=2020877
     # https://issues.redhat.com/browse/RHCLOUD-18236
     TO_REMOVE = (
-                "/api/aiops-clustering",
-                "/api/aiops-idle-cost-savings",
-                "/api/aiops-instance-type-validation",
-                "/api/aiops-outlier-detection",
-                "/api/aiops-volume-type-validation",
-                "/api/automation-hub",
-                "/api/cloudigrade",
-                "/api/custom-policies",
-                "/api/drift",
-                "/api/echo",
-                "/api/featureflags",
-                "/api/gathering",
-                "/api/historical-system-profiles",
-                "/api/hooks",
-                "/api/idp-configs-api",
-                "/api/image-builder",
-                "/api/leapp-data",
-                "/api/malware-detection",
-                "/api/marketplace-gateway",
-                "/api/module-update-router",
-                "/api/pes",
-                "/api/platform-feedback",
-                "/api/quickstarts",
-                "/api/receptor-controller",
-                "/api/rhsm",
-                "/api/subscriptions",
-                "/api/system-baseline",
-                "/api/topological-inventory",
-                "/api/upload",
-                "/api/webhooks",
-                "/api/xavier"
+        "/api/aiops-clustering",
+        "/api/aiops-idle-cost-savings",
+        "/api/aiops-instance-type-validation",
+        "/api/aiops-outlier-detection",
+        "/api/aiops-volume-type-validation",
+        "/api/automation-hub",
+        "/api/cloudigrade",
+        "/api/custom-policies",
+        "/api/drift",
+        "/api/echo",
+        "/api/featureflags",
+        "/api/gathering",
+        "/api/historical-system-profiles",
+        "/api/hooks",
+        "/api/idp-configs-api",
+        "/api/image-builder",
+        "/api/leapp-data",
+        "/api/malware-detection",
+        "/api/marketplace-gateway",
+        "/api/module-update-router",
+        "/api/pes",
+        "/api/platform-feedback",
+        "/api/quickstarts",
+        "/api/receptor-controller",
+        "/api/rhsm",
+        "/api/subscriptions",
+        "/api/system-baseline",
+        "/api/topological-inventory",
+        "/api/upload",
+        "/api/webhooks",
+        "/api/xavier",
     )
 
     # The method below should be working as expected .... however, it's not.
@@ -395,14 +477,14 @@ def endpoint_list():
     #     dic_stage.json()['services'].remove(api_to_remove)
     #     dic_stage.json()['services'].remove('/api/aiops-clustering')
 
-    for api_endpoint in response.json()['services']:
+    for api_endpoint in response.json()["services"]:
         count = 0
         for api_to_delete in TO_REMOVE:
             if api_endpoint == api_to_delete:
                 count = 1
 
         if count == 0:
-            dic_stage['services'].append(api_endpoint)
+            dic_stage["services"].append(api_endpoint)
 
     return dic_stage
 
@@ -422,7 +504,7 @@ def get_command(api_url):
         response = connection_request(url)
         check_authentication(response)
 
-        available_paths = response.json()['paths'].keys()
+        available_paths = response.json()["paths"].keys()
 
         # Testing "/api/patch" endoint, once this is the single one
         # causing problems with the paths (complete path and short path)
@@ -460,24 +542,31 @@ def update_check():
     let the user aware to download it.
     """
 
-    home_dir = os.path.expanduser('~')
+    home_dir = os.path.expanduser("~")
 
     # In case the file be not around yet.
     answer = ""
 
     if os.path.exists(home_dir + "/.crhc.version"):
-        file_age = (time.time() - (os.stat(home_dir + "/.crhc.version").st_mtime))
+        file_age = time.time() - (
+            os.stat(home_dir + "/.crhc.version").st_mtime
+        )
         # print(int(file_age))
 
-        # If the file is older than `conf.TIME_TO_CHECK_THE_NEW_VERSION`, then it
-        # will be updated.
+        # If the file is older than `conf.TIME_TO_CHECK_THE_NEW_VERSION`,
+        # then it will be updated.
         if int(file_age) < conf.TIME_TO_CHECK_THE_NEW_VERSION:
             file_ref = open(home_dir + "/.crhc.version")
             available_version = file_ref.read()
 
-            if int(available_version.replace(".", "")) > int(conf.CURRENT_VERSION.replace(".", "")):
-                answer = "Please, download the latests version from https://github.com/C-RH-C/crhc-cli/releases/latest\n\
-Current Version: {}\nNew Version: {}".format(conf.CURRENT_VERSION, available_version)
+            if int(available_version.replace(".", "")) > int(
+                conf.CURRENT_VERSION.replace(".", "")
+            ):
+                answer = "Please, download the latests version from \
+https://github.com/C-RH-C/crhc-cli/releases/latest\n\
+Current Version: {}\nNew Version: {}".format(
+                    conf.CURRENT_VERSION, available_version
+                )
             else:
                 answer = ""
         else:
@@ -491,14 +580,17 @@ Current Version: {}\nNew Version: {}".format(conf.CURRENT_VERSION, available_ver
         file_obj = open(home_dir + "/.crhc.version", "w")
         file_obj.write(available_version)
 
-        if int(available_version.replace(".", "")) > int(conf.CURRENT_VERSION.replace(".", "")):
+        if int(available_version.replace(".", "")) > int(
+            conf.CURRENT_VERSION.replace(".", "")
+        ):
             answer = "Please, download the latests version from https://github.com/C-RH-C/crhc-cli/releases/latest\n\
-Current Version: {}\nNew Version: {}".format(conf.CURRENT_VERSION, available_version)
+Current Version: {}\nNew Version: {}".format(
+                conf.CURRENT_VERSION, available_version
+            )
         else:
             answer = ""
 
     return answer
-
 
 
 def patch_systems():
@@ -512,26 +604,34 @@ def patch_systems():
 
     # ITEMS_PER_PAGE = 10
 
-    num_of_pages = int(response.json()['meta']['total_items'] / conf.ITEMS_PER_PAGE + 1)
+    num_of_pages = int(
+        response.json()["meta"]["total_items"] / conf.ITEMS_PER_PAGE + 1
+    )
     # num_of_pages = int(response.json()['meta']['total_items'] / 20 + 1)
 
-    dic_full_list = {'data': '', 'total': response.json()['meta']['total_items']}
+    dic_full_list = {
+        "data": "",
+        "total": response.json()["meta"]["total_items"],
+    }
     full_list = []
 
     count = 0
     for page in range(0, num_of_pages):
-        url = "https://console.redhat.com/api/patch/v1/systems?limit=" + str(conf.ITEMS_PER_PAGE) + "&offset=" + str(count) + "&sort=-last_upload"
-        # url = "https://console.redhat.com/api/patch/v1/systems?limit=20&offset=" + str(count) + "&sort=-last_upload"
+        url = (
+            "https://console.redhat.com/api/patch/v1/systems?limit="
+            + str(conf.ITEMS_PER_PAGE)
+            + "&offset="
+            + str(count)
+            + "&sort=-last_upload"
+        )
         count = count + conf.ITEMS_PER_PAGE
-        # count = count + 20
         response = connection_request(url)
 
-        for entry in response.json()['data']:
+        for entry in response.json()["data"]:
             full_list.append(entry)
 
-    dic_full_list['data'] = full_list
+    dic_full_list["data"] = full_list
     return dic_full_list
-
 
 
 def vulnerability_systems():
@@ -547,7 +647,9 @@ def vulnerability_systems():
 
     # Here we are checking the total number of objects and setting the correct
     # number of pages based on that.
-    check_response = divmod(response.json()['meta']['total_items'], conf.ITEMS_PER_PAGE)
+    check_response = divmod(
+        response.json()["meta"]["total_items"], conf.ITEMS_PER_PAGE
+    )
     # check_response = divmod(response.json()['meta']['total_items'], 20)
 
     if check_response[1] == 0:
@@ -555,23 +657,28 @@ def vulnerability_systems():
     else:
         num_of_pages = check_response[0] + 1
 
-
-
-    dic_full_list = {'data': '', 'total': response.json()['meta']['total_items']}
+    dic_full_list = {
+        "data": "",
+        "total": response.json()["meta"]["total_items"],
+    }
     full_list = []
 
     count = 0
     for page in range(0, num_of_pages):
-        url = "https://console.redhat.com/api/vulnerability/v1/systems?limit=" + str(conf.ITEMS_PER_PAGE) + "&offset=" + str(count) + "&sort=-last_upload"
-        # url = "https://console.redhat.com/api/vulnerability/v1/systems?limit=20&offset=" + str(count) + "&sort=-last_upload"
+        url = (
+            "https://console.redhat.com/api/vulnerability/v1/systems?limit="
+            + str(conf.ITEMS_PER_PAGE)
+            + "&offset="
+            + str(count)
+            + "&sort=-last_upload"
+        )
         count = count + conf.ITEMS_PER_PAGE
-        # count = count + 20
         response = connection_request(url)
 
-        for entry in response.json()['data']:
+        for entry in response.json()["data"]:
             full_list.append(entry)
 
-    dic_full_list['data'] = full_list
+    dic_full_list["data"] = full_list
     return dic_full_list
 
 
@@ -586,19 +693,26 @@ def advisor_systems():
     response = connection_request(url)
     check_authentication(response)
 
-    num_of_pages = int(response.json()['meta']['count'] / conf.ITEMS_PER_PAGE + 1)
+    num_of_pages = int(
+        response.json()["meta"]["count"] / conf.ITEMS_PER_PAGE + 1
+    )
 
-    dic_full_list = {'data': '', 'total': response.json()['meta']['count']}
+    dic_full_list = {"data": "", "total": response.json()["meta"]["count"]}
     full_list = []
 
     count = 0
     for page in range(0, num_of_pages):
-        url = "https://console.redhat.com/api/insights/v1/system?limit=" + str(conf.ITEMS_PER_PAGE) + "&offset=" + str(count)
+        url = (
+            "https://console.redhat.com/api/insights/v1/system?limit="
+            + str(conf.ITEMS_PER_PAGE)
+            + "&offset="
+            + str(count)
+        )
         count = count + conf.ITEMS_PER_PAGE
         response = connection_request(url)
 
-        for entry in response.json()['data']:
+        for entry in response.json()["data"]:
             full_list.append(entry)
 
-    dic_full_list['data'] = full_list
+    dic_full_list["data"] = full_list
     return dic_full_list
