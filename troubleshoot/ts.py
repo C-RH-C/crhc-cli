@@ -102,12 +102,12 @@ def compress_json_files():
     if os.path.isfile(conf.INV_JSON_FILE) and os.path.isfile(
         conf.SW_JSON_FILE
     ):
-        with ZipFile(conf.ZIP_FILE, "w") as zipObj:
-            zipObj.write(conf.INV_JSON_FILE)
-            zipObj.write(conf.SW_JSON_FILE)
-            zipObj.write(conf.PATCH_JSON_FILE)
-            zipObj.write(conf.VULNERABILITY_JSON_FILE)
-            zipObj.write(conf.ADVISOR_JSON_FILE)
+        with ZipFile(conf.ZIP_FILE, "w") as zip_obj:
+            zip_obj.write(conf.INV_JSON_FILE)
+            zip_obj.write(conf.SW_JSON_FILE)
+            zip_obj.write(conf.PATCH_JSON_FILE)
+            zip_obj.write(conf.VULNERABILITY_JSON_FILE)
+            zip_obj.write(conf.ADVISOR_JSON_FILE)
 
         if os.path.isfile(conf.ZIP_FILE):
             print("File {} created.".format(conf.ZIP_FILE))
