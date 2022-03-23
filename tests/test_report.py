@@ -28,7 +28,6 @@ def calling_csv_report_inventory():
         number_of_entries = len(aux['results'])
         report.csv_report_inventory(aux)
         return number_of_entries
-        pass
 
 
 def test_csv_report_inventory_counting_number_of_columns():
@@ -58,5 +57,4 @@ def test_csv_report_inventory_counting_number_of_rows():
     # Counting 3 rows, header + 2 lines from the input data
     with open(OUTPUT_CSV, "r") as file_obj:
         aux = file_obj.readlines()
-        pass
         assert len(aux) == number_of_entries + 1

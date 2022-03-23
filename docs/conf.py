@@ -1,3 +1,6 @@
+"""
+Configuration file for the Sphinx documentation builder.
+"""
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -10,6 +13,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+from conf import conf
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
@@ -22,7 +26,10 @@ copyright = '2021, Waldirio Pinheiro'
 author = 'Waldirio Pinheiro'
 
 # The full version, including alpha/beta/rc tags
-release = '1.7.7'
+
+# Pointing to the current conf file with the app version
+# release = '1.7.7'
+release = conf.CURRENT_VERSION
 
 
 # -- General configuration ---------------------------------------------------

@@ -4,9 +4,9 @@
     Module responsible for the main menu
 """
 
-from conf import conf
 import sys
 import json
+from conf import conf
 from execution import execution
 from report import report
 from credential import token
