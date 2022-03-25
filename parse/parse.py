@@ -4,9 +4,9 @@
     Module responsible for the main menu
 """
 
-from conf import conf
 import sys
 import json
+from conf import conf
 from execution import execution
 from report import report
 from credential import token
@@ -43,7 +43,8 @@ def inventory_sub_menu():
         # To print in JSON format
         try:
             if (sys.argv[1] == "inventory") and (sys.argv[2] == "list_all"):
-                # print("This process can spend some minutes according to the number of servers in your account.")
+                # print("This process can spend some minutes according to the
+                # number of servers in your account.")
                 response = execution.inventory_list_all()
                 print(json.dumps(response, indent=4))
                 sys.exit()
@@ -53,10 +54,15 @@ def inventory_sub_menu():
 
         # To print in JSON format
         try:
-            if (sys.argv[1] == "inventory") and (sys.argv[2] == "display_name"):
+            if (sys.argv[1] == "inventory") and (
+                sys.argv[2] == "display_name"
+            ):
 
                 if len(sys.argv) == 3:
-                    print("Please, pass the FQDN or Partial FQDN to display_name, for example 'crhc inventory display_name virt-who-esxi'")
+                    print(
+                        "Please, pass the FQDN or Partial FQDN to display_name, \
+for example 'crhc inventory display_name virt-who-esxi'"
+                    )
                     sys.exit()
                 fqdn = sys.argv[3]
                 response = execution.inventory_list_search_by_name(fqdn)
@@ -69,10 +75,15 @@ def inventory_sub_menu():
     # To print in JSON format
     if len(sys.argv) == 4 and (sys.argv[2]) == "display_name":
         try:
-            if (sys.argv[1] == "inventory") and (sys.argv[2] == "display_name"):
+            if (sys.argv[1] == "inventory") and (
+                sys.argv[2] == "display_name"
+            ):
 
                 if len(sys.argv) == 3:
-                    print("Please, pass the FQDN or Partial FQDN to display_name, for example 'crhc inventory display_name virt-who-esxi'")
+                    print(
+                        "Please, pass the FQDN or Partial FQDN to display_name, \
+for example 'crhc inventory display_name virt-who-esxi'"
+                    )
                     sys.exit()
                 fqdn = sys.argv[3]
                 response = execution.inventory_list_search_by_name(fqdn)
@@ -83,12 +94,21 @@ def inventory_sub_menu():
             ...
 
     # To print in CSV format
-    if len(sys.argv) == 5 and (sys.argv[2]) == "display_name" and (sys.argv[4]) == "--csv":
+    if (
+        len(sys.argv) == 5
+        and (sys.argv[2]) == "display_name"
+        and (sys.argv[4]) == "--csv"
+    ):
         try:
-            if (sys.argv[1] == "inventory") and (sys.argv[2] == "display_name"):
+            if (sys.argv[1] == "inventory") and (
+                sys.argv[2] == "display_name"
+            ):
 
                 if len(sys.argv) == 3:
-                    print("Please, pass the FQDN or Partial FQDN to display_name, for example 'crhc inventory display_name virt-who-esxi'")
+                    print(
+                        "Please, pass the FQDN or Partial FQDN to display_name, \
+for example 'crhc inventory display_name virt-who-esxi'"
+                    )
                     sys.exit()
                 fqdn = sys.argv[3]
                 response = execution.inventory_list_search_by_name(fqdn)
@@ -105,7 +125,11 @@ def inventory_sub_menu():
 
         # To print in CSV format
         try:
-            if (sys.argv[1] == "inventory") and (sys.argv[2] == "list") and (sys.argv[3] == "--csv"):
+            if (
+                (sys.argv[1] == "inventory")
+                and (sys.argv[2] == "list")
+                and (sys.argv[3] == "--csv")
+            ):
                 # execution.inventory_list()
                 response = execution.inventory_list()
                 report.csv_report_inventory(response)
@@ -116,10 +140,18 @@ def inventory_sub_menu():
 
         # To print in CSV format
         try:
-            if (sys.argv[1] == "inventory") and (sys.argv[2] == "list_all") and (sys.argv[3] == "--csv"):
-                # Checking if the connection still alive before printing sometihng
-                if (execution.check_authentication()):
-                    print("This process can spend some minutes according to the number of servers in your account.")
+            if (
+                (sys.argv[1] == "inventory")
+                and (sys.argv[2] == "list_all")
+                and (sys.argv[3] == "--csv")
+            ):
+                # Checking if the connection still alive before
+                # printing sometihng
+                if execution.check_authentication():
+                    print(
+                        "This process can spend some minutes according to \
+the number of servers in your account."
+                    )
                 response = execution.inventory_list_all()
                 report.csv_report_inventory(response)
                 sys.exit()
@@ -129,7 +161,11 @@ def inventory_sub_menu():
 
         # To print in CSV format
         try:
-            if (sys.argv[1] == "inventory") and (sys.argv[2] == "display_name") and (sys.argv[4] == "--csv"):
+            if (
+                (sys.argv[1] == "inventory")
+                and (sys.argv[2] == "display_name")
+                and (sys.argv[4] == "--csv")
+            ):
                 # execution.inventory_list()
                 response = execution.inventory_list_search_by_name()
                 report.csv_report_inventory(response)
@@ -188,7 +224,11 @@ def swatch_sub_menu():
 
         # To print in CSV format
         try:
-            if (sys.argv[1] == "swatch") and (sys.argv[2] == "list") and (sys.argv[3] == "--csv"):
+            if (
+                (sys.argv[1] == "swatch")
+                and (sys.argv[2] == "list")
+                and (sys.argv[3] == "--csv")
+            ):
                 response = execution.swatch_list()
                 report.csv_report_swatch(response)
 
@@ -199,7 +239,11 @@ def swatch_sub_menu():
 
         # To print in CSV format
         try:
-            if (sys.argv[1] == "swatch") and (sys.argv[2] == "list_all") and (sys.argv[3] == "--csv"):
+            if (
+                (sys.argv[1] == "swatch")
+                and (sys.argv[2] == "list_all")
+                and (sys.argv[3] == "--csv")
+            ):
                 response = execution.swatch_list_all()
                 report.csv_report_swatch(response)
                 sys.exit()
@@ -238,7 +282,6 @@ def patch_sub_menu():
         # Passing only swatch, the help menu will be presented.
         help_opt.help_patch_menu()
 
-
     if len(sys.argv) == 3:
 
         # To print in JSON format
@@ -251,14 +294,20 @@ def patch_sub_menu():
             # print("Error: {}".format(e))
             ...
 
-    if len(sys.argv) == 4 and ((sys.argv[3]) == "--help" or (sys.argv[3]) == "-h"):
+    if len(sys.argv) == 4 and (
+        (sys.argv[3]) == "--help" or (sys.argv[3]) == "-h"
+    ):
         help_opt.help_patch_menu()
 
     if len(sys.argv) == 4:
 
         # To print in CSV format
         try:
-            if (sys.argv[1] == "patch") and (sys.argv[2] == "systems") and (sys.argv[3] == "--csv"):
+            if (
+                (sys.argv[1] == "patch")
+                and (sys.argv[2] == "systems")
+                and (sys.argv[3] == "--csv")
+            ):
                 response = execution.patch_systems()
                 report.csv_report_patch(response)
 
@@ -278,7 +327,6 @@ def vulnerability_sub_menu():
         # Passing only swatch, the help menu will be presented.
         help_opt.help_vulnerability_menu()
 
-
     if len(sys.argv) == 3:
 
         # To print in JSON format
@@ -291,14 +339,20 @@ def vulnerability_sub_menu():
             # print("Error: {}".format(e))
             ...
 
-    if len(sys.argv) == 4 and ((sys.argv[3]) == "--help" or (sys.argv[3]) == "-h"):
+    if len(sys.argv) == 4 and (
+        (sys.argv[3]) == "--help" or (sys.argv[3]) == "-h"
+    ):
         help_opt.help_vulnerability_menu()
 
     if len(sys.argv) == 4:
 
         # To print in CSV format
         try:
-            if (sys.argv[1] == "vulnerability") and (sys.argv[2] == "systems") and (sys.argv[3] == "--csv"):
+            if (
+                (sys.argv[1] == "vulnerability")
+                and (sys.argv[2] == "systems")
+                and (sys.argv[3] == "--csv")
+            ):
                 response = execution.vulnerability_systems()
                 report.csv_report_vulnerability(response)
 
@@ -318,7 +372,6 @@ def advisor_sub_menu():
         # Passing only swatch, the help menu will be presented.
         help_opt.help_advisor_menu()
 
-
     if len(sys.argv) == 3:
 
         # To print in JSON format
@@ -331,14 +384,20 @@ def advisor_sub_menu():
             # print("Error: {}".format(e))
             ...
 
-    if len(sys.argv) == 4 and ((sys.argv[3]) == "--help" or (sys.argv[3]) == "-h"):
+    if len(sys.argv) == 4 and (
+        (sys.argv[3]) == "--help" or (sys.argv[3]) == "-h"
+    ):
         help_opt.help_advisor_menu()
 
     if len(sys.argv) == 4:
 
         # To print in CSV format
         try:
-            if (sys.argv[1] == "advisor") and (sys.argv[2] == "systems") and (sys.argv[3] == "--csv"):
+            if (
+                (sys.argv[1] == "advisor")
+                and (sys.argv[2] == "systems")
+                and (sys.argv[3] == "--csv")
+            ):
                 response = execution.advisor_systems()
                 report.csv_report_advisor(response)
 
@@ -371,8 +430,8 @@ def get_sub_menu():
 
 def login_sub_menu():
     """
-    Function responsible for pass the token and create the necessary configuration file
-    that will be used from this point.
+    Function responsible for pass the token and create the
+    necessary configuration file that will be used from this point.
     """
 
     # To present the available options
@@ -392,8 +451,9 @@ def login_sub_menu():
 
 def logout_sub_menu():
     """
-    Function responsile for remove all the content from the .conf file. This will remove all the
-    current information available in the local machine.
+    Function responsile for remove all the content from the .conf file.
+    This will remove all the current information available in the local
+    machine.
     """
     try:
         if sys.argv[1] == "logout":
@@ -406,8 +466,8 @@ def logout_sub_menu():
 
 def token_sub_menu():
     """
-    Here you can see the full access_key and use it in order to access the API
-    endpoint, for example
+    Here you can see the full access_key and use it in order to access
+    the API endpoint, for example
     """
     try:
         if sys.argv[1] == "token":
@@ -542,7 +602,6 @@ def main_menu():
             # print("swatch")
             patch_sub_menu()
 
-
         elif sys.argv[1] == "vulnerability":
             try:
                 if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
@@ -566,7 +625,6 @@ def main_menu():
 
             # print("swatch")
             advisor_sub_menu()
-
 
         elif sys.argv[1] == "get":
             try:
@@ -662,6 +720,8 @@ def main_menu():
         print("  -h, --help                         help for crhc")
         print("  -v, --version                      crhc version")
         print("")
-        print("Use \"crhc [command] --help\" for more information about a command.")
+        print(
+            'Use "crhc [command] --help" for more information about a command.'
+        )
         print("")
         print("{}".format(update_check()))

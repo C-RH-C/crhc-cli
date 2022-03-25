@@ -12,10 +12,13 @@ import requests
 
 def set_credential():
     """
-    Responsible to set the credential, create the local file and also validade if the
-    credential is working as expected
+    Responsible to set the credential, create the local file and also
+    validade if the credential is working as expected
     """
-    print("setting the credential. At this moment, the credential will be saved as clear text in ~/.crhc.conf")
+    print(
+        "setting the credential. At this moment, the credential will be \
+saved as clear text in ~/.crhc.conf"
+    )
     user = input("Type your console.redhat.com username: ")
     password = getpass.getpass("Type your console.redhat.com password: ")
 
@@ -28,7 +31,7 @@ def set_credential():
         print("Please, type again, wrong username or password")
         sys.exit()
 
-    home_dir = os.path.expanduser('~')
+    home_dir = os.path.expanduser("~")
     with open(home_dir + "/.crhc.conf", "w") as file_obj:
         file_obj.writelines("username:" + user)
         file_obj.writelines("\n")
@@ -37,21 +40,22 @@ def set_credential():
 
 def read_credential():
     """
-    Responsible to read the credential, and in case the credential is not present yet,
-    a new file will be created with no valid username and/or password
+    Responsible to read the credential, and in case the credential
+    is not present yet, a new file will be created with no valid
+    username and/or password
     """
-    home_dir = os.path.expanduser('~')
+    home_dir = os.path.expanduser("~")
 
     try:
         with open(home_dir + "/.crhc.conf", "r") as file_obj:
             for line in file_obj:
-                if 'username' in line:
+                if "username" in line:
                     username = line.split(":")[1]
-                if 'password' in line:
+                if "password" in line:
                     password = line.split(":")[1]
         return username, password
     except FileNotFoundError:
-        home_dir = os.path.expanduser('~')
+        home_dir = os.path.expanduser("~")
         with open(home_dir + "/.crhc.conf", "w") as file_obj:
             file_obj.writelines("username:")
             file_obj.writelines("\n")

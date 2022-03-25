@@ -1,3 +1,6 @@
+"""
+Configuration file for the Sphinx documentation builder.
+"""
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -12,6 +15,7 @@
 #
 import os
 import sys
+from conf import conf
 sys.path.insert(0, os.path.abspath('..'))
 
 
@@ -22,7 +26,10 @@ copyright = '2021, Waldirio Pinheiro'
 author = 'Waldirio Pinheiro'
 
 # The full version, including alpha/beta/rc tags
-release = '1.7.7'
+
+# Pointing to the current conf file with the app version
+# release = '1.7.7'
+release = conf.CURRENT_VERSION
 
 
 # -- General configuration ---------------------------------------------------

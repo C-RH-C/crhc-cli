@@ -195,4 +195,3 @@ Flags:\n\
     --csv     This will generate the output in CSV format. By default, it will be JSON.\
 "
     assert response == content
-
