@@ -1,6 +1,42 @@
 Changelog
 ---------
 
+**v1.10.10 - 03/25/2022**
+
+- [ENHANCEMENT] Fixing linters warnings - [`issue 97`_]
+- [ENHANCEMENT] Updating end to end test - [`issue 156`_]
+- [FIX] #118 - Fixing the api endpoint list - [`issue 118`_]
+- [ENHANCEMENT] Removing the square brackets and single quotations marks from installed product - [`issue 152`_]
+- [FIX] fixing the kvm dup entries - [`issue 40`_]
+
+.. _issue 97: https://github.com/C-RH-C/crhc-cli/issues/97
+.. _issue 156: https://github.com/C-RH-C/crhc-cli/issues/156
+.. _issue 118: https://github.com/C-RH-C/crhc-cli/issues/118
+.. _issue 152: https://github.com/C-RH-C/crhc-cli/issues/152
+.. _issue 40: https://github.com/C-RH-C/crhc-cli/issues/40
+
+
+
+**v1.9.9 - 03/01/2022**
+
+- [FIX] Issue when exporting the advisory data - [`issue 149`_]
+- [FIX] test updated - [`issue 147`_]
+- [ENHANCEMENT] MS version added
+- [ENHANCEMENT] Total # of entries added to swatch list_all - [`issue 135`_]
+- [ENHANCEMENT] Fixed the time to check for a new version - [`issue 127`_]
+- [FIX] Fixing some issues when generating the ts dump - [`issue 136`_]
+- [ENHANCEMENT] Adding the GPL 3 license - [`issue 134`_]
+- [ENHANCEMENT] fix readme links
+- [ENHANCEMENT] some update in the documentation
+- [ENHANCEMENT] end to end test added
+
+.. _issue 149: https://github.com/C-RH-C/crhc-cli/issues/149
+.. _issue 147: https://github.com/C-RH-C/crhc-cli/issues/147
+.. _issue 135: https://github.com/C-RH-C/crhc-cli/issues/135
+.. _issue 127: https://github.com/C-RH-C/crhc-cli/issues/127
+.. _issue 136: https://github.com/C-RH-C/crhc-cli/issues/136
+.. _issue 134: https://github.com/C-RH-C/crhc-cli/pull/134
+
 
 **v1.8.8 - 11/06/2021**
 

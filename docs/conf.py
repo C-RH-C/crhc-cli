@@ -15,7 +15,7 @@ Configuration file for the Sphinx documentation builder.
 #
 import os
 import sys
-from conf import conf
+# from conf import conf
 sys.path.insert(0, os.path.abspath('..'))
 
 
@@ -28,8 +28,8 @@ author = 'Waldirio Pinheiro'
 # The full version, including alpha/beta/rc tags
 
 # Pointing to the current conf file with the app version
-# release = '1.7.7'
-release = conf.CURRENT_VERSION
+release = '1.10.10'
+# release = conf.CURRENT_VERSION
 
 
 # -- General configuration ---------------------------------------------------

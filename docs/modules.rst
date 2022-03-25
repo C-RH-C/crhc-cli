@@ -4,12 +4,12 @@ crhc-cli
 .. toctree::
    :maxdepth: 4
 
-   crhc
-   parse
    conf
    credential
+   crhc
    execution
    help
+   parse
    report
    tests
    troubleshoot
