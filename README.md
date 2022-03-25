@@ -8,11 +8,12 @@ This project contains the `crhc` command line tool that simplifies the use of th
 <br>
 
 **crhc-cli** will work on those versions of python:
-- 3.6
-- 3.7
-- 3.8
-- 3.9
+- 3.6+
 <br>
+
+**Supported Platforms**: At this moment supporting `Linux` and `MS Windows`.
+<br><br><br>
+
 
 Documentation is on [Read the Docs](https://crhc-cli.readthedocs.io). Code repository and issue tracker are on [GitHub](https://github.com/C-RH-C/crhc-cli/).
 
