@@ -147,6 +147,7 @@ def inventory_list_all():
             + str(conf.ITEMS_PER_PAGE)
             + "&page="
             + str(page)
+            + "&order_by=display_name"
         )
         response = connection_request(url)
 
