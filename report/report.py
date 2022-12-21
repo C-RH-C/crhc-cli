@@ -122,6 +122,13 @@ def check_for_system_purpose_role(entries):
         count = 0
         for source in entries["server"]["facts"]:
             try:
+                if source["facts"]["SYSPURPOSE_ROLE"]:
+                    stage_lst = source["facts"]["SYSPURPOSE_ROLE"]
+                    count = 1
+            except KeyError:
+                ...
+
+            try:
                 if source["facts"]["system_purpose_role"]:
                     stage_lst = source["facts"]["system_purpose_role"]
                     count = 1
@@ -145,6 +152,13 @@ def check_for_system_purpose_usage(entries):
     elif len(entries["server"]["facts"]) > 0:
         count = 0
         for source in entries["server"]["facts"]:
+            try:
+                if source["facts"]["SYSPURPOSE_USAGE"]:
+                    stage_lst = source["facts"]["SYSPURPOSE_USAGE"]
+                    count = 1
+            except KeyError:
+                ...
+
             try:
                 if source["facts"]["system_purpose_usage"]:
                     stage_lst = source["facts"]["system_purpose_usage"]
