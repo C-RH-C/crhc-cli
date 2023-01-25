@@ -72,6 +72,27 @@ for example 'crhc inventory display_name virt-who-esxi'"
             # print("Error: {}".format(e))
             ...
 
+        # To print in JSON format
+        try:
+            if (sys.argv[1] == "inventory") and (sys.argv[2] == "remove_stale"):
+                # execution.inventory_list()
+                # response = execution.inventory_list()
+                # print(response)
+                # print(json.dumps(response, indent=4))
+                num_of_days=input("Please, type the # of days with no updates. 0 for today, 1 for yesteday, 2 for 2 days ago ...: ")
+                if num_of_days.isdigit():
+                    pass
+                else:                
+                    print("invalid entry, exiting")
+                    sys.exit()
+                response = execution.inventory_remove_stale(num_of_days)
+                # print("end here")
+                sys.exit()
+        except IndexError as e:
+            # print("Error: {}".format(e))
+            ...
+
+
     # To print in JSON format
     if len(sys.argv) == 4 and (sys.argv[2]) == "display_name":
         try:
@@ -173,6 +194,9 @@ the number of servers in your account."
         except IndexError as e:
             # print("Error: {}".format(e))
             ...
+
+
+
 
 
 def swatch_sub_menu():

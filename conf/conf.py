@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 # Current Version
-CURRENT_VERSION = "1.10.11"
+CURRENT_VERSION = "1.10.12"
 
 #  Some file references
 
@@ -25,6 +25,8 @@ ISSUE_SUMMARY = (p / "issue_summary.log").resolve()
 PATCH_SYSTEMS_FILE = (p / "patch_systems.csv").resolve()
 VULNERABILITY_SYSTEMS_FILE = (p / "vulnerability_systems.csv").resolve()
 ADVISOR_FILE = (p / "advisor_systems.csv").resolve()
+
+STALE_FILE = (p / "stale_systems_based_on_date.json").resolve()
 
 # TS Info
 INV_JSON_FILE = (p / "inventory.json").resolve()

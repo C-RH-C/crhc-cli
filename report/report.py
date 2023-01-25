@@ -6,6 +6,7 @@
 # from os import write
 import csv
 import os
+import json
 from conf import conf
 
 
@@ -1616,3 +1617,12 @@ def csv_report_advisor(json_obj):
         writer.writerows(report_list)
 
     print("File {} created".format(conf.ADVISOR_FILE))
+
+
+
+def json_stale_systems(stale_srv_list):
+    print("inside the report")
+    # print(json.dumps(stale_srv_list, indent=4))
+
+    with open(conf.STALE_FILE, "w") as file_obj:
+        file_obj.write(json.dumps(stale_srv_list, indent=4))

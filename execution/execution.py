@@ -13,6 +13,8 @@ import sys
 import os
 import time
 import requests
+import datetime
+from report import report
 from credential import token
 from conf import conf
 
@@ -32,6 +34,21 @@ def connection_request(url):
     )
 
     return response
+
+
+def connection_request_delete(url):
+    """
+    Definition responsible to receive the url, call it and send back the
+    response, updating the token whenever necessary.
+    """
+
+    access_token = token.get_token()
+    response = requests.delete(
+        url, headers={"Authorization": "Bearer {}".format(access_token)}
+    )
+
+    return response
+
 
 
 def check_authentication(response=None):
@@ -182,6 +199,80 @@ def inventory_list_all():
     return inventory_full_detail
 
 
+def inventory_list_all_no_system_profile():
+    """
+    This def will collect all the HBI entries, but only the hosts information
+    """
+
+    url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=1"
+    response = connection_request(url)
+    check_authentication(response)
+
+    # Here we are checking the total number of objects and setting the correct
+    # number of pages based on that.
+    # check_response = divmod(response.json()['total'], 50)
+    # ITEMS_PER_PAGE = 10
+    check_response = divmod(response.json()["total"], conf.ITEMS_PER_PAGE)
+
+    if check_response[1] == 0:
+        num_of_pages = check_response[0] + 1
+    else:
+        num_of_pages = check_response[0] + 2
+
+    list_of_servers = []
+    inventory_full_detail = {"results": "", "total": response.json()["total"]}
+    inventory_full_detail["results"] = list_of_servers
+
+    stage_list = []
+    stage_dic = {"server": stage_list}
+
+    # For debugin purposes
+    # num_of_pages = 2
+
+    for page in range(1, num_of_pages):
+        url = (
+            "https://console.redhat.com/api/inventory/v1/hosts?per_page="
+            + str(conf.ITEMS_PER_PAGE)
+            + "&page="
+            + str(page)
+            + "&order_by=display_name"
+        )
+        response = connection_request(url)
+
+        # debug
+        # print("page # {}".format(page))
+
+        for server in response.json()["results"]:
+
+            try:
+                stage_dic["server"] = server
+            except json.decoder.JSONDecodeError:
+                stage_dic["server"] = {}
+
+            # server_id = server["id"]
+            # url = (
+            #     "https://console.redhat.com/api/inventory/v1/hosts/"
+            #     + server_id
+            #     + "/system_profile"
+            #     + FIELDS_TO_RETRIEVE
+            # )
+            # response_system_profile = connection_request(url)
+
+            # try:
+            #     stage_dic["system_profile"] = response_system_profile.json()[
+            #         "results"
+            #     ][0]["system_profile"]
+            # except json.decoder.JSONDecodeError:
+            #     stage_dic["system_profile"] = {}
+            # except KeyError:
+            #     stage_dic["system_profile"] = {}
+
+            list_of_servers.append(stage_dic)
+            stage_dic = {}
+
+    return inventory_full_detail
+
+
 def inventory_list_search_by_name(fqdn):
     """
     This def will search the HBI entries by keyword
@@ -228,6 +319,64 @@ def inventory_list_search_by_name(fqdn):
         stage_dic = {}
 
     return inventory_full_detail
+
+
+def inventory_remove_stale(num_of_days):
+
+    print("The file with the server list to be removed will be created here: {}".format(conf.STALE_FILE))
+    # Getting the current date and time
+    current_date = datetime.datetime.now()
+    # Calculating the date to be tested and removed before that
+    date_to_test_and_remove = current_date - datetime.timedelta(days=int(num_of_days))
+
+    print("Inside remove stale, # of days: {}".format(num_of_days))
+    print("Please, wait while checking the information ...")
+    list_server_with_no_system_profile = inventory_list_all_no_system_profile()
+
+    # print("ready to go")
+    stage_lst = []
+
+    for srv in list_server_with_no_system_profile['results']:
+        srv_last_update = srv['server']['updated'].split("T")[0]
+        # To convert from string to format type
+        srv_last_update_time_format = datetime.datetime.strptime(srv_last_update, "%Y-%m-%d")
+        if srv_last_update_time_format < date_to_test_and_remove:
+            stage_lst.append(srv)
+
+    report.json_stale_systems(stage_lst)
+
+    count = len(stage_lst)
+    print("We got {} entries with date equal or less than {}.".format(count, date_to_test_and_remove.strftime("%Y-%m-%d")))
+    print("if you wish, you can open a second terminal and double-check the file {} with the complete list of servers that will be removed, before you proceed.".format(conf.STALE_FILE))
+    opt = input("Would you like to proceed and remove then? (y|Y|n|N): ")
+
+    if (opt == "y") or (opt == "Y"):
+        # print("proceed")
+        inventory_remove_entry(stage_lst)
+    elif (opt == "n") or (opt == "N"):
+        print("Canceling")
+    else:
+        print("Invalid option")
+
+    # print("ready to go")
+
+
+def inventory_remove_entry(srv_to_be_removed):
+    # print("we are here to remove the entries")
+
+    if len(srv_to_be_removed) == 0:
+        print("Nothing to remove")
+        sys.exit()
+
+    for srv in srv_to_be_removed:
+        print("here to check")
+        srv_uuid = srv['server']['id']
+        last_update = srv['server']['updated']
+        # srv_uuid = "1784587a-a502-4b98-97ea-634e92e882e2"
+        url = ("https://console.redhat.com/api/inventory/v1/hosts/" + srv_uuid)
+        print("Removing .: {}, last update at: {}".format(url, last_update))
+        response = connection_request_delete(url)
+        check_authentication(response)
 
 
 def swatch_list():
