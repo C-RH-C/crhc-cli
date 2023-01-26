@@ -201,7 +201,8 @@ def inventory_list_all():
 
 def inventory_list_all_no_system_profile():
     """
-    This def will collect all the HBI entries, but only the hosts information
+    This def will collect all the HBI entries. This call will be pretty quick
+    once we are not consulting the system_profile endpoint, just the host one.
     """
 
     url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=1"
@@ -248,24 +249,6 @@ def inventory_list_all_no_system_profile():
                 stage_dic["server"] = server
             except json.decoder.JSONDecodeError:
                 stage_dic["server"] = {}
-
-            # server_id = server["id"]
-            # url = (
-            #     "https://console.redhat.com/api/inventory/v1/hosts/"
-            #     + server_id
-            #     + "/system_profile"
-            #     + FIELDS_TO_RETRIEVE
-            # )
-            # response_system_profile = connection_request(url)
-
-            # try:
-            #     stage_dic["system_profile"] = response_system_profile.json()[
-            #         "results"
-            #     ][0]["system_profile"]
-            # except json.decoder.JSONDecodeError:
-            #     stage_dic["system_profile"] = {}
-            # except KeyError:
-            #     stage_dic["system_profile"] = {}
 
             list_of_servers.append(stage_dic)
             stage_dic = {}
@@ -322,6 +305,12 @@ def inventory_list_search_by_name(fqdn):
 
 
 def inventory_remove_stale(num_of_days):
+    """
+    Def responsible to receive the # of days and check
+    all the servers currently in console.redhat.com, check the last
+    update and compare with the current date - num_of_days passed
+    by the customer.
+    """
 
     print("The file with the server list to be removed will be created here: {}".format(conf.STALE_FILE))
     # Getting the current date and time
@@ -362,6 +351,9 @@ def inventory_remove_stale(num_of_days):
 
 
 def inventory_remove_entry(srv_to_be_removed):
+    """
+    Def responsible to remove the entry from console.redhat.com
+    """
     # print("we are here to remove the entries")
 
     if len(srv_to_be_removed) == 0:

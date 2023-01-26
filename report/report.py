@@ -1621,7 +1621,11 @@ def csv_report_advisor(json_obj):
 
 
 def json_stale_systems(stale_srv_list):
-    print("inside the report")
+    """
+    Responsible for write down the entries that will be removed. Note,
+    it will be in JSON format.
+    """
+    # print("inside the report")
     # print(json.dumps(stale_srv_list, indent=4))
 
     with open(conf.STALE_FILE, "w") as file_obj:
