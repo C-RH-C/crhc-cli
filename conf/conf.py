@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 # Current Version
-CURRENT_VERSION = "1.10.12"
+CURRENT_VERSION = "1.11.12"
 
 #  Some file references
 
