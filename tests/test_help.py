@@ -49,6 +49,7 @@ Available Commands:\n\
     list            List the inventory entries, first 50\n\
     list_all        List all the inventory entries\n\
     display_name    Please, type the FQDN or Partial Hostname\n\
+    remove_stale    Remove all the stale entries based on the # of days\n\
     \n\
 Flags: \n\
     --csv           This will generate the output in CSV format. By default, it will be JSON.\
