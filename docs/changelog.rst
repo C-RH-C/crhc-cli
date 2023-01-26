@@ -1,6 +1,24 @@
 Changelog
 ---------
 
+
+**v1.11.12 - 01/26/2023**
+
+- [ENHANCEMENT] Adding the new feature to remove stale entries based on the # of days - [`issue 24`_]
+- [FIX] Fixing the syspurpose issue - [`issue 168`_]
+
+.. _issue 168: https://github.com/C-RH-C/crhc-cli/issues/168
+.. _issue 24: https://github.com/C-RH-C/crhc-cli/issues/24
+
+
+
+**v1.10.11 - 08/16/2022**
+
+- [FIX] Ordering the inventory output, avoiding wrong information - [`issue 163`_]
+.. _issue 163: https://github.com/C-RH-C/crhc-cli/issues/163
+
+
+
 **v1.10.10 - 03/25/2022**
 
 - [ENHANCEMENT] Fixing linters warnings - [`issue 97`_]
@@ -38,6 +56,7 @@ Changelog
 .. _issue 134: https://github.com/C-RH-C/crhc-cli/pull/134
 
 
+
 **v1.8.8 - 11/06/2021**
 
 - [ENHANCEMENT] Docs updated and Feature page created - [`issue 125`_]
@@ -63,6 +82,7 @@ Changelog
 .. _issue 102: https://github.com/C-RH-C/crhc-cli/issues/102
 
 
+
 **v1.7.7 - 10/16/2021**
 
 - [ENHANCEMENT] issue_summary_created - [`issue 76`_]
@@ -78,6 +98,7 @@ Changelog
 .. _issue 88: https://github.com/C-RH-C/crhc-cli/issues/88
 
 
+
 **v1.6.6 - 10/12/2021**
 
 - [ENHANCEMENT] help redesigned and some tests added - [`issue 82`_]
@@ -86,11 +107,14 @@ Changelog
 .. _issue 82: https://github.com/C-RH-C/crhc-cli/issues/82
 
 
+
 **v1.5.6 - 10/03/2021**
 
 - [FIX] Fixed the correct # of pages and servers - [`issue 78`_]
 
 .. _issue 78: https://github.com/C-RH-C/crhc-cli/issues/78
+
+
 
 **v1.5.5 - 10/02/2021**
 
@@ -111,10 +135,12 @@ Changelog
 .. _issue 59: https://github.com/C-RH-C/crhc-cli/issues/59
 
 
+
 **v1.4.4 - 09/23/2021**
 
 - [FIX] Fixing the error caused by an empty conf file
 - [FIX] fixing a minor typo that is causing keyerror issue for the inventory list - short version
+
 
 
 **v1.4.3 - 09/11/2021**
@@ -145,6 +171,7 @@ Changelog
 - [FEATURE] Authentication using Token
 
 
+
 **v1.1.0 08/25/2021**
 
 - [RFE] remove the sort keys in the JSON output
@@ -152,6 +179,7 @@ Changelog
 - [FEATURE] # of sockets based on the swatch info - Summary
 - [FEATURE] List all the available API endpoints in console.redhat.com
 - [FEATURE] Way to query the API endpoint directly
+
 
 
 **v1.0.0 - 08/07/2021**
