@@ -1,6 +1,7 @@
 Changelog
 ---------
 
+
 **v1.10.12 - 01/26/2023**
 
 - [ENHANCEMENT] Adding the new feature to remove stale entries based on the # of days - [`issue 24`_]
