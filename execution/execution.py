@@ -157,6 +157,7 @@ def inventory_list_all():
 
     # For debugin purposes
     # num_of_pages = 2
+   
 
     for page in range(1, num_of_pages):
         url = (
@@ -168,6 +169,28 @@ def inventory_list_all():
         )
         response = connection_request(url)
 
+        inventory_batch = []
+        is_first_server = True
+        server_detail_url = "https://console.redhat.com/api/inventory/v1/hosts/"
+        for server in response.json()["results"]:
+            server_id = server["id"]
+            inventory_batch.append(server_id)
+            # if its the first entry
+            if (len(inventory_batch) == 1):
+                server_detail_url = server_detail_url + server_id
+            else:
+                server_detail_url = server_detail_url + "," + server_id
+
+        # now call the server details request with up to 50 ids
+        url = (
+                server_detail_url
+                + "/system_profile"
+                + FIELDS_TO_RETRIEVE
+            )
+        response_system_profile = connection_request(url)
+        
+        
+        # now loop through the original server request
         for server in response.json()["results"]:
 
             try:
@@ -176,18 +199,13 @@ def inventory_list_all():
                 stage_dic["server"] = {}
 
             server_id = server["id"]
-            url = (
-                "https://console.redhat.com/api/inventory/v1/hosts/"
-                + server_id
-                + "/system_profile"
-                + FIELDS_TO_RETRIEVE
-            )
-            response_system_profile = connection_request(url)
 
             try:
-                stage_dic["system_profile"] = response_system_profile.json()[
-                    "results"
-                ][0]["system_profile"]
+                server_details_list = response_system_profile.json()["results"]
+                # loop through all the server details - finding the one that matches the id we're looping through
+                for server_details in server_details_list:
+                    if (server_details["id"] == server_id ):
+                      stage_dic["system_profile"] = server_details["system_profile"]
             except json.decoder.JSONDecodeError:
                 stage_dic["system_profile"] = {}
             except KeyError:
