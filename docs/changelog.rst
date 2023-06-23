@@ -2,6 +2,14 @@ Changelog
 ---------
 
 
+**v1.12.12 - 06/23/2023**
+
+- [ENHANCEMENT] changed inventory_list_all to collect details in batches of 50 - [`issue 180`_]
+
+.. _issue 180: https://github.com/C-RH-C/crhc-cli/issues/180
+
+
+
 **v1.11.12 - 01/26/2023**
 
 - [ENHANCEMENT] Adding the new feature to remove stale entries based on the # of days - [`issue 24`_]
