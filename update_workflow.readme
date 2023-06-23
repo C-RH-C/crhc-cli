@@ -14,14 +14,6 @@ Don't forget to revoke the token once your tests are done.
 
 
 
-Create the binary version for Linux & Windows
----
-# pyinstaller --onefile crhc.py
----
-Note. The file will be available under "crhc-cli/dist" folder. Please, feel free to rename the file to "crhc-linux-x64" in case of Linux build or "crhc-win-x64.exe" in case of MS Windows build.
-
-
-
 Execute the commnand below and collect all the changes above the last tag/version/release
 ---
 $ git log --oneline
@@ -70,6 +62,16 @@ git add <files that were changed>
 git commit -m "nice description about the new version here"
 git push --set-upstream origin new_version
 ---
+
+
+
+Ok. Once you have the latest version available in the master repo, let's create the binary version for Linux & Windows. In your local repo that you ran the test
+---
+(crhc-cli) # git checkout master
+(crhc-cli) # git pull
+(crhc-cli) # pyinstaller --onefile crhc.py
+---
+Note. The file will be available under "crhc-cli/dist" folder. Please, feel free to rename the file to "crhc-linux-x64" in case of Linux build or "crhc-win-x64.exe" in case of MS Windows build.
 
 
 
