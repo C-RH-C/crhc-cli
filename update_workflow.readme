@@ -1,0 +1,78 @@
+In a different system, execute the steps below to check if the application is working. Please, request a new token and add it to the .token file.
+---
+# > ~/.token
+# vi ~/.token
+<< the file will be something like >>
+<< TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCIg..." >>
+# cd /root
+# git clone https://github.com/C-RH-C/crhc-cli.git
+# cd crhc-cli/tests
+# ./end-to-end_crhc-cli_check.sh -p 9999
+---
+Note. The steps above will do all the tests and will generate a log file "/tmp/crhc-system-test_$DATE.log" that you could review in the end. Assuming that everything is ok, we can move on.
+Don't forget to revoke the token once your tests are done.
+
+
+
+Execute the commnand below and collect all the changes above the last tag/version/release
+---
+$ git log --oneline
+---
+
+
+
+Create a new branch here for the "new_version"
+
+
+
+Edit the file "conf/conf.py" and change accordingly.
+---
+CURRENT_VERSION = "1.11.12"
+---
+Note. X.Y.Z, where:
+	X is a Major change
+	Y is Enhancement
+	Z is BugFix
+
+
+
+Check the Commits and Issues related to the changes. If there is no Issue associated to them, please, create one and do the association. It will be used in the next step.
+
+
+
+Edit the file "docs/changelog.rst" and add the changelog for the new version. Below we can see an example
+---
+**v1.11.12 - 01/26/2023**
+
+- [ENHANCEMENT] Adding the new feature to remove stale entries based on the # of days - [`issue 24`_]
+- [FIX] Fixing the syspurpose issue - [`issue 168`_]
+
+.. _issue 168: https://github.com/C-RH-C/crhc-cli/issues/168
+.. _issue 24: https://github.com/C-RH-C/crhc-cli/issues/24
+
+<...>
+---
+
+
+
+Now, it's time to push.
+---
+git status
+git add <files that were changed>
+git commit -m "nice description about the new version here"
+git push --set-upstream origin new_version
+---
+
+
+
+Ok. Once you have the latest version available in the master repo, let's create the binary version for Linux & Windows. In your local repo that you ran the test
+---
+(crhc-cli) # git checkout master
+(crhc-cli) # git pull
+(crhc-cli) # pyinstaller --onefile crhc.py
+---
+Note. The file will be available under "crhc-cli/dist" folder. Please, feel free to rename the file to "crhc-linux-x64" in case of Linux build or "crhc-win-x64.exe" in case of MS Windows build.
+
+
+
+Once it's done via CLI, just access the github page, proceed with the merge, in a sequence, create a new Release, it will also create a new tag. Keep in mind, th tag should match with the CURRENT_VESION set above.

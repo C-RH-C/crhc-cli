@@ -157,7 +157,8 @@ def inventory_list_all(current_only=False):
 
     # For debugin purposes
     # num_of_pages = 2
-   
+      
+
 
     for page in range(1, num_of_pages):
         url = (
@@ -169,6 +170,9 @@ def inventory_list_all(current_only=False):
         )
         response = connection_request(url)
 
+        inventory_batch = []
+        is_first_server = True
+        server_detail_url = "https://console.redhat.com/api/inventory/v1/hosts/"
         inventory_batch = []
         is_first_server = True
         server_detail_url = "https://console.redhat.com/api/inventory/v1/hosts/"
