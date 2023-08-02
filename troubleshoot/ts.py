@@ -13,7 +13,7 @@ from report import report
 from conf import conf
 
 
-def dump_inv_json():
+def dump_inv_json(current_only):
     """
     Function to dump only Inventory information
     """
@@ -25,13 +25,13 @@ some time to finish".format(
                 conf.INV_JSON_FILE
             )
         )
-    inventory = execution.inventory_list_all()
+    inventory = execution.inventory_list_all(current_only)
 
     file_obj = open(conf.INV_JSON_FILE, "w")
     file_obj.write(json.dumps(inventory, indent=4))
 
 
-def dump_sw_json():
+def dump_sw_json(current_only):
     """
     Function to dump only Swatch information
     """
@@ -41,7 +41,7 @@ def dump_sw_json():
             conf.SW_JSON_FILE
         )
     )
-    swatch = execution.swatch_list_all()
+    swatch = execution.swatch_list_all(current_only)
 
     file_obj = open(conf.SW_JSON_FILE, "w")
     file_obj.write(json.dumps(swatch, indent=4))
@@ -135,7 +135,7 @@ def match_hbi_sw():
             "File {} already in place, using it.".format(conf.INV_JSON_FILE)
         )
     except FileNotFoundError:
-        dump_inv_json()
+        dump_inv_json(False)
         file_obj = open(conf.INV_JSON_FILE, "r")
         inventory = json.load(file_obj)
 
@@ -144,7 +144,7 @@ def match_hbi_sw():
         swatch = json.load(file_obj)
         print("File {} already in place, using it.".format(conf.SW_JSON_FILE))
     except FileNotFoundError:
-        dump_sw_json()
+        dump_sw_json(False)
         file_obj = open(conf.SW_JSON_FILE, "r")
         swatch = json.load(file_obj)
 

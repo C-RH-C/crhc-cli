@@ -530,8 +530,21 @@ def troubleshoot_sub_menu():
 
     try:
         if (sys.argv[1] == "ts") and (sys.argv[2] == "dump"):
-            ts.dump_inv_json()
-            ts.dump_sw_json()
+            ts.dump_inv_json(False)
+            ts.dump_sw_json(False)
+            ts.dump_patch_json()
+            ts.dump_vulnerability_json()
+            ts.dump_advisor_json()
+            ts.compress_json_files()
+            sys.exit()
+    except IndexError as e:
+        # print("Error1: {}".format(e))
+        ...
+    
+    try:
+        if (sys.argv[1] == "ts") and (sys.argv[2] == "dump_current"):
+            ts.dump_inv_json(True)
+            ts.dump_sw_json(True)
             ts.dump_patch_json()
             ts.dump_vulnerability_json()
             ts.dump_advisor_json()

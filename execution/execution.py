@@ -128,7 +128,7 @@ def inventory_list():
     return inventory_full_detail
 
 
-def inventory_list_all():
+def inventory_list_all(current_only=False):
     """
     This def will collect all the HBI entries
     """
@@ -174,45 +174,52 @@ def inventory_list_all():
         server_detail_url = "https://console.redhat.com/api/inventory/v1/hosts/"
         for server in response.json()["results"]:
             server_id = server["id"]
-            inventory_batch.append(server_id)
-            # if its the first entry
-            if (len(inventory_batch) == 1):
-                server_detail_url = server_detail_url + server_id
-            else:
-                server_detail_url = server_detail_url + "," + server_id
+            stale_timestamp = server["stale_timestamp"]
+            # if you want all systems, or just if you want current systems ,and thisone is current
+            if (not current_only or (current_only and is_fresh(stale_timestamp))):
+                print("This server makes the cut - " + server_id + " with this timestamp " + stale_timestamp)
+                inventory_batch.append(server_id)
+                # if its the first entry
+                if (len(inventory_batch) == 1):
+                    server_detail_url = server_detail_url + server_id
+                else:
+                    server_detail_url = server_detail_url + "," + server_id
 
-        # now call the server details request with up to 50 ids
-        url = (
-                server_detail_url
-                + "/system_profile"
-                + FIELDS_TO_RETRIEVE
-            )
-        response_system_profile = connection_request(url)
-        
-        
-        # now loop through the original server request
-        for server in response.json()["results"]:
+        # now call the server details request with up to 50 ids, assuming that we have some server ids in this batch
+        if (len(inventory_batch) >0):
+            url = (
+                    server_detail_url
+                    + "/system_profile"
+                    + FIELDS_TO_RETRIEVE
+                )
+            response_system_profile = connection_request(url)
+            
+            
+            # now loop through the original server request
+            for server in response.json()["results"]:
+                # check whether we're getting everything - or whether the system is current or not
+                stale_timestamp = server["stale_timestamp"]
+                if (not current_only or (current_only and is_fresh(stale_timestamp))):
+                    try:
+                        stage_dic["server"] = server
+                    except json.decoder.JSONDecodeError:
+                        stage_dic["server"] = {}
 
-            try:
-                stage_dic["server"] = server
-            except json.decoder.JSONDecodeError:
-                stage_dic["server"] = {}
+                    server_id = server["id"]
 
-            server_id = server["id"]
+                    try:
+                        server_details_list = response_system_profile.json()["results"]
+                        # loop through all the server details - finding the one that matches the id we're looping through
+                        for server_details in server_details_list:
+                            if (server_details["id"] == server_id ):
+                                stage_dic["system_profile"] = server_details["system_profile"]
+                    except json.decoder.JSONDecodeError:
+                        stage_dic["system_profile"] = {}
+                    except KeyError:
+                        stage_dic["system_profile"] = {}
 
-            try:
-                server_details_list = response_system_profile.json()["results"]
-                # loop through all the server details - finding the one that matches the id we're looping through
-                for server_details in server_details_list:
-                    if (server_details["id"] == server_id ):
-                      stage_dic["system_profile"] = server_details["system_profile"]
-            except json.decoder.JSONDecodeError:
-                stage_dic["system_profile"] = {}
-            except KeyError:
-                stage_dic["system_profile"] = {}
-
-            list_of_servers.append(stage_dic)
-            stage_dic = {}
+                    list_of_servers.append(stage_dic)
+                stage_dic = {}
 
     return inventory_full_detail
 
@@ -407,7 +414,7 @@ def swatch_list():
     return response.json()
 
 
-def swatch_list_all():
+def swatch_list_all(current_only=False):
     """
     This def will collect all the entries from Subscription Watch
     """
@@ -427,10 +434,7 @@ def swatch_list_all():
     )
     # num_of_pages = round(response.json()['meta']['count'] / 100 + 1)
 
-    dic_full_list = {
-        "data": "",
-        "meta": {"count": response.json()["meta"]["count"]},
-    }
+    
     full_list = []
     dup_kvm_servers = []
     server_with_no_dupes = []
@@ -449,7 +453,15 @@ def swatch_list_all():
         # count = count + 100
 
         for entry in response.json()["data"]:
-            full_list.append(entry)
+            last_seen = entry.get("last_seen")
+            # either get all systems, or if getting current, check the last seen date
+            if (not current_only or (current_only and seen_recently(last_seen))):
+                full_list.append(entry)
+
+    dic_full_list = {
+        "data": "",
+        "meta": {"count": len(full_list)},
+    }
 
     # The piece below is just to check/remove the duplicate entries
     # caused by kvm/libvirt hypervisors. At this moment, swatch is
@@ -531,6 +543,39 @@ def swatch_list_all():
     dic_full_list["data"] = server_with_no_dupes
 
     return dic_full_list
+
+def is_fresh(stale_timestamp):
+    stale_date_string = stale_timestamp
+    is_fresh=True
+    if (len(stale_date_string) > 19):
+        stale_date_string = stale_timestamp[:19]
+    try: 
+        stale_date = datetime.datetime.strptime(stale_date_string,"%Y-%m-%dT%H:%M:%S")
+        current_date = datetime.datetime.now()
+        if (stale_date < current_date):
+            is_fresh = False
+    except Exception as e:
+        is_fresh=True
+        print("Exception in is_fresh : " + str(e))
+    
+    return is_fresh
+
+def seen_recently(last_seen):
+    stale_date_string = last_seen
+    seen_recently=True
+    if (len(stale_date_string) > 19):
+        stale_date_string = last_seen[:19]
+    try: 
+        last_seen_date = datetime.datetime.strptime(stale_date_string,"%Y-%m-%dT%H:%M:%S")
+        stale_date = last_seen_date + datetime.timedelta(days=1)
+        current_date = datetime.datetime.now()
+        if (stale_date < current_date):
+            seen_recently = False
+    except Exception as e:
+        seen_recently=True
+        print("Exception in seen_recently : " + str(e))
+    
+    return seen_recently
 
 
 def swatch_socket_summary():
