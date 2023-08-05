@@ -181,7 +181,6 @@ def inventory_list_all(current_only=False):
             stale_timestamp = server["stale_timestamp"]
             # if you want all systems, or just if you want current systems ,and thisone is current
             if (not current_only or (current_only and is_fresh(stale_timestamp))):
-                print("This server makes the cut - " + server_id + " with this timestamp " + stale_timestamp)
                 inventory_batch.append(server_id)
                 # if its the first entry
                 if (len(inventory_batch) == 1):
