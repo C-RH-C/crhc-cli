@@ -941,7 +941,6 @@ def advisor_systems():
 def get_ansible_unique_hosts():
     #'https://console.redhat.com/api/tower-analytics/v1/host_explorer/?sort_by=host_count&limit=25&offset=0' -d '{"group_by": "org"}'
     url = "https://console.redhat.com/api/tower-analytics/v1/host_explorer/?sort_by=host_count&limit=25&offset=0"
-    print(url)
     request_data = {"group_by": "org"}
     try:
         response = connection_request_post(url,request_data)
@@ -967,7 +966,6 @@ def get_ansible_unique_hosts():
             + "&offset="
             + str(count)
         )
-        print(url)
         count = count + conf.ITEMS_PER_PAGE
         response = connection_request_post(url, request_data)
 
