@@ -517,6 +517,24 @@ def whoami_sub_menu():
         # print("Error: {}".format(e))
         ...
 
+def ansible_sub_menu():
+   
+    if len(sys.argv) == 2:
+        # Passing only ansible, the help menu will be presented.
+        help_opt.help_ansible_menu()
+
+    """
+    Retrieving the ansible managed host information from c.rh.c API endpoint
+    """
+    try:
+        if (sys.argv[1] == "ansible") and (sys.argv[2] == "unique_hosts"):
+            response = execution.get_ansible_unique_hosts()
+            print(json.dumps(response, indent=4))
+            sys.exit()
+    except IndexError as e:
+        # print("Error: {}".format(e))
+        ...
+
 
 def troubleshoot_sub_menu():
     """
@@ -714,6 +732,19 @@ def main_menu():
             # print("swatch")
             whoami_sub_menu()
 
+        elif sys.argv[1] == "ansible":
+            try:
+                if (sys.argv[2] == "--help") or (sys.argv[2] == "-h"):
+                    help_opt.help_ansible_menu()
+                    sys.exit()
+            except IndexError as e:
+                # print("Error: {}".format(e))
+                ...
+
+            # print("swatch")
+            ansible_sub_menu()
+        
+
         elif (sys.argv[1] == "--help") or (sys.argv[1] == "-h"):
             help_opt.help_main_menu()
 
@@ -744,6 +775,7 @@ def main_menu():
         print("  advisor        Retrieve Insights Information")
         print("  patch          Retrieve Patch Information")
         print("  vulnerability  Retrieve Vulnerability Information")
+        print("  ansible        Retrieve Ansible Managed Host Information")
         print("  endpoint       List all the available endpoints")
         print("  get            Send a GET request")
         print("  ts             Troubleshooting tasks")

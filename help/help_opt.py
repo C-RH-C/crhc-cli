@@ -18,6 +18,10 @@ Usage: \n\
 Available Commands:\n\
     inventory       To list the Inventory data.\n\
     swatch          To list the Subscription data.\n\
+    advisor         Retrieve Insights Information\n\
+    patch           Retrieve Patch Information\n\
+    vulnerability   Retrieve Vulnerability Information\n\
+    ansible         Retrieve Ansible Managed Host Information\n\
     endpoint        To list all the available API endpoints on `console.redhat.com`\n\
     get             To consume the API endpoint directly.\n\
     login           To authenticate using your offline token.\n\
@@ -211,6 +215,21 @@ Available Commands:\n\
     \n\
 Flags:\n\
     --csv     This will generate the output in CSV format. By default, it will be JSON.\
+"
+    print(content)
+    return content
+
+def help_ansible_menu():
+    """
+    Main ansible menu
+    """
+    content = "\
+Usage: \n\
+    crhc ansible [command]\n\
+    \n\
+Available Commands:\n\
+    unique_hosts   It will provide the list of unique hosts managed by ansible automation platform\n\
+    \n\
 "
     print(content)
     return content
