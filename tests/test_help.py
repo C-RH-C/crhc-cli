@@ -137,9 +137,10 @@ Usage: \n\
     crhc ts [command]\n\
     \n\
 Available Commands:\n\
-    dump    dump the json files, Inventory and Subscription\n\
-    match   match the Inventory and Subscription information\n\
-    clean   cleanup the local 'cache/temporary/dump' files\
+    dump            dump the json files, Inventory and Subscription\n\
+    dump_current    dump the json files with current systems only, Inventory and Subscription\n\
+    match           match the Inventory and Subscription information\n\
+    clean           cleanup the local 'cache/temporary/dump' files\
 "
     assert response == content
 

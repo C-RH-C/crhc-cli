@@ -56,6 +56,8 @@ The main idea of this script is to collect the information from console.redhat.c
       - This option will show some information regarding to the user who requested the token
     * - crhc ts dump 
       - Export the whole Inventory and Subscription information in json format. Some files will be created.
+    * - crhc ts dump_current
+      - Export the current Inventory and Subscription information in json format. Some files will be created.
     * - crhc ts match 
       - If the files mentioned above are not around, this feature will call the dump and after that will check both files and will create the 3rd one with the whole information correlated accordingly.
     * - crhc ts clean 
