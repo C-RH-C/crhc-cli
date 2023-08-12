@@ -50,6 +50,19 @@ def connection_request_delete(url):
     return response
 
 
+def connection_request_post(url,payload):
+    """
+    Definition responsible to receive the url, call it and send back the
+    response, updating the token whenever neces'sary.
+    """
+
+    access_token = token.get_token()
+    response = requests.post(
+        url, json=payload, headers={"Authorization": "Bearer {}".format(access_token) , "Content-Type" : "application/json"}
+    )
+
+    return response
+
 
 def check_authentication(response=None):
     """
@@ -923,4 +936,45 @@ def advisor_systems():
             full_list.append(entry)
 
     dic_full_list["data"] = full_list
+    return dic_full_list
+
+
+def get_ansible_unique_hosts():
+    #'https://console.redhat.com/api/tower-analytics/v1/host_explorer/?sort_by=host_count&limit=25&offset=0' -d '{"group_by": "org"}'
+    url = "https://console.redhat.com/api/tower-analytics/v1/host_explorer/?sort_by=host_count&limit=25&offset=0"
+    request_data = {"group_by": "org"}
+    try:
+        response = connection_request_post(url,request_data)
+    except Exception as err:
+        print("Error: {}".format(err))
+
+
+    check_authentication(response)
+
+    num_of_pages = int(
+        response.json()["meta"]["count"] / conf.ITEMS_PER_PAGE + 1
+    )
+
+    dic_full_list = {"data": "", "total_organizations": response.json()["meta"]["count"], "total_unique_host_count": 0}
+    number_of_unique_hosts=0
+    full_list = []
+
+    count = 0
+    for page in range(0, num_of_pages):
+        url = (
+            "https://console.redhat.com/api/tower-analytics/v1/host_explorer/?sort_by=host_count&limit="
+            + str(conf.ITEMS_PER_PAGE)
+            + "&offset="
+            + str(count)
+        )
+        count = count + conf.ITEMS_PER_PAGE
+        response = connection_request_post(url, request_data)
+
+        responseJson = response.json()
+        for entry in responseJson["items"]:
+            full_list.append(entry)
+            number_of_unique_hosts = number_of_unique_hosts + entry["total_unique_host_count"]
+
+    dic_full_list["data"] = full_list
+    dic_full_list["total_unique_host_count"] = number_of_unique_hosts
     return dic_full_list
