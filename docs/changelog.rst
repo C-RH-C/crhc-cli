@@ -2,6 +2,19 @@ Changelog
 ---------
 
 
+**v1.13.13 - 09/06/2023**
+
+- [ENHANCEMENT] Ansible report feature added - [`issue 179`]
+- [ENHANCEMENT] adding dump_current feature under ts menu - [`issue 184`]
+- [FIX] Fixing the endpoint that was changed on console.redhat.com side - [`issue 188`]
+
+
+.. _issue 179: https://github.com/C-RH-C/crhc-cli/issues/179
+.. _issue 184: https://github.com/C-RH-C/crhc-cli/issues/184
+.. _issue 188: https://github.com/C-RH-C/crhc-cli/issues/188
+
+
+
 **v1.12.12 - 06/23/2023**
 
 - [ENHANCEMENT] changed inventory_list_all to collect details in batches of 50 - [`issue 180`_]
