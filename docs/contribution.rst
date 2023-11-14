@@ -16,6 +16,14 @@ If you would like to play around with the Code, let's proceed as below
 
 ------
 
+**Prerequisites**
+In order to build this project the following dependencies are needed:
+
+* git
+* gcc
+* python3-devel
+* libffi-devel
+
 **Source_Code**
 
 In your RHEL/CentOS/Fedora/etc with Python 3.x installed, let's execute the commands in a sequence
