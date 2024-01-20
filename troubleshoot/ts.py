@@ -243,6 +243,9 @@ def issue_summary_report(final_lst):
         except TypeError as e:
             # print(e)
             ...
+        except KeyError as e:
+            # print(e)
+            ...
 
         # Checking for duplicate FQDN
         fqdn = obj[0]["server"]["fqdn"]
