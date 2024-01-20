@@ -151,7 +151,7 @@ def match_hbi_sw():
     for inv_element in inventory["results"]:
         count = 0
         for sw_element in swatch["data"]:
-            if inv_element["server"]["id"] == sw_element["inventory_id"]:
+            if inv_element["server"]["id"] == sw_element["instance_id"]:
                 # print("found it")
                 # print("{},{}".format(inv_element,sw_element))
                 stage_lst.append(inv_element)
