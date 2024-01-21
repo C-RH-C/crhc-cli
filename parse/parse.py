@@ -79,10 +79,10 @@ for example 'crhc inventory display_name virt-who-esxi'"
                 # response = execution.inventory_list()
                 # print(response)
                 # print(json.dumps(response, indent=4))
-                num_of_days=input("Please, type the # of days with no updates. 0 for today, 1 for yesteday, 2 for 2 days ago ...: ")
+                num_of_days = input("Please, type the # of days with no updates. 0 for today, 1 for yesteday, 2 for 2 days ago ...: ")
                 if num_of_days.isdigit():
                     pass
-                else:                
+                else:
                     print("invalid entry, exiting")
                     sys.exit()
                 response = execution.inventory_remove_stale(num_of_days)
@@ -91,7 +91,6 @@ for example 'crhc inventory display_name virt-who-esxi'"
         except IndexError as e:
             # print("Error: {}".format(e))
             ...
-
 
     # To print in JSON format
     if len(sys.argv) == 4 and (sys.argv[2]) == "display_name":
@@ -194,9 +193,6 @@ the number of servers in your account."
         except IndexError as e:
             # print("Error: {}".format(e))
             ...
-
-
-
 
 
 def swatch_sub_menu():
@@ -559,7 +555,7 @@ def troubleshoot_sub_menu():
     except IndexError as e:
         # print("Error1: {}".format(e))
         ...
-    
+
     try:
         if (sys.argv[1] == "ts") and (sys.argv[2] == "dump_current"):
             ts.dump_inv_json(True)
@@ -744,7 +740,6 @@ def main_menu():
 
             # print("swatch")
             ansible_sub_menu()
-
 
         elif (sys.argv[1] == "--help") or (sys.argv[1] == "-h"):
             help_opt.help_main_menu()

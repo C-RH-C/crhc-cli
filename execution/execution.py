@@ -50,7 +50,7 @@ def connection_request_delete(url):
     return response
 
 
-def connection_request_post(url,payload):
+def connection_request_post(url, payload):
     """
     Definition responsible to receive the url, call it and send back the
     response, updating the token whenever neces'sary.
@@ -58,7 +58,7 @@ def connection_request_post(url,payload):
 
     access_token = token.get_token()
     response = requests.post(
-        url, json=payload, headers={"Authorization": "Bearer {}".format(access_token) , "Content-Type" : "application/json"}
+        url, json=payload, headers={"Authorization": "Bearer {}".format(access_token), "Content-Type": "application/json"}
     )
 
     return response
@@ -170,8 +170,6 @@ def inventory_list_all(current_only=False):
 
     # For debugin purposes
     # num_of_pages = 2
-      
-
 
     for page in range(1, num_of_pages):
         url = (
@@ -184,10 +182,7 @@ def inventory_list_all(current_only=False):
         response = connection_request(url)
 
         inventory_batch = []
-        is_first_server = True
-        server_detail_url = "https://console.redhat.com/api/inventory/v1/hosts/"
-        inventory_batch = []
-        is_first_server = True
+        # is_first_server = True
         server_detail_url = "https://console.redhat.com/api/inventory/v1/hosts/"
         for server in response.json()["results"]:
             server_id = server["id"]
@@ -202,15 +197,14 @@ def inventory_list_all(current_only=False):
                     server_detail_url = server_detail_url + "," + server_id
 
         # now call the server details request with up to 50 ids, assuming that we have some server ids in this batch
-        if (len(inventory_batch) >0):
+        if (len(inventory_batch) > 0):
             url = (
                     server_detail_url
                     + "/system_profile"
                     + FIELDS_TO_RETRIEVE
                 )
             response_system_profile = connection_request(url)
-            
-            
+
             # now loop through the original server request
             for server in response.json()["results"]:
                 # check whether we're getting everything - or whether the system is current or not
@@ -227,7 +221,7 @@ def inventory_list_all(current_only=False):
                         server_details_list = response_system_profile.json()["results"]
                         # loop through all the server details - finding the one that matches the id we're looping through
                         for server_details in server_details_list:
-                            if (server_details["id"] == server_id ):
+                            if (server_details["id"] == server_id):
                                 stage_dic["system_profile"] = server_details["system_profile"]
                     except json.decoder.JSONDecodeError:
                         stage_dic["system_profile"] = {}
@@ -460,7 +454,6 @@ def swatch_list_all(current_only=False):
     )
     # num_of_pages = round(response.json()['meta']['count'] / 100 + 1)
 
-    
     full_list = []
     dup_kvm_servers = []
     server_with_no_dupes = []
@@ -577,37 +570,39 @@ def swatch_list_all(current_only=False):
 
     return dic_full_list
 
+
 def is_fresh(stale_timestamp):
     stale_date_string = stale_timestamp
-    is_fresh=True
+    is_fresh = True
     if (len(stale_date_string) > 19):
         stale_date_string = stale_timestamp[:19]
-    try: 
-        stale_date = datetime.datetime.strptime(stale_date_string,"%Y-%m-%dT%H:%M:%S")
+    try:
+        stale_date = datetime.datetime.strptime(stale_date_string, "%Y-%m-%dT%H:%M:%S")
         current_date = datetime.datetime.now()
         if (stale_date < current_date):
             is_fresh = False
     except Exception as e:
-        is_fresh=True
+        is_fresh = True
         print("Exception in is_fresh : " + str(e))
-    
+
     return is_fresh
+
 
 def seen_recently(last_seen):
     stale_date_string = last_seen
-    seen_recently=True
+    seen_recently = True
     if (len(stale_date_string) > 19):
         stale_date_string = last_seen[:19]
-    try: 
-        last_seen_date = datetime.datetime.strptime(stale_date_string,"%Y-%m-%dT%H:%M:%S")
+    try:
+        last_seen_date = datetime.datetime.strptime(stale_date_string, "%Y-%m-%dT%H:%M:%S")
         stale_date = last_seen_date + datetime.timedelta(days=1)
         current_date = datetime.datetime.now()
         if (stale_date < current_date):
             seen_recently = False
     except Exception as e:
-        seen_recently=True
+        seen_recently = True
         print("Exception in seen_recently : " + str(e))
-    
+
     return seen_recently
 
 
@@ -957,14 +952,12 @@ def advisor_systems():
 
 
 def get_ansible_unique_hosts():
-    #'https://console.redhat.com/api/tower-analytics/v1/host_explorer/?sort_by=host_count&limit=25&offset=0' -d '{"group_by": "org"}'
     url = "https://console.redhat.com/api/tower-analytics/v1/host_explorer/?sort_by=host_count&limit=25&offset=0"
     request_data = {"group_by": "org"}
     try:
-        response = connection_request_post(url,request_data)
+        response = connection_request_post(url, request_data)
     except Exception as err:
         print("Error: {}".format(err))
-
 
     check_authentication(response)
 
@@ -973,7 +966,7 @@ def get_ansible_unique_hosts():
     )
 
     dic_full_list = {"data": "", "total_organizations": response.json()["meta"]["count"], "total_unique_host_count": 0}
-    number_of_unique_hosts=0
+    number_of_unique_hosts = 0
     full_list = []
 
     count = 0
