@@ -67,6 +67,7 @@ def check_for_installed_products(entries):
 
     elif stage_lst[0] != "No_installed_products_key_available":
         # Operation to turn the nested list flat
+        # TODO
         stage_lst = [x for l in stage_lst for x in l]
 
         # Operation to remove the duplicate entries
@@ -1617,7 +1618,6 @@ def csv_report_advisor(json_obj):
         writer.writerows(report_list)
 
     print("File {} created".format(conf.ADVISOR_FILE))
-
 
 
 def json_stale_systems(stale_srv_list):

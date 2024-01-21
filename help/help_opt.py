@@ -219,6 +219,7 @@ Flags:\n\
     print(content)
     return content
 
+
 def help_ansible_menu():
     """
     Main ansible menu
