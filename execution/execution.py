@@ -419,8 +419,13 @@ def swatch_list():
 
     # ITEMS_PER_PAGE = 10
 
+    # url = (
+    #     "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL for x86?limit="
+    #     + str(conf.ITEMS_PER_PAGE)
+    #     + "&offset=0&sort=display_name"
+    # )
     url = (
-        "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL for x86?limit="
+        "https://console.redhat.com/api/rhsm-subscriptions/v1/instances/products/RHEL for x86?limit="
         + str(conf.ITEMS_PER_PAGE)
         + "&offset=0&sort=display_name"
     )
@@ -437,8 +442,13 @@ def swatch_list_all(current_only=False):
 
     # ITEMS_PER_PAGE = 10
 
+    # url = (
+    #     "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL for x86?limit="
+    #     + str(conf.ITEMS_PER_PAGE)
+    #     + "&offset=0&sort=display_name"
+    # )
     url = (
-        "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL for x86?limit="
+        "https://console.redhat.com/api/rhsm-subscriptions/v1/instances/products/RHEL for x86?limit="
         + str(conf.ITEMS_PER_PAGE)
         + "&offset=0&sort=display_name"
     )
@@ -457,8 +467,15 @@ def swatch_list_all(current_only=False):
 
     count = 0
     for page in range(0, num_of_pages):
+        # url = (
+        #     "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL for x86?limit="
+        #     + str(conf.ITEMS_PER_PAGE)
+        #     + "&offset="
+        #     + str(count)
+        #     + "&sort=display_name"
+        # )
         url = (
-            "https://console.redhat.com/api/rhsm-subscriptions/v1/hosts/products/RHEL for x86?limit="
+            "https://console.redhat.com/api/rhsm-subscriptions/v1/instances/products/RHEL for x86?limit="
             + str(conf.ITEMS_PER_PAGE)
             + "&offset="
             + str(count)
@@ -549,8 +566,8 @@ def swatch_list_all(current_only=False):
         count = 0
         for each_server_no_dupe in server_with_no_dupes:
             if (
-                each_server_fl["inventory_id"]
-                == each_server_no_dupe["inventory_id"]
+                each_server_fl["instance_id"]
+                == each_server_no_dupe["instance_id"]
             ):
                 count = 1
         if count == 0:
