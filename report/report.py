@@ -680,7 +680,7 @@ def csv_report_swatch(json_obj):
 
         try:
             # stage_lst.append(sw_entries["sockets"])
-            stage_lst.append(sw_entries["measurements"])
+            stage_lst.append(entries["measurements"])
         except KeyError:
             stage_lst.append("Not in sw - check")
 
