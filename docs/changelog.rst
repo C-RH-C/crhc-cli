@@ -2,6 +2,23 @@ Changelog
 ---------
 
 
+**v1.14.14 - 01/21/2024**
+
+- [FIX] Updating pyinstaller - [`issue 210`]
+- [FIX] Fixing the socket_summary - [`issue 203`]
+- [FIX] Report updated to fix the csv information and fields - [`issue 203`]
+- [FIX] swatch error when pulling the information - [`issue 200`]
+- [ENHANCEMENT] Fixed some issues presented by flake8. - [`issue 206`]
+- [ENHANCEMENT] Update dependencies file - [`issue 192`]
+
+.. _issue 210: https://github.com/C-RH-C/crhc-cli/issues/210
+.. _issue 204: https://github.com/C-RH-C/crhc-cli/issues/204
+.. _issue 203: https://github.com/C-RH-C/crhc-cli/issues/203
+.. _issue 200: https://github.com/C-RH-C/crhc-cli/issues/200
+.. _issue 206: https://github.com/C-RH-C/crhc-cli/issues/206
+.. _issue 191: https://github.com/C-RH-C/crhc-cli/issues/191
+
+
 **v1.13.13 - 09/06/2023**
 
 - [ENHANCEMENT] Ansible report feature added - [`issue 179`]
