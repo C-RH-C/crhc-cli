@@ -5,7 +5,7 @@ Changelog
 **v1.14.14 - 01/21/2024**
 
 - [FIX] Updating pyinstaller - [`issue 210`]
-- [FIX] Fixing the socket_summary - [`issue 203`]
+- [FIX] Fixing the socket_summary - [`issue 204`]
 - [FIX] Report updated to fix the csv information and fields - [`issue 203`]
 - [FIX] swatch error when pulling the information - [`issue 200`]
 - [ENHANCEMENT] Fixed some issues presented by flake8. - [`issue 206`]
