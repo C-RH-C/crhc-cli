@@ -9,7 +9,7 @@ Changelog
 - [FIX] Report updated to fix the csv information and fields - [`issue 203`]
 - [FIX] swatch error when pulling the information - [`issue 200`]
 - [ENHANCEMENT] Fixed some issues presented by flake8. - [`issue 206`]
-- [ENHANCEMENT] Update dependencies file - [`issue 192`]
+- [ENHANCEMENT] Update dependencies file - [`issue 191`]
 
 .. _issue 210: https://github.com/C-RH-C/crhc-cli/issues/210
 .. _issue 204: https://github.com/C-RH-C/crhc-cli/issues/204
