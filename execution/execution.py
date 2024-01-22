@@ -613,6 +613,7 @@ def swatch_socket_summary():
     """
 
     item_list = swatch_list_all()
+    # item_list = swatch_list()
 
     baremetal_count = 0
     hypervisor_count = 0
@@ -622,31 +623,21 @@ def swatch_socket_summary():
 
     for server in item_list["data"]:
         # Baremetal server
-        if (
-            server["hardware_type"] == "PHYSICAL"
-            and server["is_hypervisor"] is False
-        ):
-            baremetal_count = baremetal_count + server["sockets"]
+        if (server["category"] == "physical"):
+            baremetal_count = baremetal_count + int(server["measurements"][0])
         # Hypervisor server
-        if (
-            server["hardware_type"] == "PHYSICAL"
-            and server["is_hypervisor"] is True
-        ):
-            hypervisor_count = hypervisor_count + server["sockets"]
+        if (server["category"] == "hypervisor"):
+            hypervisor_count = hypervisor_count + int(server["measurements"][0])
         # VM with no host guest mapping
-        if (
-            server["hardware_type"] == "VIRTUALIZED"
-            and server["is_hypervisor"] is False
-            and server["is_unmapped_guest"] is True
-        ):
+        if (server["category"] == "virtual"):
             vm_with_no_host_guest_mapping = (
-                vm_with_no_host_guest_mapping + server["sockets"]
+                vm_with_no_host_guest_mapping + int(server["measurements"][0])
             )
         # Cloud server
-        if server["hardware_type"] == "CLOUD":
-            cloud_count = cloud_count + server["sockets"]
+        if server["category"] == "cloud":
+            cloud_count = cloud_count + int(server["measurements"][0])
 
-        total_socket_count = total_socket_count + server["sockets"]
+        total_socket_count = total_socket_count + int(server["measurements"][0])
 
     print("Public Cloud ........: {}".format(cloud_count))
     print("Virtualized RHEL ....: {}".format(vm_with_no_host_guest_mapping))
