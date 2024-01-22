@@ -639,16 +639,11 @@ def csv_report_swatch(json_obj):
 
     stage_lst = [
         "display_name",
-        "hardware_type",
         "inventory_id",
-        "insights_id",
-        "is_hypervisor",
         "number_of_guests",
-        "is_unmapped_guest",
         "last_seen",
-        "measurement_type",
+        "category",
         "sockets",
-        "cores",
         "subscription_manager_id",
         "cloud_provider",
     ]
@@ -664,22 +659,7 @@ def csv_report_swatch(json_obj):
             stage_lst.append("Not available")
 
         try:
-            stage_lst.append(entries["hardware_type"])
-        except KeyError:
-            stage_lst.append("Not available")
-
-        try:
             stage_lst.append(entries["inventory_id"])
-        except KeyError:
-            stage_lst.append("Not available")
-
-        try:
-            stage_lst.append(entries["insights_id"])
-        except KeyError:
-            stage_lst.append("Not available")
-
-        try:
-            stage_lst.append(entries["is_hypervisor"])
         except KeyError:
             stage_lst.append("Not available")
 
@@ -689,29 +669,20 @@ def csv_report_swatch(json_obj):
             stage_lst.append("Not available")
 
         try:
-            stage_lst.append(entries["is_unmapped_guest"])
-        except KeyError:
-            stage_lst.append("Not available")
-
-        try:
             stage_lst.append(entries["last_seen"])
         except KeyError:
             stage_lst.append("Not available")
 
         try:
-            stage_lst.append(entries["measurement_type"])
+            stage_lst.append(entries["category"])
         except KeyError:
             stage_lst.append("Not available")
 
         try:
-            stage_lst.append(entries["sockets"])
+            # stage_lst.append(sw_entries["sockets"])
+            stage_lst.append(entries["measurements"])
         except KeyError:
-            stage_lst.append("Not available")
-
-        try:
-            stage_lst.append(entries["cores"])
-        except KeyError:
-            stage_lst.append("Not available")
+            stage_lst.append("Not in sw - check")
 
         try:
             stage_lst.append(entries["subscription_manager_id"])
@@ -785,16 +756,11 @@ def csv_match_report(match_obj):
         "hypervisor_uuid",
         "number_of_guests",
         "sw_display_name",
-        "sw_hardware_type",
         "sw_inventory_id",
-        "sw_insights_id",
-        "sw_is_hypervisor",
         "sw_number_of_guests",
-        "sw_is_unmapped_guest",
         "sw_last_seen",
-        "sw_measurement_type",
+        "sw_category",
         "sw_sockets",
-        "sw_cores",
         "sw_subscription_manager_id",
         "sw_cloud_provider",
     ]
@@ -805,6 +771,9 @@ def csv_match_report(match_obj):
     for elements in match_obj:
         entries = elements[0]
         sw_entries = elements[1]
+
+        # if ( elements[0]["server"]["id"] == "12708bed-125b-46d7-bf81-66e46a33de1c" ):
+        #     print("here again")
 
         try:
             stage_lst.append(entries["server"]["id"])
@@ -1009,11 +978,6 @@ def csv_match_report(match_obj):
             stage_lst.append("Not in sw")
             stage_lst.append("Not in sw")
             stage_lst.append("Not in sw")
-            stage_lst.append("Not in sw")
-            stage_lst.append("Not in sw")
-            stage_lst.append("Not in sw")
-            stage_lst.append("Not in sw")
-            stage_lst.append("Not in sw")
 
         else:
             try:
@@ -1022,22 +986,7 @@ def csv_match_report(match_obj):
                 stage_lst.append("Not in sw")
 
             try:
-                stage_lst.append(sw_entries["hardware_type"])
-            except KeyError:
-                stage_lst.append("Not in sw")
-
-            try:
-                stage_lst.append(sw_entries["inventory_id"])
-            except KeyError:
-                stage_lst.append("Not in sw")
-
-            try:
-                stage_lst.append(sw_entries["insights_id"])
-            except KeyError:
-                stage_lst.append("Not in sw")
-
-            try:
-                stage_lst.append(sw_entries["is_hypervisor"])
+                stage_lst.append(sw_entries["instance_id"])
             except KeyError:
                 stage_lst.append("Not in sw")
 
@@ -1047,29 +996,21 @@ def csv_match_report(match_obj):
                 stage_lst.append("Not in sw")
 
             try:
-                stage_lst.append(sw_entries["is_unmapped_guest"])
-            except KeyError:
-                stage_lst.append("Not in sw")
-
-            try:
                 stage_lst.append(sw_entries["last_seen"])
             except KeyError:
                 stage_lst.append("Not in sw")
 
+            # Category
             try:
-                stage_lst.append(sw_entries["measurement_type"])
+                stage_lst.append(sw_entries["category"])
             except KeyError:
                 stage_lst.append("Not in sw")
 
             try:
-                stage_lst.append(sw_entries["sockets"])
+                # stage_lst.append(sw_entries["sockets"])
+                stage_lst.append(sw_entries["measurements"])
             except KeyError:
-                stage_lst.append("Not in sw")
-
-            try:
-                stage_lst.append(sw_entries["cores"])
-            except KeyError:
-                stage_lst.append("Not in sw")
+                stage_lst.append("Not in sw - check")
 
             try:
                 stage_lst.append(sw_entries["subscription_manager_id"])
