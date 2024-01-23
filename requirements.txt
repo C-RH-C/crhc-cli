@@ -24,7 +24,7 @@ lazy-object-proxy==1.7.1
 MarkupSafe==2.0.1
 mccabe==0.7.0
 mypy-extensions==1.0.0
-packaging==21.3
+packaging
 pathspec==0.9.0
 platformdirs==2.4.0
 pluggy==1.0.0
@@ -34,7 +34,7 @@ pycodestyle==2.9.1
 pycparser==2.21
 pyflakes==2.5.0
 Pygments==2.14.0
-pyinstaller==6.3.0
+pyinstaller
 pyinstaller-hooks-contrib==2022.0
 PyJWT==2.4.0
 pylint==2.13.9
