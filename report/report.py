@@ -679,7 +679,8 @@ def csv_report_swatch(json_obj):
             stage_lst.append("Not available")
 
         try:
-            # stage_lst.append(sw_entries["sockets"])
+            # using the int to remove the decimal value and to keep
+            # this output as integer
             stage_lst.append(int(entries["measurements"][0]))
         except KeyError:
             stage_lst.append("Not in sw - check")
