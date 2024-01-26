@@ -680,7 +680,7 @@ def csv_report_swatch(json_obj):
 
         try:
             # stage_lst.append(sw_entries["sockets"])
-            stage_lst.append(entries["measurements"])
+            stage_lst.append(int(entries["measurements"][0]))
         except KeyError:
             stage_lst.append("Not in sw - check")
 
@@ -1007,8 +1007,9 @@ def csv_match_report(match_obj):
                 stage_lst.append("Not in sw")
 
             try:
-                # stage_lst.append(sw_entries["sockets"])
-                stage_lst.append(sw_entries["measurements"])
+                # using the int to remove the decimal value and to keep
+                # this output as integer
+                stage_lst.append(int(sw_entries["measurements"][0]))
             except KeyError:
                 stage_lst.append("Not in sw - check")
 
