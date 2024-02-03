@@ -4,12 +4,12 @@ Changelog
 
 **v1.14.14 - 01/21/2024**
 
-- [FIX] Updating pyinstaller - [`issue 210`]
-- [FIX] Fixing the socket_summary - [`issue 204`]
-- [FIX] Report updated to fix the csv information and fields - [`issue 203`]
-- [FIX] swatch error when pulling the information - [`issue 200`]
-- [ENHANCEMENT] Fixed some issues presented by flake8. - [`issue 206`]
-- [ENHANCEMENT] Update dependencies file - [`issue 191`]
+- [FIX] Updating pyinstaller - [`issue 210`_]
+- [FIX] Fixing the socket_summary - [`issue 204`_]
+- [FIX] Report updated to fix the csv information and fields - [`issue 203`_]
+- [FIX] swatch error when pulling the information - [`issue 200`_]
+- [ENHANCEMENT] Fixed some issues presented by flake8. - [`issue 206`_]
+- [ENHANCEMENT] Update dependencies file - [`issue 191`_]
 
 .. _issue 210: https://github.com/C-RH-C/crhc-cli/issues/210
 .. _issue 204: https://github.com/C-RH-C/crhc-cli/issues/204
@@ -21,9 +21,9 @@ Changelog
 
 **v1.13.13 - 09/06/2023**
 
-- [ENHANCEMENT] Ansible report feature added - [`issue 179`]
-- [ENHANCEMENT] adding dump_current feature under ts menu - [`issue 184`]
-- [FIX] Fixing the endpoint that was changed on console.redhat.com side - [`issue 188`]
+- [ENHANCEMENT] Ansible report feature added - [`issue 179`_]
+- [ENHANCEMENT] adding dump_current feature under ts menu - [`issue 184`_]
+- [FIX] Fixing the endpoint that was changed on console.redhat.com side - [`issue 188`_]
 
 
 .. _issue 179: https://github.com/C-RH-C/crhc-cli/issues/179
