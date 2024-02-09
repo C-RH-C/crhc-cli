@@ -822,7 +822,7 @@ def patch_systems():
     This def will collect all the entries from patch systems
     """
 
-    url = "https://console.redhat.com/api/patch/v1/systems"
+    url = "https://console.redhat.com/api/patch/v3/systems"
     response = connection_request(url)
     check_authentication(response)
 
@@ -842,7 +842,7 @@ def patch_systems():
     count = 0
     for page in range(0, num_of_pages):
         url = (
-            "https://console.redhat.com/api/patch/v1/systems?limit="
+            "https://console.redhat.com/api/patch/v3/systems?limit="
             + str(conf.ITEMS_PER_PAGE)
             + "&offset="
             + str(count)
