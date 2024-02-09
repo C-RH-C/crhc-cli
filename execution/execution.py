@@ -22,6 +22,31 @@ from conf import conf
 FIELDS_TO_RETRIEVE = ""
 
 
+def return_num_of_pages(total_items, type=None):
+    """
+    Def to return the # of pages when doing pagination
+    Once inventory starts by page one, we need a small change in the code
+    """
+    check_response = divmod(total_items, conf.ITEMS_PER_PAGE)
+
+    if (type == "inventory"):
+        if check_response[1] == 0:
+            num_of_pages = check_response[0] + 1
+        else:
+            num_of_pages = check_response[0] + 2
+
+        # print("type set here")
+        # print("num of pages: {}".format(num_of_pages))
+        # print("Item per page: {}".format(conf.ITEMS_PER_PAGE))
+    else:
+        if check_response[1] == 0:
+            num_of_pages = check_response[0]
+        else:
+            num_of_pages = check_response[0] + 1
+
+    return num_of_pages
+
+
 def connection_request(url):
     """
     Definition responsible to receive the url, call it and send back the
@@ -154,12 +179,14 @@ def inventory_list_all(current_only=False):
     # number of pages based on that.
     # check_response = divmod(response.json()['total'], 50)
     # ITEMS_PER_PAGE = 10
-    check_response = divmod(response.json()["total"], conf.ITEMS_PER_PAGE)
+    # check_response = divmod(response.json()["total"], conf.ITEMS_PER_PAGE)
 
-    if check_response[1] == 0:
-        num_of_pages = check_response[0] + 1
-    else:
-        num_of_pages = check_response[0] + 2
+    num_of_pages = return_num_of_pages(response.json()["total"], type="inventory")
+
+    # if check_response[1] == 0:
+    #     num_of_pages = check_response[0] + 1
+    # else:
+    #     num_of_pages = check_response[0] + 2
 
     list_of_servers = []
     inventory_full_detail = {"results": "", "total": response.json()["total"]}
@@ -248,12 +275,15 @@ def inventory_list_all_no_system_profile():
     # number of pages based on that.
     # check_response = divmod(response.json()['total'], 50)
     # ITEMS_PER_PAGE = 10
-    check_response = divmod(response.json()["total"], conf.ITEMS_PER_PAGE)
+    # check_response = divmod(response.json()["total"], conf.ITEMS_PER_PAGE)
 
-    if check_response[1] == 0:
-        num_of_pages = check_response[0] + 1
-    else:
-        num_of_pages = check_response[0] + 2
+    num_of_pages = return_num_of_pages(response.json()["total"])
+
+
+    # if check_response[1] == 0:
+    #     num_of_pages = check_response[0] + 1
+    # else:
+    #     num_of_pages = check_response[0] + 2
 
     list_of_servers = []
     inventory_full_detail = {"results": "", "total": response.json()["total"]}
@@ -449,10 +479,13 @@ def swatch_list_all(current_only=False):
     response = connection_request(url)
     check_authentication(response)
 
-    num_of_pages = round(
-        response.json()["meta"]["count"] / conf.ITEMS_PER_PAGE + 1
-    )
+    # num_of_pages = round(
+    #     response.json()["meta"]["count"] / conf.ITEMS_PER_PAGE + 1
+    # )
     # num_of_pages = round(response.json()['meta']['count'] / 100 + 1)
+
+    num_of_pages = return_num_of_pages(response.json()["meta"]["count"])
+
 
     full_list = []
     dup_kvm_servers = []
@@ -826,12 +859,10 @@ def patch_systems():
     response = connection_request(url)
     check_authentication(response)
 
-    # ITEMS_PER_PAGE = 10
-
-    num_of_pages = int(
-        response.json()["meta"]["total_items"] / conf.ITEMS_PER_PAGE + 1
-    )
-    # num_of_pages = int(response.json()['meta']['total_items'] / 20 + 1)
+    # num_of_pages = int(
+    #     response.json()["meta"]["total_items"] / conf.ITEMS_PER_PAGE + 1
+    # )
+    num_of_pages = return_num_of_pages(response.json()["meta"]["total_items"])
 
     dic_full_list = {
         "data": "",
@@ -871,15 +902,13 @@ def vulnerability_systems():
 
     # Here we are checking the total number of objects and setting the correct
     # number of pages based on that.
-    check_response = divmod(
-        response.json()["meta"]["total_items"], conf.ITEMS_PER_PAGE
-    )
+    # check_response = divmod(
+    #     response.json()["meta"]["total_items"], conf.ITEMS_PER_PAGE
+    # )
+    num_of_pages = return_num_of_pages(response.json()["meta"]["total_items"])
+
     # check_response = divmod(response.json()['meta']['total_items'], 20)
 
-    if check_response[1] == 0:
-        num_of_pages = check_response[0]
-    else:
-        num_of_pages = check_response[0] + 1
 
     dic_full_list = {
         "data": "",
@@ -917,9 +946,11 @@ def advisor_systems():
     response = connection_request(url)
     check_authentication(response)
 
-    num_of_pages = int(
-        response.json()["meta"]["count"] / conf.ITEMS_PER_PAGE + 1
-    )
+    num_of_pages = return_num_of_pages(response.json()["meta"]["count"])
+
+    # num_of_pages = int(
+    #     response.json()["meta"]["count"] / conf.ITEMS_PER_PAGE + 1
+    # )
 
     dic_full_list = {"data": "", "total": response.json()["meta"]["count"]}
     full_list = []
@@ -952,9 +983,11 @@ def get_ansible_unique_hosts():
 
     check_authentication(response)
 
-    num_of_pages = int(
-        response.json()["meta"]["count"] / conf.ITEMS_PER_PAGE + 1
-    )
+    # num_of_pages = int(
+    #     response.json()["meta"]["count"] / conf.ITEMS_PER_PAGE + 1
+    # )
+    num_of_pages = return_num_of_pages(response.json()["meta"]["count"])
+
 
     dic_full_list = {"data": "", "total_organizations": response.json()["meta"]["count"], "total_unique_host_count": 0}
     number_of_unique_hosts = 0
