@@ -47,4 +47,4 @@ ZIP_FILE = (p / "crhc_data.zip").resolve()
 TIME_TO_CHECK_THE_NEW_VERSION = 21600
 
 # Items per page when doing the API call
-ITEMS_PER_PAGE = 10
+ITEMS_PER_PAGE = 50
