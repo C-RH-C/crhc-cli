@@ -1,0 +1,17 @@
+FROM docker.io/dokken/centos-7
+
+WORKDIR /app
+RUN yum install gcc zlib-devel openssl-devel libffi-devel git -y && \
+    yum clean all && \
+    wget https://www.python.org/ftp/python/3.8.18/Python-3.8.18.tgz && \
+    tar xvf Python-3.8.18.tgz
+
+WORKDIR /app/Python-3.8.18
+RUN pwd && \
+    ./configure --enable-shared && make && make install && \
+    echo "/usr/local/lib/" >/etc/ld.so.conf.d/py.conf && \
+    ldconfig -v && \
+    python3.8 --version
+
+WORKDIR /app
+RUN rm -rf Python-3.8.18*

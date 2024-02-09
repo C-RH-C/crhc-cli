@@ -1,0 +1,25 @@
+FROM localhost/py_38
+
+WORKDIR /app
+# RUN git clone https://github.com/C-RH-C/crhc-cli.git
+# 
+# WORKDIR /app/crhc-cli/
+# RUN python3.8 -m venv ~/.venv/crhc-cli && \
+#     source ~/.venv/crhc-cli/bin/activate && \
+#     pip install --upgrade pip && \
+#     pip install -r requirements.txt && \
+#     ./crhc.py && \
+#     pyinstaller --onefile crhc.py && \
+#     cp dist/crhc /app
+# 
+# WORKDIR /app
+# RUN ./crhc
+CMD git clone https://github.com/C-RH-C/crhc-cli.git && \
+    python3.8 -m venv ~/.venv/crhc-cli && \
+    source ~/.venv/crhc-cli/bin/activate && \
+    pip install --upgrade pip && \
+    cd crhc-cli && \
+    pip install -r requirements.txt && \
+    ./crhc.py && \
+    pyinstaller --onefile crhc.py && \
+    cp dist/crhc /app
