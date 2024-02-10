@@ -1,6 +1,20 @@
 Changelog
 ---------
 
+**v1.15.15 - 02/09/2024**
+
+[FIX] items per page normalized across the items - [`issue 217`_]
+[ENHANCEMENT] Fixed patch api to use v3, instead of v1 - [`issue 222`_]
+[ENHANCEMENT] automated way to create the binary - [`issue 221`_]
+[ENHANCEMENT] Updated the data in a way that the count will be possible - [`issue 215`_]
+[FIX] requirement updated - [`issue 213`_]
+
+.. _issue 217: https://github.com/C-RH-C/crhc-cli/issues/217
+.. _issue 222: https://github.com/C-RH-C/crhc-cli/issues/222
+.. _issue 221: https://github.com/C-RH-C/crhc-cli/issues/221
+.. _issue 215: https://github.com/C-RH-C/crhc-cli/issues/215
+.. _issue 213: https://github.com/C-RH-C/crhc-cli/issues/213
+
 
 **v1.14.14 - 01/21/2024**
 
