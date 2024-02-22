@@ -997,11 +997,11 @@ def get_ansible_unique_hosts():
     for page in range(0, num_of_pages):
         url = (
             "https://console.redhat.com/api/tower-analytics/v1/host_explorer/?sort_by=host_count&limit="
-            + str(conf.ITEMS_PER_PAGE)
+            + str(conf.ANSIBLE_ITEMS_PER_PAGE)
             + "&offset="
             + str(count)
         )
-        count = count + conf.ITEMS_PER_PAGE
+        count = count + conf.ANSIBLE_ITEMS_PER_PAGE
         response = connection_request_post(url, request_data)
 
         responseJson = response.json()
