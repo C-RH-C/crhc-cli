@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 # Current Version
-CURRENT_VERSION = "1.15.15"
+CURRENT_VERSION = "1.16.16"
 
 #  Some file references
 
@@ -48,3 +48,5 @@ TIME_TO_CHECK_THE_NEW_VERSION = 21600
 
 # Items per page when doing the API call
 ITEMS_PER_PAGE = 50
+# Ansible has a max limit of 25 Items per page when doing the API call
+ANSIBLE_ITEMS_PER_PAGE = 25
