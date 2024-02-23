@@ -4,7 +4,7 @@
     Module responsible for test the help menu content
 """
 
-from help import help_opt
+from crhc_cli.help import help_opt
 
 
 def test_check_main_help_menu():
