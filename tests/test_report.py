@@ -7,7 +7,7 @@ import json
 import csv
 import tempfile
 from pathlib import Path
-from report import report
+from crhc_cli.report import report
 
 
 INPUT_JSON = "tests/data/inventory.json"

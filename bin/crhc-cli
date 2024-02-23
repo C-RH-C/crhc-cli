@@ -1,0 +1,8 @@
+#!/usr/bin/env python
+import os
+
+project_dir = os.path.dirname(os.path.dirname(__file__))
+os.sys.path.append(project_dir)
+
+from crhc_cli import crhc
+crhc.parse.main_menu()
