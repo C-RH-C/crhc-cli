@@ -369,6 +369,94 @@ def inventory_list_search_by_name(fqdn):
     return inventory_full_detail
 
 
+def inventory_list_stale(current_only=False):
+    """
+    Def resposible to retrieve the list of entries in stale and
+    stale_warning status.
+    """
+
+    # Adding the stale and stale_warning to return the correct # of elements
+    url = "https://console.redhat.com/api/inventory/v1/hosts?staleness=stale&staleness=stale_warning&per_page=1"
+    response = connection_request(url)
+    check_authentication(response)
+
+    num_of_pages = return_num_of_pages(response.json()["total"], type="inventory")
+
+    list_of_servers = []
+    inventory_full_detail = {"results": "", "total": response.json()["total"]}
+    inventory_full_detail["results"] = list_of_servers
+
+    stage_list = []
+    stage_dic = {"server": stage_list}
+
+    # For debugin purposes
+    # num_of_pages = 2
+
+    for page in range(1, num_of_pages):
+        url = (
+            "https://console.redhat.com/api/inventory/v1/hosts?staleness=stale&staleness=stale_warning&per_page="
+            + str(conf.ITEMS_PER_PAGE)
+            + "&page="
+            + str(page)
+            + "&order_by=display_name"
+        )
+        response = connection_request(url)
+
+        inventory_batch = []
+        # is_first_server = True
+        server_detail_url = "https://console.redhat.com/api/inventory/v1/hosts/"
+        for server in response.json()["results"]:
+            server_id = server["id"]
+            stale_timestamp = server["stale_timestamp"]
+            # if you want all systems, or just if you want current systems ,and thisone is current
+            if (not current_only or (current_only and is_fresh(stale_timestamp))):
+                inventory_batch.append(server_id)
+                # if its the first entry
+                if (len(inventory_batch) == 1):
+                    server_detail_url = server_detail_url + server_id
+                else:
+                    server_detail_url = server_detail_url + "," + server_id
+
+        # now call the server details request with up to 50 ids, assuming that we have some server ids in this batch
+        if (len(inventory_batch) > 0):
+            url = (
+                    server_detail_url
+                    + "/system_profile"
+                    + FIELDS_TO_RETRIEVE
+                )
+            response_system_profile = connection_request(url)
+
+            # now loop through the original server request
+            for server in response.json()["results"]:
+                # check whether we're getting everything - or whether the system is current or not
+                stale_timestamp = server["stale_timestamp"]
+                if (not current_only or (current_only and is_fresh(stale_timestamp))):
+                    try:
+                        stage_dic["server"] = server
+                    except json.decoder.JSONDecodeError:
+                        stage_dic["server"] = {}
+
+                    server_id = server["id"]
+
+                    try:
+                        server_details_list = response_system_profile.json()["results"]
+                        # loop through all the server details - finding the one that matches the id we're looping through
+                        for server_details in server_details_list:
+                            if (server_details["id"] == server_id):
+                                stage_dic["system_profile"] = server_details["system_profile"]
+                    except json.decoder.JSONDecodeError:
+                        stage_dic["system_profile"] = {}
+                    except KeyError:
+                        stage_dic["system_profile"] = {}
+
+                    list_of_servers.append(stage_dic)
+                stage_dic = {}
+
+    return inventory_full_detail
+
+
+
+
 def inventory_remove_stale(num_of_days):
     """
     Def responsible to receive the # of days and check
