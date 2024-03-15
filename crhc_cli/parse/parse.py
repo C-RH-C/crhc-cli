@@ -92,13 +92,14 @@ for example 'crhc inventory display_name virt-who-esxi'"
                 # response = execution.inventory_list()
                 # print(response)
                 # print(json.dumps(response, indent=4))
-                num_of_days = input("Please, type the # of days with no updates. 0 for today, 1 for yesteday, 2 for 2 days ago ...: ")
-                if num_of_days.isdigit():
-                    pass
-                else:
-                    print("invalid entry, exiting")
-                    sys.exit()
-                response = execution.inventory_remove_stale(num_of_days)
+                # num_of_days = input("Please, type the # of days with no updates. 0 for today, 1 for yesteday, 2 for 2 days ago ...: ")
+                # if num_of_days.isdigit():
+                #     pass
+                # else:
+                #     print("invalid entry, exiting")
+                #     sys.exit()
+                # response = execution.inventory_remove_stale(num_of_days)
+                response = execution.inventory_remove_stale()
                 # print("end here")
                 sys.exit()
         except IndexError as e:
