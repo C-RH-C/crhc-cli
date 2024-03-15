@@ -455,52 +455,43 @@ def inventory_list_stale(current_only=False):
     return inventory_full_detail
 
 
-
-
-def inventory_remove_stale(num_of_days):
+def inventory_remove_stale():
     """
-    Def responsible to receive the # of days and check
-    all the servers currently in console.redhat.com, check the last
-    update and compare with the current date - num_of_days passed
-    by the customer.
+    Def responsible to check all the systems in stale and
+    stale_warning state, argue the customer to be sure, and move on
+    removing all the stale entries from console.redhat.com
     """
 
-    print("The file with the server list to be removed will be created here: {}".format(conf.STALE_FILE))
-    # Getting the current date and time
-    current_date = datetime.datetime.now()
-    # Calculating the date to be tested and removed before that
-    date_to_test_and_remove = current_date - datetime.timedelta(days=int(num_of_days))
+    # Adding the stale and stale_warning to return the correct # of elements
+    url = "https://console.redhat.com/api/inventory/v1/hosts?staleness=stale&staleness=stale_warning&per_page=1"
+    response = connection_request(url)
+    check_authentication(response)
 
-    print("Inside remove stale, # of days: {}".format(num_of_days))
-    print("Please, wait while checking the information ...")
-    list_server_with_no_system_profile = inventory_list_all_no_system_profile()
+    num_of_elements = response.json()["total"]
 
-    # print("ready to go")
-    stage_lst = []
+    print("We can see that you have {} elements at this moment set as stale or stale_warning".format(num_of_elements))
+    print("You can check this information on the link below")
+    print("")
+    print("https://console.redhat.com/insights/inventory?status=stale&status=stale_warning")
+    print("")
+    response_remote = input("Based on the information above, would you like to proceed and remove all the stale objects? (y/n): ")
 
-    for srv in list_server_with_no_system_profile['results']:
-        srv_last_update = srv['server']['updated'].split("T")[0]
-        # To convert from string to format type
-        srv_last_update_time_format = datetime.datetime.strptime(srv_last_update, "%Y-%m-%d")
-        if srv_last_update_time_format < date_to_test_and_remove:
-            stage_lst.append(srv)
-
-    report.json_stale_systems(stage_lst)
-
-    count = len(stage_lst)
-    print("We got {} entries with date equal or less than {}.".format(count, date_to_test_and_remove.strftime("%Y-%m-%d")))
-    print("if you wish, you can open a second terminal and double-check the file {} with the complete list of servers that will be removed, before you proceed.".format(conf.STALE_FILE))
-    opt = input("Would you like to proceed and remove then? (y|Y|n|N): ")
-
-    if (opt == "y") or (opt == "Y"):
-        # print("proceed")
-        inventory_remove_entry(stage_lst)
-    elif (opt == "n") or (opt == "N"):
-        print("Canceling")
+    if response_remote == "y":
+        print("")
+        print("The response was yes. Retrieving the complete list of stale and stale_warning to be removed")
+        print("please, wait ...")
+        all_stale_objects = inventory_list_stale()
+        confirmation = input("Are you sure you would like to remove all the stale entries? (y/n): ")
+        if confirmation == "y":
+            print("ok, let's proceed")
+            inventory_remove_entry(all_stale_objects)
+        else:
+            print("exiting ...")
+            sys.exit()
+        print("I'm here")
     else:
-        print("Invalid option")
-
-    # print("ready to go")
+        print("exiting ...")
+        sys.exit()
 
 
 def inventory_remove_entry(srv_to_be_removed):
@@ -513,8 +504,9 @@ def inventory_remove_entry(srv_to_be_removed):
         print("Nothing to remove")
         sys.exit()
 
-    for srv in srv_to_be_removed:
-        print("here to check")
+    # This for will pass through all the stale objects
+    # and will remove them, one by one
+    for srv in srv_to_be_removed['results']:
         srv_uuid = srv['server']['id']
         last_update = srv['server']['updated']
         # srv_uuid = "1784587a-a502-4b98-97ea-634e92e882e2"
