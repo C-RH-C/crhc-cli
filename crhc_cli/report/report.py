@@ -404,7 +404,7 @@ def csv_report_inventory(json_obj):
         "created",
         "insights_id",
         "reporter",
-        "rhel_machine_id",
+        "bios_uuid",
         "tuned_profile",
         "sap_system",
         "sap_version",
@@ -565,9 +565,9 @@ def csv_report_inventory(json_obj):
             stage_lst.append("No_reporter_key_available")
 
         try:
-            stage_lst.append(entries["server"]["rhel_machine_id"])
+            stage_lst.append(entries["server"]["bios_uuid"])
         except KeyError:
-            stage_lst.append("No_rhel_machine_id_key_available")
+            stage_lst.append("No_bios_uuid_key_available")
 
         try:
             stage_lst.append(entries["system_profile"]["tuned_profile"])
@@ -742,7 +742,7 @@ def csv_match_report(match_obj):
         "created",
         "insights_id",
         "reporter",
-        "rhel_machine_id",
+        "bios_uuid",
         "tuned_profile",
         "sap_system",
         "sap_version",
@@ -916,9 +916,9 @@ def csv_match_report(match_obj):
             stage_lst.append("No_reporter_key_available")
 
         try:
-            stage_lst.append(entries["server"]["rhel_machine_id"])
+            stage_lst.append(entries["server"]["bios_uuid"])
         except KeyError:
-            stage_lst.append("No_rhel_machine_id_key_available")
+            stage_lst.append("No_bios_uuid_key_available")
 
         try:
             stage_lst.append(entries["system_profile"]["tuned_profile"])

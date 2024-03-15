@@ -70,7 +70,7 @@ And after that, we can see all the available methods. From now, we can call them
         "results": [
             {
                 "insights_id": "1f959a58-9e13-4d60-8cef-33a452d2303b",
-                "rhel_machine_id": null,
+                "bios_uuid": null,
                 ...
 
 **Using the token with the curl command**
@@ -115,7 +115,7 @@ This should be enough to export the data and create the file ``/tmp/inventory_re
 * created
 * insights_id
 * reporter
-* rhel_machine_id
+* bios_uuid
 * tuned_profile
 * sap_system
 * sap_version
@@ -210,7 +210,7 @@ This is an awesome report because will combine both information from Inventory a
 * created
 * insights_id
 * reporter
-* rhel_machine_id
+* bios_uuid
 * tuned_profile
 * sap_system
 * sap_version
