@@ -74,6 +74,31 @@ for example 'crhc inventory display_name virt-who-esxi'"
 
         # To print in JSON format
         try:
+            if (sys.argv[1] == "inventory") and (sys.argv[2] == "list_stale"):
+                # execution.inventory_list()
+                # response = execution.inventory_list()
+                # print(response)
+                # print(json.dumps(response, indent=4))
+                # num_of_days = input("Please, type the # of days with no updates. 0 for today, 1 for yesteday, 2 for 2 days ago ...: ")
+                # if num_of_days.isdigit():
+                #     pass
+                # else:
+                #     print("invalid entry, exiting")
+                #     sys.exit()
+                response = execution.inventory_list_stale()
+                print(json.dumps(response, indent=4))
+                # sys.exit()
+                # print("end here")
+                sys.exit()
+        except IndexError as e:
+            # print("Error: {}".format(e))
+            ...
+
+
+
+
+        # To print in JSON format
+        try:
             if (sys.argv[1] == "inventory") and (sys.argv[2] == "remove_stale"):
                 # execution.inventory_list()
                 # response = execution.inventory_list()
@@ -188,6 +213,27 @@ the number of servers in your account."
             ):
                 # execution.inventory_list()
                 response = execution.inventory_list_search_by_name()
+                report.csv_report_inventory(response)
+                sys.exit()
+        except IndexError as e:
+            # print("Error: {}".format(e))
+            ...
+
+        # To print in CSV format
+        try:
+            if (
+                (sys.argv[1] == "inventory")
+                and (sys.argv[2] == "list_stale")
+                and (sys.argv[3] == "--csv")
+            ):
+                # Checking if the connection still alive before
+                # printing sometihng
+                if execution.check_authentication():
+                    print(
+                        "This process can spend some minutes according to \
+the number of servers in your account."
+                    )
+                response = execution.inventory_list_stale()
                 report.csv_report_inventory(response)
                 sys.exit()
         except IndexError as e:
