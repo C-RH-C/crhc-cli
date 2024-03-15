@@ -7,6 +7,7 @@ CMD git clone https://github.com/C-RH-C/crhc-cli.git && \
     pip install --upgrade pip && \
     cd crhc-cli && \
     pip install -r requirements.txt && \
-    ./crhc.py && \
-    pyinstaller --onefile crhc.py && \
-    cp dist/crhc /app
+    chmod +x bin/crhc-cli && \
+    bin/crhc-cli && \
+    pyinstaller --paths=. --onefile bin/crhc-cli && \
+    cp dist/crhc-cli /app/crhc-linux-x64
