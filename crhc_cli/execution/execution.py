@@ -375,22 +375,12 @@ def inventory_list_stale(current_only=False):
     stale_warning status.
     """
 
+    # Adding the stale and stale_warning to return the correct # of elements
     url = "https://console.redhat.com/api/inventory/v1/hosts?staleness=stale&staleness=stale_warning&per_page=1"
     response = connection_request(url)
     check_authentication(response)
 
-    # Here we are checking the total number of objects and setting the correct
-    # number of pages based on that.
-    # check_response = divmod(response.json()['total'], 50)
-    # ITEMS_PER_PAGE = 10
-    # check_response = divmod(response.json()["total"], conf.ITEMS_PER_PAGE)
-
     num_of_pages = return_num_of_pages(response.json()["total"], type="inventory")
-
-    # if check_response[1] == 0:
-    #     num_of_pages = check_response[0] + 1
-    # else:
-    #     num_of_pages = check_response[0] + 2
 
     list_of_servers = []
     inventory_full_detail = {"results": "", "total": response.json()["total"]}

@@ -75,20 +75,8 @@ for example 'crhc inventory display_name virt-who-esxi'"
         # To print in JSON format
         try:
             if (sys.argv[1] == "inventory") and (sys.argv[2] == "list_stale"):
-                # execution.inventory_list()
-                # response = execution.inventory_list()
-                # print(response)
-                # print(json.dumps(response, indent=4))
-                # num_of_days = input("Please, type the # of days with no updates. 0 for today, 1 for yesteday, 2 for 2 days ago ...: ")
-                # if num_of_days.isdigit():
-                #     pass
-                # else:
-                #     print("invalid entry, exiting")
-                #     sys.exit()
                 response = execution.inventory_list_stale()
                 print(json.dumps(response, indent=4))
-                # sys.exit()
-                # print("end here")
                 sys.exit()
         except IndexError as e:
             # print("Error: {}".format(e))
