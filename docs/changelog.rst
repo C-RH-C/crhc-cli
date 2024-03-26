@@ -1,6 +1,47 @@
 Changelog
 ---------
 
+**v1.16.16 - 03/25/2024**
+
+    Fixed ansible issue with max items in request by @starnold-redhat in #227
+    New structure to be able to install it via pip by @waldirio in #231
+    Fixing the bios_uuid information by @waldirio in #234
+    added the feature to list all the stale and stale_warning by @waldirio in #235
+    remove stale feature updated by @waldirio in #237
+    added the missing files by @waldirio in #239
+    container file updated by @waldirio in #241
+
+[FIX] Fixed ansible issue with max items in request - [` issue xxx`_]
+[ENHANCEMENT] New structure to be able to install it via pip - [` issue xxx`_]
+[FIX] Fixing the bios_uuid information - [` issue xxx`_]
+[ENHANCEMENT] added the feature to list all the stale and stale_warning - [` issue xxx`_]
+[ENHANCEMENT] remove stale feature updated - [` issue xxx`_]
+[FIX] Added the missing files - [` issue xxx`_]
+[FIX] Container file updated - [` issue xxx`_]
+
+[FIX] items per page normalized across the items - [` issue xxx`_]
+[ENHANCEMENT] Fixed patch api to use v3, instead of v1 - [` issue xxx`_]
+[ENHANCEMENT] automated way to create the binary - [` issue xxx`_]
+[FIX] Fixing the missing links on changelog page - [` issue xxx`_]
+[ENHANCEMENT] Updated the data in a way that the count will be possible - [` issue xxx`_]
+[FIX] requirement updated - [` issue xxx`_]
+
+.. _issue xxx: https://github.com/C-RH-C/crhc-cli/issues/xxx
+.. _issue xxx: https://github.com/C-RH-C/crhc-cli/issues/xxx
+.. _issue xxx: https://github.com/C-RH-C/crhc-cli/issues/xxx
+.. _issue xxx: https://github.com/C-RH-C/crhc-cli/issues/xxx
+.. _issue xxx: https://github.com/C-RH-C/crhc-cli/issues/xxx
+.. _issue xxx: https://github.com/C-RH-C/crhc-cli/issues/xxx
+.. _issue xxx: https://github.com/C-RH-C/crhc-cli/issues/xxx
+.. _issue xxx: https://github.com/C-RH-C/crhc-cli/issues/xxx
+.. _issue xxx: https://github.com/C-RH-C/crhc-cli/issues/xxx
+.. _issue xxx: https://github.com/C-RH-C/crhc-cli/issues/xxx
+.. _issue xxx: https://github.com/C-RH-C/crhc-cli/issues/xxx
+.. _issue xxx: https://github.com/C-RH-C/crhc-cli/issues/xxx
+.. _issue xxx: https://github.com/C-RH-C/crhc-cli/issues/xxx
+
+
+
 **v1.15.15 - 02/09/2024**
 
 [FIX] items per page normalized across the items - [`issue 217`_]
