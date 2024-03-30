@@ -10,7 +10,7 @@ with open("requirements.txt", "r") as req:
 
 setup(
     name="crhc-cli",
-    version="1.15.15",
+    version="1.16.16",
     author="Waldirio",
     author_email="waldirio@gmail.com",
     description="This project contains the crhc command line tool that simplifies the use of the C.RH.C API available at console.redhat.com",
