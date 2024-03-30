@@ -3,13 +3,13 @@ Changelog
 
 **v1.16.16 - 03/25/2024**
 
-- [FIX] Fixed ansible issue with max items in request - [` issue 228`_]
-- [ENHANCEMENT] New structure to be able to install it via pip - [` issue 229`_]
-- [FIX] Fixing the bios_uuid information - [` issue 233`_]
-- [ENHANCEMENT] added the feature to list all the stale and stale_warning - [` issue 232`_]
-- [ENHANCEMENT] remove stale feature updated - [` issue 236`_]
-- [FIX] Added the missing files - [` issue 238`_]
-- [FIX] Container file updated - [` issue 240`_]
+- [FIX] Fixed ansible issue with max items in request - [`issue 228`_]
+- [ENHANCEMENT] New structure to be able to install it via pip - [`issue 229`_]
+- [FIX] Fixing the bios_uuid information - [`issue 233`_]
+- [ENHANCEMENT] added the feature to list all the stale and stale_warning - [`issue 232`_]
+- [ENHANCEMENT] remove stale feature updated - [`issue 236`_]
+- [FIX] Added the missing files - [`issue 238`_]
+- [FIX] Container file updated - [`issue 240`_]
 
 .. _issue 228: https://github.com/C-RH-C/crhc-cli/issues/228
 .. _issue 229: https://github.com/C-RH-C/crhc-cli/issues/229
