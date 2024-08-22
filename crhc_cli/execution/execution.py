@@ -55,7 +55,7 @@ def connection_request(url):
 
     access_token = token.get_token()
     response = requests.get(
-        url, headers={"Authorization": "Bearer {}".format(access_token)}
+        url, headers={"Authorization": "Bearer {}".format(access_token), "app": "crhc-cli-request"}
     )
 
     return response
@@ -69,7 +69,7 @@ def connection_request_delete(url):
 
     access_token = token.get_token()
     response = requests.delete(
-        url, headers={"Authorization": "Bearer {}".format(access_token)}
+        url, headers={"Authorization": "Bearer {}".format(access_token), "app": "crhc-cli-delete"}
     )
 
     return response
@@ -83,7 +83,7 @@ def connection_request_post(url, payload):
 
     access_token = token.get_token()
     response = requests.post(
-        url, json=payload, headers={"Authorization": "Bearer {}".format(access_token), "Content-Type": "application/json"}
+        url, json=payload, headers={"Authorization": "Bearer {}".format(access_token), "Content-Type": "application/json", "app": "crhc-cli-post"}
     )
 
     return response
@@ -98,7 +98,7 @@ def check_authentication(response=None):
         access_token = token.get_token()
         url = "https://console.redhat.com/api/inventory/v1/hosts?per_page=1"
         response = requests.get(
-            url, headers={"Authorization": "Bearer {}".format(access_token)}
+            url, headers={"Authorization": "Bearer {}".format(access_token), "app": "crhc-cli-auth"}
         )
         if response.status_code != 200:
             print(
