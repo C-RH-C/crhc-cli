@@ -1,6 +1,10 @@
 FROM docker.io/dokken/centos-7
 
 WORKDIR /app
+
+RUN rm -rf /etc/yum.repos.d/* && \
+    echo -e "[base]\nname=CentOS\nbaseurl=https://vault.centos.org/7.9.2009/os/x86_64/\ngpgcheck=1\ngpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7\n\n[updates]\nname=CentOS-$releasever-Updates\nbaseurl=https://vault.centos.org/7.9.2009/updates/x86_64/\ngpgcheck=1\ngpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7" >/etc/yum.repos.d/local.repo
+
 RUN yum install gcc zlib-devel openssl-devel libffi-devel git -y && \
     yum clean all && \
     wget https://www.python.org/ftp/python/3.8.18/Python-3.8.18.tgz && \
