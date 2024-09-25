@@ -57,6 +57,13 @@ def connection_request(url):
     response = requests.get(
         url, headers={"Authorization": "Bearer {}".format(access_token), "app": "crhc-cli-request"}
     )
+    retries = 5
+    # Going to try and call each request up to 5 times, to be more defensive about api gateway issues
+    while (response.status_code != 200  and retries >0) :
+        response = requests.get(
+            url, headers={"Authorization": "Bearer {}".format(access_token)}
+        )
+        retries = retries -1
 
     return response
 
