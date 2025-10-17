@@ -152,6 +152,10 @@ def match_hbi_sw():
         count = 0
         for sw_element in swatch["data"]:
             if inv_element["server"]["id"] == sw_element["instance_id"]:
+                # Debug
+                # if inv_element['server']['display_name'] == "FQDN.HERE":
+                #     print("HERE")
+
                 # print("found it")
                 # print("{},{}".format(inv_element,sw_element))
                 stage_lst.append(inv_element)

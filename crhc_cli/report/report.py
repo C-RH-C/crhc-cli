@@ -25,7 +25,8 @@ def check_for_installed_products(entries):
     if (
         (entries["server"]["reporter"] == "puptoo")
         or (entries["server"]["reporter"] == "yupana")
-        or entries["server"]["reporter"] == "rhsm-conduit"
+        or (entries["server"]["reporter"] == "rhsm-conduit")
+        or (entries["server"]["reporter"] == "satellite")
     ):
         try:
             if len(entries["system_profile"]["installed_products"]) > 0:
@@ -770,6 +771,9 @@ def csv_match_report(match_obj):
     stage_lst = []
 
     for elements in match_obj:
+        # Debug
+        # if elements[0]['server']['display_name'] == "FQDN.HERE":
+        #     print("HERE")
         entries = elements[0]
         sw_entries = elements[1]
 
