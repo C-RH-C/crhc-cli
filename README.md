@@ -1,3 +1,9 @@
+# **Archived Project**
+
+For more information, please visit the issue [https://issues.redhat.com/browse/RHIN-2342](https://issues.redhat.com/browse/RHIN-2342)
+
+---
+
 # C.RH.C API Command Line Tool
 
 This project contains the `crhc` command line tool that simplifies the use of the C.RH.C API available at `console.redhat.com`
